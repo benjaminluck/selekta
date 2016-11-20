@@ -8,7 +8,7 @@
 //error_reporting(E_ALL);
 define('STARTDIR', '/Volumes/2TB EXT Western Digital/_AUDIO/_ONSECK/_dj:selection/selection-v10/');
 
-$writeDir = "/Applications/MAMP/htdocs/index-selection/test_src/";
+$writeDir = "/Applications/MAMP/htdocs/selekta/test_src/";
 //$dir = "/Volumes/2TB%20EXT%20Western%20Digital%201/_AUDIO/_ONSECK/_dj:selection/selection-v10/";
 $dir = STARTDIR;
 $writeDir = $dir;

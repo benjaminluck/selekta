@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -11,40 +12,38 @@ require 'params.php';
 
 use Elasticsearch\ClientBuilder;
 
-
-
 $client = ClientBuilder::create()->build();
-$flatList = new FlatList($dir,$dir);
+$flatList = new FlatList($dir, $dir);
 $flatList->buildList();
 $fileList = $flatList->Array();
 
 // // move to  read dir
 // echo $dir;
 // chdir($dir);
-//
+
 // // init vars
 // $structure = [];
 // $tree = [];
-//
+
 // // build and format tree
 // //$tree[$dir] = buildFolderTreeRecursive($dir, $dir);
 // //$out = listRecursive($dir, $dir);
 // //$json_tree = json_encode($tree);
-//
+
 // // print tree
 
 $params = ['body' => []];
 
-for ($i = 0; $i < sizeof($fileList); $i++) {
+for ($i = 0; $i < sizeof($fileList); ++$i) {
     $params['body'][] = [
         'index' => [
             '_index' => 'flat_16nov',
             '_type' => 'mp3',
-            '_id' => $i
-        ]
+            '_id' => $i,
+        ],
     ];
 
-     $params['body'][] = json_encode($fileList[$i]);
+    $params['body'][] = json_encode($fileList[$i]);
 }
 
 // Send the last batch if it exists
@@ -59,7 +58,4 @@ chdir($writeDir);
 //file_put_contents('list.json', $json_tree);
 
 // insert into elastic
-
-
-
-?>
+;
