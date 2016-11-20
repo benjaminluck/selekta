@@ -1,17 +1,105 @@
 <html>
   <head>
+    <meta http-equiv="refresh" content="1" >
   </head>
   <body>
     <?php
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+
+    require 'params.php';
+    define('DESTINATION', $destination);
+
     $json = file_get_contents("list.json");
-    $array = json_decode($json);
-    print_r($array);
+    $array = json_decode($json, true);
+  //  print_r(json_encode($array));
+    $todo_list = [];
+
+    file_put_contents(DESTINATION.'todo.log', "");
+
+    $ct = 0;
+
+     function walkThruDir($array){
+       foreach($array as $k1 => $v1){
+         if(!isset($v1['srcPath'])){
+           walkThruDir($v1);
+         }
+         else{
+           $items[] = $v1;
+           file_put_contents(DESTINATION.'todo.log', $v1['srcPath'].PHP_EOL , FILE_APPEND | LOCK_EX);
+           file_put_contents(DESTINATION.'todo.log', DESTINATION . $v1['fileName'].PHP_EOL, FILE_APPEND | LOCK_EX);
+           file_put_contents(DESTINATION.'todo.log', '----'.PHP_EOL, FILE_APPEND | LOCK_EX);
+
+          //  copy($v1['srcPath'], DESTINATION . $v1['fileName']);
+          //  $ct++;
+           //
+          //  if($ct > 10){
+          //    return $items;
+          //  }
+
+
+           //file_put_contents(DESTINATION.'todo.log', $v1['relPath'].PHP_EOL , FILE_APPEND | LOCK_EX);
+
+          //  echo '<pre>';
+          //  echo $v1['srcPath'];
+          //  echo '</pre>';
+         }
+         // append filename to list
+       }
+
+       return $items;
+         }
+
+        $todo_list = walkThruDir($array);
+      //  print_r($todo_list);
+
+      // first get file Length
+      $file = new SplFileObject(DESTINATION.'todo.log');
+
+      while (!$file->eof()) {
+          $file->fgets();
+          $end = $file->ftell();
+      }
+
+
+
+        $file = new SplFileObject(DESTINATION.'todo.log');
+
+    // Loop until we reach the end of the file.
+    while (!$file->eof()) {
+        // Echo one line from the file.
+
+        $a = $file->fgets();
+        $b = $file->fgets();
+        $last = $file->fgets();
+
+
+        // echo $a . PHP_EOL;
+        // echo $b . PHP_EOL;
+        // echo $last . PHP_EOL;
+
+        if($last == '----' || $last == '---- ' ) { continue; }
+
+
+
+        if(file_exists(rtrim($b))) { continue; }
+
+
+        copy(rtrim($a), rtrim($b));
+        echo ("Progress : " . round($file->ftell() / $end, 4) * 100 . '%');
+      //  header("Refresh:0");
+        exit();
+      //  echo $a;
+    }
+
+    // Unset the file to call __destruct(), closing the file handle.
+    $file = null;
+
+
     exit;
 
-    $destination = "/Applications/MAMP/htdocs/index-selection/test_destination/";
+
 
     $from = "/Applications/MAMP/htdocs/index-selection/test_unstruct/";
 

@@ -5,4 +5,7 @@ $writeDir = "/Applications/MAMP/htdocs/selekta/test_src/";
 $dir = STARTDIR;
 $writeDir = $dir;
 
+$destination = "/Applications/MAMP/htdocs/selekta/test_destination/";
+$destination = '/Volumes/2TB EXT Western Digital/test_destination/';
+
 ?>
