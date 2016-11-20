@@ -37,7 +37,7 @@ $params = ['body' => []];
 for ($i = 0; $i < sizeof($fileList); ++$i) {
     $params['body'][] = [
         'index' => [
-            '_index' => 'flat_16nov',
+            '_index' => 'selection-' . date("d-m-y"),
             '_type' => 'mp3',
             '_id' => $i,
         ],
