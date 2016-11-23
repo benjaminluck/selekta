@@ -15,6 +15,11 @@ class FileList
     '__readme.rtf',
   ];
 
+  public function getFolderName(){
+    $comps = array_filter(explode('/', $this->inputDir));
+    return end($comps);
+  }
+
     public $musicExt = [
     'mp3',
     'aiff',

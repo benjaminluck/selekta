@@ -16,6 +16,8 @@ $client = ClientBuilder::create()->build();
 $flatList = new FlatList($dir, $dir);
 $flatList->buildList();
 $fileList = $flatList->Array();
+$selectionName = $flatList->getFolderName();
+
 
 // // move to  read dir
 // echo $dir;
@@ -37,7 +39,7 @@ $params = ['body' => []];
 for ($i = 0; $i < sizeof($fileList); ++$i) {
     $params['body'][] = [
         'index' => [
-            '_index' => 'selection-' . date("d-m-y"),
+            '_index' => $selectionName,
             '_type' => 'mp3',
             '_id' => $i,
         ],

@@ -15,6 +15,7 @@ class FlatList extends FileList
         $this->startDir = $start;
     }
 
+
     public function printList()
     {
         print_r($this->list);
@@ -55,7 +56,7 @@ class FlatList extends FileList
                             // logic if file is an actual file
                             $it = $this->newItem($file, $dir2, $this->startDir);
                             if(in_array($it['ext'], $this->musicExt)){ $it = $this->describeMusicItem($it, $file); }
-                            
+
                             $this->list[] = $it;
                         }
                     }
