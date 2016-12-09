@@ -10,10 +10,10 @@ general: basic interface with dynamic paths
 </head>
 <body>
 <ul>
-  <li><a href="view.php">view</a></li>
-  <li><a href="write.php">write</a></li>
-  <li><a href="create_list.php">create_list</a></li>
-  <li><a href="es_insert.php">es_insert</a></li>
+  <li><a href="actions/view.php">view</a></li>
+  <li><a href="actions/write.php">write</a></li>
+  <li><a href="actions/create_list.php">create_list</a></li>
+  <li><a href="actions/es_insert.php">es_insert</a></li>
 </ul>
 </body>
 </html>

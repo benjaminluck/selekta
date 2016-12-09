@@ -4,11 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require 'vendor/autoload.php';
-require 'backend/FileList.php';
-require 'backend/FlatList.php';
-require 'backend/StructuredTree.php';
-require 'params.php';
+require '../classmap.php';
+require '../params.php';
 
 use Elasticsearch\ClientBuilder;
 
