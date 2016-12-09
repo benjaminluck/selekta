@@ -73,9 +73,12 @@ class FileList
         return $it;
     }
 
-    public function __construct()
+    public function __construct($dir)
     {
-        // construct logic;
+          // general constructor logic;
+          if(!is_dir($dir)){
+            exit('Input path is not a valid directory');
+          }
     }
 
     public function JSON()

@@ -8,10 +8,12 @@ class FlatList extends FileList
     public $list = [];
     public $tree;
 
-    public function __construct($in, $start)
+    public function __construct($start)
     {
-        // construct logic;
-    $this->inputDir = $in;
+        // run general FileList constructor
+        parent::__construct($start);
+
+        $this->inputDir = $start;
         $this->startDir = $start;
     }
 
@@ -39,7 +41,7 @@ class FlatList extends FileList
         if (is_null($dir2)) {
             $dir2 = $this->startDir;
         }
-
+        echo $dir1;
         chdir($dir1);
         $tree = [];
         $list = [];
