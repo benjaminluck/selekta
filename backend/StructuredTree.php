@@ -10,6 +10,8 @@ class StructuredTree extends FileList
 
     public function __construct($start)
     {
+        parent::__construct();
+
         // construct logic;
         $this->inputDir = $start;
         $this->startDir = $start;
