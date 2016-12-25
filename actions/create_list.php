@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 require '../classmap.php';
 require '../params.php';
 
-$tree = new StructuredTree($dir;
+$tree = new StructuredTree($dir);
 $tree->buildList();
 $fileList = $tree->Array();
 
