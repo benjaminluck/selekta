@@ -4,7 +4,7 @@
 define('STARTDIR', '/Volumes/2TB EXT Western Digital/_AUDIO/_ONSECK/_dj:selection/selection-v10/');
 
 // directory where .json is written
-$writeDir = "/Applications/MAMP/htdocs/selekta/test_src/";
+$writeDir = "/Volumes/2TB EXT Western Digital/_AUDIO/_ONSECK/_dj:selection/selection-v10/";
 $dir = STARTDIR;
 $writeDir = $dir;
 
