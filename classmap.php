@@ -7,4 +7,6 @@ require 'backend/StructuredTree.php';
 require 'backend/FileWriter.php';
 require 'backend/ElasticHandler.php';
 
+require 'api/API.php';
+
 ?>
