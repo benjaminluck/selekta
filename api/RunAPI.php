@@ -24,9 +24,15 @@ $params = [
 $apiInstance = new API($params);
 $tlList = $apiInstance->createList();
 
+// set content type
+header('Content-type: application/json');
+
 switch($request){
   case ($request[0] == 'list') :
       echo $tlList->JSON();
+      break;
+  case ($request[0] == 'test') :
+      echo 'test';
       break;
 }
 
