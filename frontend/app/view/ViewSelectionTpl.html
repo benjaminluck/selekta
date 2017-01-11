@@ -1,0 +1,11 @@
+<tr *ngFor="let l of list">
+  {{l}}
+  <div *ngFor="let key of l | keys">
+    {{key}}: {{l[key]}}
+    <div *ngFor="let key2 of key | keys">
+      <div *ngFor="let key3 of key2 | keys">
+        {{key2}}: {{key[key2]}} 
+      </div>
+    </div>
+  </div>
+</tr>

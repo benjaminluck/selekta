@@ -1,12 +1,12 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { OneComponent }   from './one.component';
+import { ViewSelectionComponent }   from './view-selection.component';
 import { TwoComponent }   from './two.component';
 
 const routes: Routes = [
-  { path: 'one',  component: OneComponent },
-  { path: 'two',  component: TwoComponent }
+  { path: 'view-selection',  component: ViewSelectionComponent },
+  { path: 'two',  component: TwoComponent } 
 ];
 
 @NgModule({

@@ -8,19 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.name = 'Angular';
+var core_1 = require("@angular/core");
+var KeysPipe = (function () {
+    function KeysPipe() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: 'app/view/WrapperTpl.html'
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    KeysPipe.prototype.transform = function (value, args) {
+        var keys = [];
+        for (var key in value) {
+            keys.push({ key: key, value: value[key] });
+        }
+        return keys;
+    };
+    return KeysPipe;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+KeysPipe = __decorate([
+    core_1.Pipe({ name: 'keys' }),
+    __metadata("design:paramtypes", [])
+], KeysPipe);
+exports.KeysPipe = KeysPipe;
+//# sourceMappingURL=keys.pipe.js.map

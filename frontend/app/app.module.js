@@ -12,9 +12,10 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
-var one_component_1 = require("./one.component");
+var view_selection_component_1 = require("./view-selection.component");
 var two_component_1 = require("./two.component");
 var app_routing_module_1 = require("./app-routing.module");
+var keys_pipe_1 = require("./keys.pipe");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -29,8 +30,9 @@ AppModule = __decorate([
         ],
         declarations: [
             app_component_1.AppComponent,
-            one_component_1.OneComponent,
-            two_component_1.TwoComponent
+            view_selection_component_1.ViewSelectionComponent,
+            two_component_1.TwoComponent,
+            keys_pipe_1.KeysPipe
         ],
         bootstrap: [app_component_1.AppComponent]
     }),

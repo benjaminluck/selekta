@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent }  from './app.component';
-import { OneComponent }  from './one.component';
+import { ViewSelectionComponent }  from './view-selection.component';
 import { TwoComponent }  from './two.component';
 
 import { AppRoutingModule } from './app-routing.module';
+
+import { KeysPipe } from './keys.pipe';
 
 @NgModule({
   imports:      [
@@ -16,8 +18,9 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   declarations: [
     AppComponent,
-    OneComponent,
-    TwoComponent
+    ViewSelectionComponent,
+    TwoComponent,
+    KeysPipe
   ],
   bootstrap:    [ AppComponent ]
 })

@@ -87,7 +87,7 @@ class ElasticHandler
         }
       }
     }
-    
+
     return $tags;
   }
 
@@ -167,7 +167,11 @@ class ElasticHandler
       }
     }
 
-    return $indices;
+    if(!empty($indices)){
+      return $indices;
+    }
+
+    return "No indicies found.";
   }
 
 }
