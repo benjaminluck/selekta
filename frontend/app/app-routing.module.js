@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var one_component_1 = require('./one.component');
+var view_selection_component_1 = require('./view-selection.component');
 var two_component_1 = require('./two.component');
 var routes = [
-    { path: 'one', component: one_component_1.OneComponent },
+    { path: 'view-selection', component: view_selection_component_1.ViewSelectionComponent },
     { path: 'two', component: two_component_1.TwoComponent }
 ];
 var AppRoutingModule = (function () {
