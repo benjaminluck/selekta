@@ -1,11 +1,15 @@
-<tr *ngFor="let l of list">
-  {{l}}
-  <div *ngFor="let key of l | keys">
-    {{key}}: {{l[key]}}
-    <div *ngFor="let key2 of key | keys">
-      <div *ngFor="let key3 of key2 | keys">
-        {{key2}}: {{key[key2]}} 
-      </div>
-    </div>
-  </div>
-</tr>
+<ul>
+  <li *ngFor='let key of list | keys'>
+   Key: {{key.key}}, value: {{key.value}}
+   <ul>
+     <li *ngFor='let key2 of key.value | keys'>
+      Key: {{key2.key}}, value: {{key2.value}}
+      <ul>
+        <li *ngFor='let key3 of key2.value | keys'>
+         Key: {{key3.key}}, value: {{key3.value}}
+        </li>
+      </ul>
+     </li>
+   </ul>
+  </li>
+</ul>

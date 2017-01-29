@@ -12,16 +12,17 @@ import { KeysPipe } from './keys.pipe';
 export class ViewSelectionComponent  {
   list : any[];
 
-
   constructor (API : ApiService){
       let response : any[];
       API.getList().subscribe(
           res => {
             console.log(res);
             this.list = [];
-            for(let key in res){
-              this.list.push(res[key]);
-            }
+            this.list = res; 
+            // for(let key in res){
+            //   let obj = {};
+            //   this.list.push(res[key]);
+            // }
           },
           err => console.error(err),
           () => console.log('Completed!')

@@ -17,9 +17,7 @@ var ViewSelectionComponent = (function () {
         API.getList().subscribe(function (res) {
             console.log(res);
             _this.list = [];
-            for (var key in res) {
-                _this.list.push(res[key]);
-            }
+            _this.list = res;
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
         console.log(response);
         console.log(this);
