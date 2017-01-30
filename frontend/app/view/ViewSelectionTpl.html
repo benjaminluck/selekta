@@ -5,7 +5,7 @@
      <li *ngFor='let key2 of key.value | keys'>
       Key: {{key2.key}}, value: {{key2.value}}
       <ul>
-        <li *ngFor='let key3 of key2.value | keys'>
+        <li *ngFor='let key3 of key2.value | keys' (click)="selectItem(key,key2,key3)">
          Key: {{key3.key}}, value: {{key3.value}}
         </li>
       </ul>

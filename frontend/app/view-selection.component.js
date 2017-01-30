@@ -10,10 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var api_service_1 = require("./api.service");
+var core_2 = require("@angular/core");
 var ViewSelectionComponent = (function () {
-    function ViewSelectionComponent(API) {
+    function ViewSelectionComponent(API, zone) {
         var _this = this;
+        this.zone = zone;
         var response;
+        this.zone = zone;
         API.getList().subscribe(function (res) {
             console.log(res);
             _this.list = [];
@@ -22,6 +25,15 @@ var ViewSelectionComponent = (function () {
         console.log(response);
         console.log(this);
     }
+    ViewSelectionComponent.prototype.selectItem = function () {
+        var path0 = arguments[0].key;
+        var path1 = arguments[1].key;
+        var path2 = arguments[2].key;
+        console.log(arguments);
+        console.log(this);
+        console.log(this.list[path0][path1][path2]);
+        console.log(this.zone);
+    };
     return ViewSelectionComponent;
 }());
 ViewSelectionComponent = __decorate([
@@ -30,7 +42,7 @@ ViewSelectionComponent = __decorate([
         providers: [api_service_1.ApiService],
         templateUrl: 'app/view/ViewSelectionTpl.html'
     }),
-    __metadata("design:paramtypes", [api_service_1.ApiService])
+    __metadata("design:paramtypes", [api_service_1.ApiService, core_2.NgZone])
 ], ViewSelectionComponent);
 exports.ViewSelectionComponent = ViewSelectionComponent;
 //# sourceMappingURL=view-selection.component.js.map
