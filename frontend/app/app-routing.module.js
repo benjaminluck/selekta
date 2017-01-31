@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var view_selection_component_1 = require('./view-selection.component');
-var two_component_1 = require('./two.component');
+var dashboard_component_1 = require('./dashboard.component');
 var routes = [
     { path: 'view-selection', component: view_selection_component_1.ViewSelectionComponent },
-    { path: 'two', component: two_component_1.TwoComponent }
+    { path: 'dashboard', component: dashboard_component_1.DashboardComponent }
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {

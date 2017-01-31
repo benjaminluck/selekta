@@ -12,7 +12,7 @@ var core_1 = require('@angular/core');
 var KeysPipe = (function () {
     function KeysPipe() {
     }
-    KeysPipe.prototype.transform = function (value, args) {
+    KeysPipe.prototype.transform = function (value) {
         var keys = [];
         for (var key in value) {
             keys.push({ key: key, value: value[key] });

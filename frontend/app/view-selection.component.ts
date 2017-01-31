@@ -36,15 +36,13 @@ export class ViewSelectionComponent  {
 
   }
 
-  selectItem(){
-    let path0 = arguments[0].key;
-    let path1 = arguments[1].key;
-    let path2 = arguments[2].key;
-
+  clickSong(){
     console.log(arguments);
-    console.log(this);
-    console.log(this.list[path0][path1][path2]);
-    console.log(this.zone);
-  //  delete this.list[path0][path1][path2];
+    if(arguments[0].visible == undefined){
+      arguments[0].visible = false;
+    }
+
+    arguments[0].visible = !arguments[0].visible;
+
   }
 }

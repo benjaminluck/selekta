@@ -2,11 +2,11 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ViewSelectionComponent }   from './view-selection.component';
-import { TwoComponent }   from './two.component';
+import { DashboardComponent }   from './dashboard.component';
 
 const routes: Routes = [
   { path: 'view-selection',  component: ViewSelectionComponent },
-  { path: 'two',  component: TwoComponent } 
+  { path: 'dashboard',  component: DashboardComponent }
 ];
 
 @NgModule({

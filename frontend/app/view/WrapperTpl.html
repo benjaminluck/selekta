@@ -1,6 +1,14 @@
-<h1>selekta</h1>
-            <nav>
-          <a routerLink="/view-selection" routerLinkActive="active">View selection</a>
-          <a routerLink="/two" routerLinkActive="active">TwoComponent</a>
-          </nav>
-          <router-outlet></router-outlet>
+<md-sidenav-container class="main-container">
+  <md-sidenav #sidenav mode="side" opened="true" class="main-sidenav">
+    <nav>
+        <a class="display-block m-a" routerLink="/view-selection" routerLinkActive="active"><md-icon md-list-avatar>settings</md-icon></a>
+        <a class="display-block m-a" routerLink="/dashboard" routerLinkActive="active"><md-icon md-list-avatar>view_headline</md-icon></a>
+    </nav>
+  </md-sidenav>
+  <div class="main-sidenav-content">
+    <!-- <button md-button (click)="sidenav.open()">
+      <md-icon md-list-avatar>keyboard_arrow_right</md-icon>
+    </button> -->
+    <router-outlet></router-outlet>
+  </div>
+</md-sidenav-container>

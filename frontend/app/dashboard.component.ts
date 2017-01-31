@@ -4,9 +4,9 @@ import { ApiService } from './api.service';
 @Component({
   selector: 'my-app',
   providers: [ApiService],
-  templateUrl: 'app/two.html'
+  templateUrl: 'app/view/DashboardTpl.html'
 })
-export class TwoComponent  {
+export class DashboardComponent  {
   name = 'Angular';
   list = '';
   test = '' ;
