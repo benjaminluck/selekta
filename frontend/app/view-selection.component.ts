@@ -30,7 +30,7 @@ export class ViewSelectionComponent  {
           () => console.log('Completed!')
         );
       console.log(response);
-
+      let data = [2,3];
 
       console.log(this);
 
@@ -38,6 +38,7 @@ export class ViewSelectionComponent  {
 
   clickSong(){
     console.log(arguments);
+
     if(arguments[0].visible == undefined){
       arguments[0].visible = false;
     }

@@ -26,6 +26,17 @@ var ApiService = (function () {
     ApiService.prototype.blee = function () {
         console.log('blee');
     };
+    ApiService.prototype.getCreateList = function () {
+        console.log("getList");
+        return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/create-list/')
+            .map(function (response) { return response.json(); });
+    };
+    ApiService.prototype.updateDoc = function (data) {
+        console.log("updateDoc");
+        console.log(data);
+        return this.http.post('http://localhost:8888/selekta/api/RunAPI.php/update-doc/', data)
+            .map(function (response) { return response.json(); });
+    };
     ApiService.prototype.getList = function () {
         console.log("getList");
         return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/list/')

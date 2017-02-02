@@ -10,11 +10,70 @@ class API {
   public $writeDir = '';
   public $destination = '';
 
+  private $dbClient;
+
   public function __construct($constructParams){
     // init params
     $this->dir = $constructParams['dir'];
     $this->writeDir = $constructParams['writeDir'];
     $this->destination = $constructParams['destination'];
+    $this->dbClient = new ElasticHandler();
+  }
+
+  public function updateDoc($params, $data){
+    $indices = $this->dbClient->listIndices();
+    $selectedIndex = $indices[6];
+    $selectedType = 'mp3';
+
+    $resp = $client->updateSingleDocument($selectedIndex, $selectedType, $params['id'], $data);
+  }
+
+  public function shapeData($array, $type){
+    switch($type){
+      case 'song-bpm':
+      foreach($array as $item){
+
+          if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
+            $one = $item['_source']['songGroup'];
+            $two = $item['_source']['bpmGroup'];
+            $data = $item['_source'];
+            $data['id'] = $item['_id'];
+            $fileName = $data['fileName'];
+
+            $newArray[$one][$two][$fileName] = $data;
+          }
+      }
+      break;
+      case 'bpm-song':
+      foreach($array as $item){
+
+          if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
+            $one = $item['_source']['bpmGroup'];
+            $two = $item['_source']['songGroup'];;
+            $data = $item['_source'];
+            $data['id'] = $item['_id'];
+            $fileName = $data['fileName'];
+
+            $newArray[$one][$two][$fileName] = $data;
+          }
+      }
+      break;
+    }
+
+    $json = json_encode($newArray);
+
+    return $json;
+  }
+
+  public function getListFromIndex(){
+    $indices = $this->dbClient->listIndices();
+    $selectedIndex = $indices[6];
+    $selectedType = 'mp3';
+
+    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+    $list = $this->shapeData($list, 'bpm-song');
+
+    return $list;
   }
 
   public function createList(){

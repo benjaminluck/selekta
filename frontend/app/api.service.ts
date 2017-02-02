@@ -20,6 +20,19 @@ export class ApiService{
     console.log('blee');
   }
 
+  getCreateList() {
+    console.log("getList");
+    return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/create-list/')
+      .map(response => response.json());
+  }
+
+  updateDoc(data: any[]){
+    console.log("updateDoc");
+    console.log(data);
+    return this.http.post('http://localhost:8888/selekta/api/RunAPI.php/update-doc/', data)
+      .map(response => response.json());
+  }
+
   getList() {
     console.log("getList");
     return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/list/')

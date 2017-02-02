@@ -4,7 +4,7 @@
       <md-tab *ngFor='let key2 of key.value | keys' label="{{key2.key}}">
         <div style="margin: 5px;">
           <md-card style="margin-bottom:5px; font-size:12px; padding:5px;" *ngFor='let key3 of key2.value | keys'>
-            {{key3.key}}
+            {{key3.key}} <md-chip>{{key3.value.tags}}</md-chip> <input placeholder="Tag" [(ngModel)]="key3.value.newTag">
             <button md-button (click)="clickSong(key3);"><md-icon md-list-avatar>expand_more</md-icon></button>
             <md-card-content style="padding: 5px;" *ngIf="key3.visible">
               <ul>

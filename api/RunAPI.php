@@ -28,11 +28,22 @@ $tlList = $apiInstance->createList();
 header('Content-type: application/json');
 
 switch($request){
-  case ($request[0] == 'list') :
+  case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;
+  case ($request[0] == 'update-doc') :
+      $params = [];
+      $data = [];
+      exit();
+      echo $$apiInstance->updateDoc($params, $data);
+      break;
+  case ($request[0] == 'list') :
+      $list = $apiInstance->getListFromIndex();
+      print_r($list);
+      break;
   case ($request[0] == 'test') :
-      echo 'test';
+      //echo 'test';
+      echo getenv('REMOTE_ADDR');;
       break;
 }
 

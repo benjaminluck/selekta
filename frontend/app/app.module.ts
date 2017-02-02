@@ -1,5 +1,6 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 
@@ -17,6 +18,7 @@ import { KeysPipe } from './keys.pipe';
     BrowserModule,
     AppRoutingModule,
     HttpModule,
+    FormsModule,
     MaterialModule.forRoot(),
   ],
   declarations: [
