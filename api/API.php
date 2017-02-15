@@ -25,7 +25,14 @@ class API {
     $selectedIndex = $indices[6];
     $selectedType = 'mp3';
 
-    $resp = $client->updateSingleDocument($selectedIndex, $selectedType, $params['id'], $data);
+    // combine newTag with tags
+    // if(!empty($data['tags'])){
+    //   $data['tags'] = $data['tags'] . ',' . $data['newTag'];
+    // }
+
+    $resp = $this->dbClient->updateSingleDocument($selectedIndex, $selectedType, $params['id'], $data);
+
+    return $resp;
   }
 
   public function shapeData($array, $type){

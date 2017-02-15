@@ -13,10 +13,10 @@ import { KeysPipe } from './keys.pipe';
 export class ViewSelectionComponent  {
   list : any[];
 
-  constructor (API : ApiService, public zone: NgZone){
+  constructor (public API : ApiService, public zone: NgZone){
       let response : any[];
       this.zone = zone;
-      API.getList().subscribe(
+      this.API.getList().subscribe(
           res => {
             console.log(res);
             this.list = [];
@@ -34,6 +34,34 @@ export class ViewSelectionComponent  {
 
       console.log(this);
 
+  }
+
+  documentAppendTag(doc: any[]){
+    if(doc['newTag']){
+
+      if(doc['tags']){
+        doc['tags'].push(doc['newTag']);
+      }else{
+        doc['tags'] = [doc['newTag']];
+      }
+
+      delete doc['newTag'];
+    };
+    console.log(doc);
+  }
+
+  updateDoc(data: any[]){
+    this.documentAppendTag(data);
+    console.log(arguments);
+    console.log(data);
+    console.log(this.zone);
+    this.API.updateDoc(data).subscribe(
+        res => {
+          console.log(res); 
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
   }
 
   clickSong(){

@@ -32,10 +32,13 @@ switch($request){
       echo $tlList->JSON();
       break;
   case ($request[0] == 'update-doc') :
-      $params = [];
-      $data = [];
-      exit();
-      echo $$apiInstance->updateDoc($params, $data);
+      $request_body = file_get_contents('php://input');
+      $data = json_decode($request_body, true);
+      $params = [
+        "id" => $data['id']
+      ];
+      $result = $apiInstance->updateDoc($params, $data);
+      print_r($result);
       break;
   case ($request[0] == 'list') :
       $list = $apiInstance->getListFromIndex();

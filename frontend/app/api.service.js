@@ -31,10 +31,20 @@ var ApiService = (function () {
         return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/create-list/')
             .map(function (response) { return response.json(); });
     };
+    // Update a comment
+    // updateComment (body: Object): Observable<Comment[]> {
+    //     let bodyString = JSON.stringify(body); // Stringify payload
+    //     let headers      = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
+    //     let options       = new RequestOptions({ headers: headers }); // Create a request option
+    //
+    //     return this.http.put(`${this.commentsUrl}/${body['id']}`, body, options) // ...using put request
+    //                      .map((res:Response) => res.json()) // ...and calling .json() on the response to return data
+    //                      .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
+    // }
     ApiService.prototype.updateDoc = function (data) {
         console.log("updateDoc");
         console.log(data);
-        return this.http.post('http://localhost:8888/selekta/api/RunAPI.php/update-doc/', data)
+        return this.http.put('http://localhost:8888/selekta/api/RunAPI.php/update-doc/', data)
             .map(function (response) { return response.json(); });
     };
     ApiService.prototype.getList = function () {

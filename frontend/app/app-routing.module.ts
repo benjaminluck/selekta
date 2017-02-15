@@ -6,7 +6,11 @@ import { DashboardComponent }   from './dashboard.component';
 
 const routes: Routes = [
   { path: 'view-selection',  component: ViewSelectionComponent },
-  { path: 'dashboard',  component: DashboardComponent }
+  { path: 'dashboard',  component: DashboardComponent },
+  { path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

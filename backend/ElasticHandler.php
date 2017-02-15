@@ -51,6 +51,19 @@ class ElasticHandler
   }
 
   public function updateSingleDocument($index, $type, $doc_id, $data = ''){
+    $params = [
+      'index' => $index,
+      'type' => $type,
+      'id' => $doc_id,
+      'body' => $data
+    ];
+
+    $response = $this->connection->index($params);
+    $json = json_encode($response);
+    return $json;
+  }
+
+  public function updateTags($index, $type, $doc_id, $data = ''){
         $params = [
         'index' => $index,
         'type' => $type,
