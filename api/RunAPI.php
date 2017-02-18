@@ -31,6 +31,10 @@ switch($request){
   case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;
+  case ($request[0] == 'create-vault') :
+      $resp = $apiInstance->createIndexFromFolder();
+      print_r($resp);
+      break;
   case ($request[0] == 'update-doc') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);

@@ -152,6 +152,12 @@ class ElasticHandler
     return $results;
   }
 
+  public function bulk($params){
+    $results = $this->connection->bulk($params);
+
+    return $results;
+  }
+
   public function listIndices(){
     $resp = $this->elasticGET('_cat/indices/');
 

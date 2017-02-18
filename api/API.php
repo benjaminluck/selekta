@@ -37,6 +37,18 @@ class API {
 
   public function shapeData($array, $type){
     switch($type){
+      case 'regular':
+      foreach($array as $item){
+
+        $data = $item['_source'];
+        $fileName = $data['fileName'];
+
+        if(isset($data['structure'])){
+        $execstring = '$newArray["' . implode('"]["', $data['structure']) . '"]["'. $fileName .'"] = $data;';
+        eval($execstring);
+        }
+      }
+      break;
       case 'song-bpm':
       foreach($array as $item){
 
@@ -78,22 +90,50 @@ class API {
     $selectedType = 'mp3';
 
     $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
-    $list = $this->shapeData($list, 'bpm-song');
+    $list = $this->shapeData($list, 'regular');
 
     return $list;
+  }
+
+  public function createIndexFromFolder(){
+    $client = $this->dbClient;
+    $flatList = new FlatList($this->dir, $this->dir);
+    $flatList->buildList();
+    $fileList = $flatList->Array();
+    $selectionName = $flatList->getFolderName();
+
+    $params = ['body' => []];
+
+    for ($i = 0; $i < sizeof($fileList); ++$i) {
+        $params['body'][] = [
+            'index' => [
+                '_index' => $selectionName,
+                '_type' => 'mp3',
+                '_id' => $i,
+            ],
+        ];
+
+        $params['body'][] = json_encode($fileList[$i]);
+    }
+
+    // Send the last batch if it exists
+    if (!empty($params['body'])) {
+        $responses = $client->bulk($params);
+    }
+
+    print_r($responses);
+
+    return $responses;
+
   }
 
   public function createList(){
     $tree = new StructuredTree($this->dir);
     $tree->buildList();
-    //
-    // $fileList = $tree->Array();
-    //
-    // print_r($tree->JSON());
-    //
-    // // move to write dir and put contents
+
     chdir($this->writeDir);
     file_put_contents('list.json', $tree->JSON());
+
     return $tree;
   }
 
