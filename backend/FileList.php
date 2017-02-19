@@ -38,7 +38,7 @@ class FileList
         $it['bpmGroup'] = $folder_array[1];
 
         // remove last item from structure array since this is the filename
-        unset($it['structure'][count($it['structure']) - 1]); 
+        unset($it['structure'][count($it['structure']) - 1]);
         $stripe_location = array_search('-', $file_array);
         $it['artist'] = '';
 
@@ -69,6 +69,7 @@ class FileList
     {
         $it = [];
         $it['srcPath'] = $inputDir.$file; // full path
+        $it['includePath'] = "file://" . $it['srcPath'];
         $it['relPath'] = str_replace($startDir, '', $it['srcPath']); // path from starting directory
         $it['fileName'] = $file;
         $meta = pathinfo($it['srcPath']);

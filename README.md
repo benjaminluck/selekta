@@ -2,9 +2,12 @@
 A set of tools to keep you sane when organising your music selection
 
 # todo
-- Frontend: on dashboard page create a link that does a post to /API/create-vault
+- Frontend: list items by tag
 - Frontend: allow user to move items to other 'folders'
 - Frontend: new temporary list, button that loops over all items and updates/saves all docs in ES
+- Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content?)
+- Backend: determine bpmGroup property by given BPM
+- API: FileWriter writeToLog : write based on 'structure' instead of 'relPath'
 - API : check if directory exists before constructing
 - refactor update scripting to use json (to push objects instead of strings)
 - export ES selection to list.json

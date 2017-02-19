@@ -11,7 +11,7 @@ export class DashboardComponent  {
   list = '';
   test = '' ;
 
-  constructor (API : ApiService){
+  constructor (public API : ApiService){
     API.getList().subscribe(
         res => { console.log(res); this.list = res; },
         err => console.error(err),
@@ -26,6 +26,16 @@ export class DashboardComponent  {
 
       console.log(this);
 
+  }
+
+  createVault(){
+    this.API.createVault().subscribe(
+        res => {
+          console.log(res);
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
   }
 
 }

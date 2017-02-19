@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ApiService{
-  private baseUrl: string = 'http://swapi.co/api';
+  private baseUrl: string = 'http://localhost:8888/selekta/api/RunAPI.php/';
 
   constructor(private http : Http){
   //   console.log('hey');
@@ -36,6 +36,13 @@ export class ApiService{
     //                      .map((res:Response) => res.json()) // ...and calling .json() on the response to return data
     //                      .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
     // }
+
+  createVault(){ 
+    console.log("createVault");
+    let params = {};
+    return this.http.post(this.baseUrl + 'create-vault/', params)
+      .map(response => response.json());
+  }
 
   updateDoc(data: any[]){
     console.log("updateDoc");

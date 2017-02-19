@@ -33,7 +33,8 @@ switch($request){
       break;
   case ($request[0] == 'create-vault') :
       $resp = $apiInstance->createIndexFromFolder();
-      print_r($resp);
+      $json = json_encode($resp); 
+      print_r($json);
       break;
   case ($request[0] == 'update-doc') :
       $request_body = file_get_contents('php://input');
