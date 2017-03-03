@@ -24,6 +24,7 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
       //addtional bundles
       '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+      'clarity-angular': 'node_modules/clarity-angular/clarity-angular.umd.js',
 
       // other libraries
       'rxjs':                      'npm:rxjs',

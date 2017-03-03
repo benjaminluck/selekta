@@ -69,8 +69,8 @@ class FileList
     {
         $it = [];
         $it['srcPath'] = $inputDir.$file; // full path
-        $it['includePath'] = "file://" . $it['srcPath'];
         $it['relPath'] = str_replace($startDir, '', $it['srcPath']); // path from starting directory
+        $it['includePath'] = "selection/" . $it['relPath']; // assumes 'selection' is a symlink to directory containing files
         $it['fileName'] = $file;
         $meta = pathinfo($it['srcPath']);
         $it['ext'] = $meta['extension'];

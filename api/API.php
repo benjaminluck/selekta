@@ -41,6 +41,7 @@ class API {
       foreach($array as $item){
 
         $data = $item['_source'];
+        $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
 
         if(isset($data['structure'])){

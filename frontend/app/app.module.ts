@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
+import { ClarityModule } from 'clarity-angular';
 
 import { AppComponent }  from './app.component';
 import { ViewSelectionComponent }  from './view-selection.component';
@@ -15,11 +16,12 @@ import { KeysPipe } from './keys.pipe';
 
 @NgModule({
   imports:      [
-    BrowserModule,
+    BrowserModule, 
     AppRoutingModule,
     HttpModule,
     FormsModule,
-    MaterialModule.forRoot(),
+    ClarityModule.forRoot(),
+    MaterialModule.forRoot()
   ],
   declarations: [
     AppComponent,

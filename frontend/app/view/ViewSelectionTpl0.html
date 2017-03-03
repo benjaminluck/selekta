@@ -1,0 +1,49 @@
+<md-tab-group>
+  <md-tab *ngFor='let key of list | keys' label="{{key.key}}">
+    <md-tab-group>
+      <md-tab *ngFor='let key2 of key.value | keys' label="{{key2.key}}">
+        <div style="margin: 5px;">
+          <clr-datagrid>
+              <clr-dg-column>Title</clr-dg-column>
+              <clr-dg-column>Artist</clr-dg-column>
+              <clr-dg-column>BPM</clr-dg-column>
+              <clr-dg-column>Key</clr-dg-column>
+              <clr-dg-column>Tags</clr-dg-column>
+              <clr-dg-column>Structure</clr-dg-column>
+
+              <clr-dg-row *ngFor='let key3 of key2.value | keys'>
+                  <clr-dg-cell >{{key3.value.title}}</clr-dg-cell>
+                  <clr-dg-cell>{{key3.value.artist}}</clr-dg-cell>
+                  <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
+                  <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
+                  <clr-dg-cell>
+                    <span class="badge" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
+                    <input type="text" id="field_tag" [(ngModel)]="key3.value.newTag" placeholder="New tag">
+                    <clr-icon shape="add" size="15" (click)="updateDoc(key3.value);"></clr-icon>
+                  </clr-dg-cell>
+                  <clr-dg-cell>{{key3.value.structure}}</clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>users</clr-dg-footer>
+          </clr-datagrid>
+          <!-- <md-card style="margin-bottom:5px; font-size:12px; padding:5px;" *ngFor='let key3 of key2.value | keys'>
+            {{key3.key}} <md-chip *ngFor='let tag of key3.value.tags' style="margin-right:5px;">{{tag}}</md-chip> <input placeholder="Tag" [(ngModel)]="key3.value.newTag">
+            <button md-button (click)="clickSong(key3);"><md-icon md-list-avatar>expand_more</md-icon></button>
+            <button md-button (click)="updateDoc(key3.value);"><md-icon md-list-avatar>send</md-icon></button>
+            <md-card-content style="padding: 5px;" *ngIf="key3.visible">
+              <ul>
+                <li *ngFor='let key4 of key3.value | keys'>
+                  {{key4.key}} : {{key4.value}}
+                </li>
+              </ul>
+              <audio controls>
+                <source [src]="key3.value.relPath">
+              Your browser does not support the audio element.
+              </audio>
+            </md-card-content>
+          </md-card> -->
+        </div>
+      </md-tab>
+    </md-tab-group>
+  </md-tab>
+</md-tab-group>

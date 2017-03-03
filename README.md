@@ -5,7 +5,7 @@ A set of tools to keep you sane when organising your music selection
 - Frontend: list items by tag
 - Frontend: allow user to move items to other 'folders'
 - Frontend: new temporary list, button that loops over all items and updates/saves all docs in ES
-- Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content?)
+- Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)
 - Backend: determine bpmGroup property by given BPM
 - API: FileWriter writeToLog : write based on 'structure' instead of 'relPath'
 - API : check if directory exists before constructing
@@ -13,7 +13,7 @@ A set of tools to keep you sane when organising your music selection
 - export ES selection to list.json
 - add link to file (prettify path using new function)
 - Cleanup /frontend/
-
+- Versions of files in /vault/
 
 # domains
 - selekta
