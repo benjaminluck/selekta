@@ -37,7 +37,7 @@ class API {
 
   public function shapeData($array, $type){
     switch($type){
-      case 'regular':
+      case 'structured':
       foreach($array as $item){
 
         $data = $item['_source'];
@@ -48,6 +48,14 @@ class API {
         $execstring = '$newArray["' . implode('"]["', $data['structure']) . '"]["'. $fileName .'"] = $data;';
         eval($execstring);
         }
+      }
+      break;
+      case 'unstructured':
+      foreach($array as $item){
+        $data = $item['_source'];
+        $data['id'] = $item['_id'];
+        $fileName = $data['fileName'];
+        $newArray[] = $data;
       }
       break;
       case 'song-bpm':
@@ -85,13 +93,24 @@ class API {
     return $json;
   }
 
-  public function getListFromIndex(){
+  public function getVaultFromIndex(){
     $indices = $this->dbClient->listIndices();
     $selectedIndex = $indices[6];
     $selectedType = 'mp3';
 
     $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
-    $list = $this->shapeData($list, 'regular');
+    $list = $this->shapeData($list, 'unstructured');
+
+    return $list;
+  }
+
+  public function getListFromIndex($listShape){
+    $indices = $this->dbClient->listIndices();
+    $selectedIndex = $indices[6];
+    $selectedType = 'mp3';
+
+    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+    $list = $this->shapeData($list, $listShape);
 
     return $list;
   }

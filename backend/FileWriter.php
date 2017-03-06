@@ -74,7 +74,11 @@ class FileWriter
     $file = new SplFileObject($this->logFilePath);
 
     // start the file-reading loop
+    $count = 0;
     while (!$file->eof()) {
+        if($count >10){
+          exit();
+        }
         $a = $file->fgets();
         $b = $file->fgets();
         $last = $file->fgets();
@@ -92,7 +96,7 @@ class FileWriter
         // unset $file handler & exit loop
         // since this is a verrrryyy looong while loop, only run it once and rely on the call being repeated
         $file = null;
-        exit();
+        $count++;
     }
   }
 

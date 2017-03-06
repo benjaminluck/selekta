@@ -1,31 +1,61 @@
-<clr-tree-node *ngFor='let key of list | keys' [clrTreeNodeExpanded]="true">
-        {{key.key}}
-        <clr-tree-node *ngFor='let key2 of key.value | keys' [clrTreeNodeExpanded]="true">
-            {{key2.key}}
-            <clr-tree-node [clrTreeNodeExpanded]="true">
-                <clr-datagrid>
-                    <clr-dg-column>Title</clr-dg-column>
-                    <clr-dg-column>Artist</clr-dg-column>
-                    <clr-dg-column>BPM</clr-dg-column>
-                    <clr-dg-column>Key</clr-dg-column>
-                    <clr-dg-column>Tags</clr-dg-column>
-                    <clr-dg-column>Structure</clr-dg-column>
+<div *ngIf="listShape == 'structured'">
+  <clr-tree-node *ngFor='let key of list | keys' [clrTreeNodeExpanded]="false">
+      {{key.key}}
+      <clr-tree-node *ngFor='let key2 of key.value | keys' [clrTreeNodeExpanded]="false">
+          {{key2.key}}
+          <clr-tree-node [clrTreeNodeExpanded]="true">
+              <clr-datagrid>
+                  <clr-dg-column>Title</clr-dg-column>
+                  <clr-dg-column>Artist</clr-dg-column>
+                  <clr-dg-column>Tags</clr-dg-column>
+                  <clr-dg-column>BPM</clr-dg-column>
+                  <clr-dg-column>Key</clr-dg-column>
+                  <clr-dg-column>Structure</clr-dg-column>
 
-                    <clr-dg-row *ngFor='let key3 of key2.value | keys'>
-                        <clr-dg-cell >{{key3.value.title}}</clr-dg-cell>
-                        <clr-dg-cell>{{key3.value.artist}}</clr-dg-cell>
-                        <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
-                        <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
-                        <clr-dg-cell>
-                          <span class="badge" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
-                          <input type="text" id="field_tag" [(ngModel)]="key3.value.newTag" placeholder="New tag">
-                          <clr-icon shape="add" size="15" (click)="updateDoc(key3.value);"></clr-icon>
-                        </clr-dg-cell>
-                        <clr-dg-cell>{{key3.value.structure}}</clr-dg-cell>
-                    </clr-dg-row>
+                  <clr-dg-row *ngFor='let key3 of key2.value | keys'>
+                      <clr-dg-cell >{{key3.value.title}}</clr-dg-cell>
+                      <clr-dg-cell>{{key3.value.artist}}</clr-dg-cell>
+                      <clr-dg-cell>
+                        <span class="badge" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
+                        <input type="text" id="field_tag" [(ngModel)]="key3.value.newTag" placeholder="New tag">
+                        <clr-icon shape="add" size="15" (click)="updateDoc(key3.value);"></clr-icon>
+                      </clr-dg-cell>
+                      <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
+                      <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
+                      <clr-dg-cell>{{key3.value.structure}}</clr-dg-cell>
+                  </clr-dg-row>
 
-                    <clr-dg-footer>users</clr-dg-footer>
-                </clr-datagrid>
-            </clr-tree-node>
-        </clr-tree-node>
-    </clr-tree-node>
+                  <clr-dg-footer>users</clr-dg-footer>
+              </clr-datagrid>
+          </clr-tree-node>
+      </clr-tree-node>
+  </clr-tree-node>
+</div>
+
+<div *ngIf="listShape == 'unstructured'">
+  <clr-tree-node [clrTreeNodeExpanded]="true">
+      <clr-datagrid>
+          <clr-dg-column>Title</clr-dg-column>
+          <clr-dg-column>Artist</clr-dg-column>
+          <clr-dg-column>Tags</clr-dg-column>
+          <clr-dg-column>BPM</clr-dg-column>
+          <clr-dg-column>Key</clr-dg-column>
+          <clr-dg-column>Structure</clr-dg-column>
+
+          <clr-dg-row *ngFor='let key of list | keys'>
+              <clr-dg-cell >{{key.value.title}}</clr-dg-cell>
+              <clr-dg-cell>{{key.value.artist}}</clr-dg-cell>
+              <clr-dg-cell>
+                <span class="badge" *ngFor='let tag of key.value.tags'>{{tag}}</span>
+                <input type="text" id="field_tag" [(ngModel)]="key.value.newTag" placeholder="New tag">
+                <clr-icon shape="add" size="15" (click)="updateDoc(key.value);"></clr-icon>
+              </clr-dg-cell>
+              <clr-dg-cell>{{key.value.bpm}}</clr-dg-cell>
+              <clr-dg-cell>{{key.value.key}}</clr-dg-cell>
+              <clr-dg-cell>{{key.value.structure}}</clr-dg-cell>
+          </clr-dg-row>
+
+          <clr-dg-footer>users</clr-dg-footer>
+      </clr-datagrid>
+  </clr-tree-node>
+</div>

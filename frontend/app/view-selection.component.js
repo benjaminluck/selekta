@@ -9,16 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var api_service_1 = require('./api.service');
 var core_2 = require('@angular/core');
 var ViewSelectionComponent = (function () {
-    function ViewSelectionComponent(API, zone) {
+    function ViewSelectionComponent(API, zone, route) {
         var _this = this;
         this.API = API;
         this.zone = zone;
         var response;
+        this.listShape = "structured";
+        if (route.snapshot.data[0]) {
+            this.listShape = route.snapshot.data[0].shapeData;
+            console.log(this.listShape);
+        }
         this.zone = zone;
-        this.API.getList().subscribe(function (res) {
+        this.API.getList(this.listShape).subscribe(function (res) {
             console.log(res);
             _this.list = [];
             _this.list = res;
@@ -66,7 +72,7 @@ var ViewSelectionComponent = (function () {
             providers: [api_service_1.ApiService],
             templateUrl: 'app/view/ViewSelectionTpl.html'
         }), 
-        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone])
+        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
     ], ViewSelectionComponent);
     return ViewSelectionComponent;
 }());

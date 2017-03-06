@@ -20,6 +20,12 @@ export class ApiService{
     console.log('blee');
   }
 
+  getParams() {
+    console.log("getParams");
+    return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/params/')
+      .map(response => response.json());
+  }
+
   getCreateList() {
     console.log("getList");
     return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/create-list/')
@@ -37,7 +43,7 @@ export class ApiService{
     //                      .catch((error:any) => Observable.throw(error.json().error || 'Server error')); //...errors if any
     // }
 
-  createVault(){ 
+  createVault(){
     console.log("createVault");
     let params = {};
     return this.http.post(this.baseUrl + 'create-vault/', params)
@@ -51,11 +57,14 @@ export class ApiService{
       .map(response => response.json());
   }
 
-  getList() {
+  getList(listShape: string) {
     console.log("getList");
-    return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/list/')
+    console.log("listShape");
+    let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/'
+    return this.http.get(endpoint + listShape)
       .map(response => response.json());
   }
+
 
   getTest() {
     console.log("getTest");

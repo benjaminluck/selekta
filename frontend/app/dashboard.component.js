@@ -8,33 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var api_service_1 = require('./api.service');
+var core_1 = require("@angular/core");
+var api_service_1 = require("./api.service");
 var DashboardComponent = (function () {
     function DashboardComponent(API) {
-        var _this = this;
         this.API = API;
         this.name = 'Angular';
         this.list = '';
         this.test = '';
-        API.getList().subscribe(function (res) { console.log(res); _this.list = res; }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
-        API.getTest().subscribe(function (res) { console.log(res); _this.test = res['_body']; }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
-        console.log(this);
     }
     DashboardComponent.prototype.createVault = function () {
         this.API.createVault().subscribe(function (res) {
             console.log(res);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
-    DashboardComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            providers: [api_service_1.ApiService],
-            templateUrl: 'app/view/DashboardTpl.html'
-        }), 
-        __metadata('design:paramtypes', [api_service_1.ApiService])
-    ], DashboardComponent);
     return DashboardComponent;
 }());
+DashboardComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        providers: [api_service_1.ApiService],
+        templateUrl: 'app/view/DashboardTpl.html'
+    }),
+    __metadata("design:paramtypes", [api_service_1.ApiService])
+], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dashboard.component.js.map

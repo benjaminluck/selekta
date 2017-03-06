@@ -28,12 +28,20 @@ $tlList = $apiInstance->createList();
 header('Content-type: application/json');
 
 switch($request){
+  case ($request[0] == 'params'):
+    $params = [];
+    $params['dir'] = $apiInstance->dir;
+    $params['writeDir'] = $apiInstance->writeDir;
+    $params['destination'] = $apiInstance->destination;
+    $json = json_encode($params);
+    print_r($json);
+    break;
   case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;
   case ($request[0] == 'create-vault') :
       $resp = $apiInstance->createIndexFromFolder();
-      $json = json_encode($resp); 
+      $json = json_encode($resp);
       print_r($json);
       break;
   case ($request[0] == 'update-doc') :
@@ -46,7 +54,15 @@ switch($request){
       print_r($result);
       break;
   case ($request[0] == 'list') :
-      $list = $apiInstance->getListFromIndex();
+      $request_body = file_get_contents('php://input');
+      $data = json_decode($request_body, true);
+      $shape = $request[1];
+      // if($request[1] == 'unstructured'){
+      //   $list = $apiInstance->getListFromIndex();
+      //   print_r($list);
+      //   break;
+      // }
+      $list = $apiInstance->getListFromIndex($shape);
       print_r($list);
       break;
   case ($request[0] == 'test') :

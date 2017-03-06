@@ -26,6 +26,11 @@ var ApiService = (function () {
     ApiService.prototype.blee = function () {
         console.log('blee');
     };
+    ApiService.prototype.getParams = function () {
+        console.log("getParams");
+        return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/params/')
+            .map(function (response) { return response.json(); });
+    };
     ApiService.prototype.getCreateList = function () {
         console.log("getList");
         return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/create-list/')
@@ -53,9 +58,11 @@ var ApiService = (function () {
         return this.http.put('http://localhost:8888/selekta/api/RunAPI.php/update-doc/', data)
             .map(function (response) { return response.json(); });
     };
-    ApiService.prototype.getList = function () {
+    ApiService.prototype.getList = function (listShape) {
         console.log("getList");
-        return this.http.get('http://localhost:8888/selekta/api/RunAPI.php/list/')
+        console.log("listShape");
+        var endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/';
+        return this.http.get(endpoint + listShape)
             .map(function (response) { return response.json(); });
     };
     ApiService.prototype.getTest = function () {

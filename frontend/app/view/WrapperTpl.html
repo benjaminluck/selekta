@@ -1,14 +1,35 @@
-<md-sidenav-container class="main-container">
-  <md-sidenav #sidenav mode="side" opened="true" class="main-sidenav">
-    <nav>
-        <a class="display-block m-a" routerLink="/view-selection" routerLinkActive="active"><md-icon md-list-avatar>settings</md-icon></a>
-        <a class="display-block m-a" routerLink="/dashboard" routerLinkActive="active"><md-icon md-list-avatar>view_headline</md-icon></a>
-    </nav>
-  </md-sidenav>
-  <div class="main-sidenav-content">
-    <!-- <button md-button (click)="sidenav.open()">
-      <md-icon md-list-avatar>keyboard_arrow_right</md-icon>
-    </button> -->
-    <router-outlet></router-outlet>
-  </div>
-</md-sidenav-container>
+<div class="main-container">
+    <!-- <div class="alert alert-app-level">
+        ...
+    </div> -->
+    <header class="header header-6">
+        selekta
+    </header>
+    <!-- <nav class="subnav">
+        ...
+    </nav> -->
+    <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+        <nav class="sidenav">
+          <section class="sidenav-content">
+            <section class="nav-group">
+              <label for="tabexample2">Selections</label>
+              <ul class="nav-list">
+                  <li><a class="nav-link" routerLink="/view-selection" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> View Selection</a></li>
+                  <li><a class="nav-link" routerLink="/view-vault" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> View Vault</a></li>
+                  <li><a class="nav-link">Link 6</a></li>
+              </ul>
+            </section>
+            <section class="nav-group">
+              <label for="tabexample2">General</label>
+              <ul class="nav-list">
+                  <li><a class="nav-link" routerLink="/dashboard" routerLinkActive="active"><clr-icon shape="home" size="15"></clr-icon> Dashboard</a></li>
+                  <li><a class="nav-link" routerLink="/configurations" routerLinkActive="active"><clr-icon shape="home" size="15"></clr-icon> Settings</a></li>
+              </ul>
+            </section>
+          </section>
+        </nav>
+    </div>
+</div>

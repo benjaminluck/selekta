@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { ApiService } from './api.service';
 import { NgZone } from '@angular/core';
 
@@ -12,11 +12,17 @@ import { KeysPipe } from './keys.pipe';
 })
 export class ViewSelectionComponent  {
   list : any[];
+  listShape : string;
 
-  constructor (public API : ApiService, public zone: NgZone){
+  constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
+      this.listShape = "structured";
+      if(route.snapshot.data[0]){
+        this.listShape = route.snapshot.data[0].shapeData;
+        console.log(this.listShape);
+      }
       this.zone = zone;
-      this.API.getList().subscribe(
+      this.API.getList(this.listShape).subscribe(
           res => {
             console.log(res);
             this.list = [];
@@ -57,7 +63,7 @@ export class ViewSelectionComponent  {
     console.log(this.zone);
     this.API.updateDoc(data).subscribe(
         res => {
-          console.log(res); 
+          console.log(res);
         },
         err => console.error(err),
         () => console.log('Completed!')

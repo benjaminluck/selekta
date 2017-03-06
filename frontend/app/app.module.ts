@@ -8,6 +8,7 @@ import { ClarityModule } from 'clarity-angular';
 import { AppComponent }  from './app.component';
 import { ViewSelectionComponent }  from './view-selection.component';
 import { DashboardComponent }  from './dashboard.component';
+import { ConfigurationsComponent }  from './configurations.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -16,7 +17,7 @@ import { KeysPipe } from './keys.pipe';
 
 @NgModule({
   imports:      [
-    BrowserModule, 
+    BrowserModule,
     AppRoutingModule,
     HttpModule,
     FormsModule,
@@ -27,6 +28,7 @@ import { KeysPipe } from './keys.pipe';
     AppComponent,
     ViewSelectionComponent,
     DashboardComponent,
+    ConfigurationsComponent,
     KeysPipe
   ],
   bootstrap:    [ AppComponent ]
