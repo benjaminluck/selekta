@@ -65,6 +65,14 @@ export class ApiService{
       .map(response => response.json());
   }
 
+  getListByTags(listShape: string, tags: array) {
+    console.log("getList");
+    console.log("listShape");
+    let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/'
+    return this.http.get(endpoint + listShape + '/' + tags[0])
+      .map(response => response.json());
+  }
+
 
   getTest() {
     console.log("getTest");

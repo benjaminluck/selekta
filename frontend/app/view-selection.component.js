@@ -19,6 +19,7 @@ var ViewSelectionComponent = (function () {
         this.zone = zone;
         var response;
         this.listShape = "structured";
+        this.selectedTags = [];
         if (route.snapshot.data[0]) {
             this.listShape = route.snapshot.data[0].shapeData;
             console.log(this.listShape);
@@ -59,12 +60,20 @@ var ViewSelectionComponent = (function () {
             console.log(res);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
-    ViewSelectionComponent.prototype.clickSong = function () {
-        console.log(arguments);
-        if (arguments[0].visible == undefined) {
-            arguments[0].visible = false;
-        }
-        arguments[0].visible = !arguments[0].visible;
+    ViewSelectionComponent.prototype.selectTag = function (tagName) {
+        var _this = this;
+        console.log(tagName);
+        this.selectedTags.push(tagName);
+        console.log(this.selectedTags);
+        this.API.getListByTags(this.listShape, this.selectedTags).subscribe(function (res) {
+            console.log(res);
+            _this.list = [];
+            _this.list = res;
+            // for(let key in res){
+            //   let obj = {};
+            //   this.list.push(res[key]);
+            // }
+        }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
     ViewSelectionComponent = __decorate([
         core_1.Component({

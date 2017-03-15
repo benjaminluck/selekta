@@ -57,12 +57,19 @@ switch($request){
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
       $shape = $request[1];
+
+      if(!empty($request[2])){
+        $tags[] = $request[2];
+        $list = $apiInstance->getListFromIndex($shape,$tags);
+      }else{
+        $list = $apiInstance->getListFromIndex($shape);
+      }
       // if($request[1] == 'unstructured'){
       //   $list = $apiInstance->getListFromIndex();
       //   print_r($list);
       //   break;
       // }
-      $list = $apiInstance->getListFromIndex($shape);
+
       print_r($list);
       break;
   case ($request[0] == 'test') :

@@ -1,3 +1,5 @@
+<span class="badge" *ngFor='let tag of selectedTags'>{{tag}}</span>
+
 <div *ngIf="listShape == 'structured'">
   <clr-tree-node *ngFor='let key of list | keys' [clrTreeNodeExpanded]="false">
       {{key.key}}
@@ -16,7 +18,7 @@
                       <clr-dg-cell >{{key3.value.title}}</clr-dg-cell>
                       <clr-dg-cell>{{key3.value.artist}}</clr-dg-cell>
                       <clr-dg-cell>
-                        <span class="badge" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
+                        <span class="badge" (click)="selectTag(tag);" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
                         <input type="text" id="field_tag" [(ngModel)]="key3.value.newTag" placeholder="New tag">
                         <clr-icon shape="add" size="15" (click)="updateDoc(key3.value);"></clr-icon>
                       </clr-dg-cell>
@@ -46,7 +48,7 @@
               <clr-dg-cell >{{key.value.title}}</clr-dg-cell>
               <clr-dg-cell>{{key.value.artist}}</clr-dg-cell>
               <clr-dg-cell>
-                <span class="badge" *ngFor='let tag of key.value.tags'>{{tag}}</span>
+                <span class="badge" (click)="selectTag(tag);"  *ngFor='let tag of key.value.tags'>{{tag}}</span>
                 <input type="text" id="field_tag" [(ngModel)]="key.value.newTag" placeholder="New tag">
                 <clr-icon shape="add" size="15" (click)="updateDoc(key.value);"></clr-icon>
               </clr-dg-cell>

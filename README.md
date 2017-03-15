@@ -2,11 +2,15 @@
 A set of tools to keep you sane when organising your music selection
 
 # todo
-- Frontend: list items by tag (by clicking on tag, then showing that tag at the top)
 - Frontend: allow user to move items to other 'folders'
+- Frontend: fetch flat list and build JSON structure locally
 - Frontend: new temporary list, button that loops over all items and updates/saves all docs in ES
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)
+- Frontend: multiple tag handling
+- Backend: generate document id by artist + track hash
 - Backend: determine bpmGroup property by given BPM
+- Energy level rating
+- Custom params
 - API: FileWriter writeToLog : write based on 'structure' instead of 'relPath'
 - API : check if directory exists before constructing
 - refactor update scripting to use json (to push objects instead of strings)

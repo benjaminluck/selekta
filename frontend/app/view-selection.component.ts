@@ -13,10 +13,12 @@ import { KeysPipe } from './keys.pipe';
 export class ViewSelectionComponent  {
   list : any[];
   listShape : string;
+  selectedTags : any[];
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
       this.listShape = "structured";
+      this.selectedTags = [];
       if(route.snapshot.data[0]){
         this.listShape = route.snapshot.data[0].shapeData;
         console.log(this.listShape);
@@ -70,14 +72,24 @@ export class ViewSelectionComponent  {
       );
   }
 
-  clickSong(){
-    console.log(arguments);
+  selectTag(tagName: string){
+    console.log(tagName);
+    this.selectedTags.push(tagName);
+    console.log(this.selectedTags);
 
-    if(arguments[0].visible == undefined){
-      arguments[0].visible = false;
-    }
-
-    arguments[0].visible = !arguments[0].visible;
+    this.API.getListByTags(this.listShape, this.selectedTags).subscribe(
+        res => {
+          console.log(res);
+          this.list = [];
+          this.list = res;
+          // for(let key in res){
+          //   let obj = {};
+          //   this.list.push(res[key]);
+          // }
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
 
   }
 }

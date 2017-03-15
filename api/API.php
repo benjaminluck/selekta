@@ -88,28 +88,44 @@ class API {
       break;
     }
 
+    if(empty($newArray)){
+      $msg = 'No data found for selected parameters.';
+  //    echo $msg . PHP_EOL;
+      return $msg;
+    }
+
     $json = json_encode($newArray);
 
     return $json;
   }
 
-  public function getVaultFromIndex(){
+  // public function getVaultFromIndex($tags = []){
+  //   $indices = $this->dbClient->listIndices();
+  //   $selectedIndex = $indices[6];
+  //   $selectedType = 'mp3';
+  //
+  //
+  //   if(!empty($tags){
+  //     $list = $this->dbClient->searchIndexByTags($selectedIndex, $selectedType, $tags[0]);
+  //   }else{
+  //     $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+  //   }
+  //
+  //   $list = $this->shapeData($list, 'unstructured');
+  //
+  //   return $list;
+  // }
+
+  public function getListFromIndex($listShape, $tags = []){
     $indices = $this->dbClient->listIndices();
     $selectedIndex = $indices[6];
     $selectedType = 'mp3';
+    if(!empty($tags)){
+      $list = $this->dbClient->searchIndexByTags($selectedIndex, $selectedType, $tags[0]);
+    }else{
+      $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+    }
 
-    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
-    $list = $this->shapeData($list, 'unstructured');
-
-    return $list;
-  }
-
-  public function getListFromIndex($listShape){
-    $indices = $this->dbClient->listIndices();
-    $selectedIndex = $indices[6];
-    $selectedType = 'mp3';
-
-    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
     $list = $this->shapeData($list, $listShape);
 
     return $list;
