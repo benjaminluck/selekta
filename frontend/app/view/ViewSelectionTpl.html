@@ -24,10 +24,27 @@
                       </clr-dg-cell>
                       <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
                       <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
-                      <clr-dg-cell>{{key3.value.structure}}</clr-dg-cell>
+                      <clr-dg-cell>
+                        {{key3.value.structure}}
+                        <form>
+                          <section class="form-block">
+                              <div class="form-group">
+                                  <div class="select">
+                                      <select [(ngModel)]="struct" (change)="structureChanged(key3.value, 0, struct)" name="selectItem">
+                                          <option *ngFor="let key of list | keys" [ngValue]="key.key">{{key.key}}</option>
+                                      </select>
+                                  </div>
+                                  <div class="select">
+                                      <select [(ngModel)]="struct" (change)="structureChanged(key3.value, 1, struct)" name="selectItem">
+                                          <option *ngFor="let key2 of key.value | keys" [ngValue]="key2.key">{{key2.key}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </section>
+                      </form>
+                      </clr-dg-cell>
                   </clr-dg-row>
-
-                  <clr-dg-footer>users</clr-dg-footer>
+                  <clr-dg-footer>tracks</clr-dg-footer>
               </clr-datagrid>
           </clr-tree-node>
       </clr-tree-node>
@@ -57,7 +74,7 @@
               <clr-dg-cell>{{key.value.structure}}</clr-dg-cell>
           </clr-dg-row>
 
-          <clr-dg-footer>users</clr-dg-footer>
+          <clr-dg-footer>tracks</clr-dg-footer>
       </clr-datagrid>
   </clr-tree-node>
 </div>

@@ -62,10 +62,10 @@ export class ApiService{
     console.log("listShape");
     let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/'
     return this.http.get(endpoint + listShape)
-      .map(response => response.json());
+      .map(response => response.json()); 
   }
 
-  getListByTags(listShape: string, tags: array) {
+  getListByTags(listShape: string, tags: any[]) {
     console.log("getList");
     console.log("listShape");
     let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/'

@@ -44,6 +44,15 @@ export class ViewSelectionComponent  {
 
   }
 
+  structureChanged(){
+    let file = arguments[0];
+    let structIndex = arguments[1];
+    let struct = arguments[2];
+    file.structure[structIndex] = struct;
+    this.updateDoc(file);
+    console.log(this.list);
+  }
+
   documentAppendTag(doc: any[]){
     if(doc['newTag']){
 

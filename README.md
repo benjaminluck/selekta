@@ -2,15 +2,17 @@
 A set of tools to keep you sane when organising your music selection
 
 # todo
-- Frontend: allow user to move items to other 'folders'
+- API: FileWriter save as rsync bash script
 - Frontend: fetch flat list and build JSON structure locally
-- Frontend: new temporary list, button that loops over all items and updates/saves all docs in ES
+- Frontend: ^^ and reconstruct this list on the fly when the structure [] has been changed
+- Frontend: button to duplicate a selection
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)
 - Frontend: multiple tag handling
 - Backend: generate document id by artist + track hash
 - Backend: determine bpmGroup property by given BPM
 - Energy level rating
 - Custom params
+
 - API: FileWriter writeToLog : write based on 'structure' instead of 'relPath'
 - API : check if directory exists before constructing
 - refactor update scripting to use json (to push objects instead of strings)
@@ -18,6 +20,7 @@ A set of tools to keep you sane when organising your music selection
 - add link to file (prettify path using new function)
 - Cleanup /frontend/
 - Versions of files in /vault/
+- Frontend: new temporary list, button that loops over all items and updates/saves all docs in ES
 
 # domains
 - selekta
