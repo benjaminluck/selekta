@@ -2,9 +2,10 @@
 A set of tools to keep you sane when organising your music selection
 
 # todo
-- API: FileWriter save as rsync bash script
 - Frontend: fetch flat list and build JSON structure locally
 - Frontend: ^^ and reconstruct this list on the fly when the structure [] has been changed
+- FileWriter: from active ES json instead of generated JSON from folder structure
+- IDEA: structure = { "selectionv-10" : ['A','1'] "selection-v2323" : --- etc }
 - Frontend: button to duplicate a selection
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)
 - Frontend: multiple tag handling

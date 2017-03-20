@@ -21,9 +21,11 @@ class FileWriter
 
   public $destination = '';
 
-  public function __construct($todoJSON, $destination){
+  public function __construct($todoJSON, $destination, $params = ''){
       $this->destination = $destination;
       $this->logFilePath = $this->destination .'todo.log';
+      $this->todoRSYNC = $this->destination .'todo.rsync.sh';
+
       $this->todoJSON = $todoJSON;
       $this->todoArray = json_decode($this->todoJSON , true);
       $this->items = $this->initCreateTodo($this->todoArray);
@@ -40,6 +42,28 @@ class FileWriter
     file_put_contents($this->logFilePath, '----'.PHP_EOL, FILE_APPEND | LOCK_EX);
   }
 
+  public function writeToLogRsync($file){
+    $targetPath = '';
+
+    if(empty($file['structure'])){
+      return false;
+    }
+
+    $structSuffix = implode('/',$file['structure']);
+    $closeChar = ';';
+    $rsyncParams = '--delete --verbose --ignore-existing -r --partial';
+    $rsyncParams = '--verbose -r --partial';
+    $rsyncIn = $file['srcPath'];
+    $rsyncIn = escapeshellarg($rsyncIn);
+    $rsyncOut = $this->destination . $structSuffix . '/' . $file[$this->logParams['filename']];
+    $rsyncOut = escapeshellarg($rsyncOut);
+    $rsyncCmd = 'rsync '.$rsyncParams.' '.$rsyncIn.' '.$rsyncOut.$closeChar;
+    $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix) .$closeChar;
+    //rsync --delete --verbose --ignore-existing -r --partial /Volumes/2TB\ EXT\ Western\ Digital/_AUDIO/_ONSECK/_dj\:selection/selection-v10/ /Volumes/32GB\ D/
+    file_put_contents($this->todoRSYNC, $makeDirCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
+    file_put_contents($this->todoRSYNC, $rsyncCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
+  }
+
   public function initCreateTodo($array){
     file_put_contents($this->logFilePath, '');
     return $this->writeTodoItems($array);
@@ -47,13 +71,13 @@ class FileWriter
 
   public function writeTodoItems($array){
     $items = $this->items;
-
     foreach($array as $k1 => $v1){
       if(!isset($v1['srcPath'])){
         $this->writeTodoItems($v1);
       }
       else{
         $items[] = $v1;
+        $this->writeToLogRsync($v1);
         $this->writeToLog($v1);
       }
       // append filename to list

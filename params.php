@@ -15,4 +15,7 @@ $vaultDir = "/Volumes/2TB EXT Western Digital/_AUDIO/_ONSECK/_dj:selection/_vaul
 $destination = "/Applications/MAMP/htdocs/selekta/test_destination/";
 $destination = '/Volumes/2TB EXT Western Digital/test_destination/';
 
+// path where the JSON file structure is written
+$jsonList = $writeDir . 'list.json' ;
+
 ?>
