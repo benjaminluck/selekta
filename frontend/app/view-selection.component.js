@@ -18,18 +18,20 @@ var ViewSelectionComponent = (function () {
         this.API = API;
         this.zone = zone;
         var response;
-        this.listShape = "unstructured";
+        this.listShape = "structured";
         this.selectedTags = [];
         if (route.snapshot.data[0]) {
             this.listShape = route.snapshot.data[0].shapeData;
             console.log(this.listShape);
         }
         this.zone = zone;
-        this.API.getList(this.listShape).subscribe(function (res) {
+        this.API.getList("unstructured").subscribe(function (res) {
             console.log(res);
             _this.list = [];
             _this.list = res;
-            _this.buildStructuredList(_this.list);
+            if (_this.listShape == 'structured') {
+                _this.list = _this.buildStructuredList(_this.list);
+            }
             // for(let key in res){
             //   let obj = {};
             //   this.list.push(res[key]);
@@ -40,7 +42,7 @@ var ViewSelectionComponent = (function () {
         console.log(this);
     }
     ViewSelectionComponent.prototype.buildStructuredList = function (listUnstructed) {
-        var structured = [];
+        var structured = {};
         for (var _i = 0, listUnstructed_1 = listUnstructed; _i < listUnstructed_1.length; _i++) {
             var item = listUnstructed_1[_i];
             if (item.hasOwnProperty('structure')) {
@@ -60,6 +62,7 @@ var ViewSelectionComponent = (function () {
             }
             console.log(item); // 1, "string", false
         }
+        return structured;
     };
     ViewSelectionComponent.prototype.structureChanged = function () {
         var file = arguments[0];
@@ -67,7 +70,6 @@ var ViewSelectionComponent = (function () {
         var struct = arguments[2];
         file.structure[structIndex] = struct;
         this.updateDoc(file);
-        console.log(this.list);
     };
     ViewSelectionComponent.prototype.documentAppendTag = function (doc) {
         if (doc['newTag']) {

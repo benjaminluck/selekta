@@ -17,19 +17,22 @@ export class ViewSelectionComponent  {
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
-      this.listShape = "unstructured";
+      this.listShape = "structured";
       this.selectedTags = [];
       if(route.snapshot.data[0]){
         this.listShape = route.snapshot.data[0].shapeData;
         console.log(this.listShape);
       }
       this.zone = zone;
-      this.API.getList(this.listShape).subscribe(
+      this.API.getList("unstructured").subscribe(
           res => {
             console.log(res);
             this.list = [];
             this.list = res;
-            this.buildStructuredList(this.list);
+            if(this.listShape == 'structured'){
+              this.list = this.buildStructuredList(this.list);
+            }
+
             // for(let key in res){
             //   let obj = {};
             //   this.list.push(res[key]);
@@ -46,7 +49,7 @@ export class ViewSelectionComponent  {
   }
 
   buildStructuredList(listUnstructed: any[]){
-    let structured = [];
+    let structured = {};
     for (let item of listUnstructed) {
       if(item.hasOwnProperty('structure')){
         for(let i = 0; i < item['structure'].length; i++){
@@ -70,6 +73,8 @@ export class ViewSelectionComponent  {
 
       console.log(item); // 1, "string", false
     }
+
+    return structured;
   }
 
   structureChanged(){
@@ -78,7 +83,6 @@ export class ViewSelectionComponent  {
     let struct = arguments[2];
     file.structure[structIndex] = struct;
     this.updateDoc(file);
-    console.log(this.list);
   }
 
   documentAppendTag(doc: any[]){

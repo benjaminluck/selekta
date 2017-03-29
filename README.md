@@ -2,8 +2,6 @@
 A set of tools to keep you sane when organising your music selection
 
 # todo
-- Frontend: fetch flat list and build JSON structure locally
-- Frontend: ^^ and reconstruct this list on the fly when the structure [] has been changed
 - FileWriter: from active ES json instead of generated JSON from folder structure
 - IDEA: structure = { "selectionv-10" : ['A','1'] "selection-v2323" : --- etc }
 - Frontend: button to duplicate a selection
