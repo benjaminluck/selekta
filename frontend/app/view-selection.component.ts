@@ -17,7 +17,7 @@ export class ViewSelectionComponent  {
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
-      this.listShape = "structured";
+      this.listShape = "unstructured";
       this.selectedTags = [];
       if(route.snapshot.data[0]){
         this.listShape = route.snapshot.data[0].shapeData;
@@ -29,6 +29,7 @@ export class ViewSelectionComponent  {
             console.log(res);
             this.list = [];
             this.list = res;
+            this.buildStructuredList(this.list);
             // for(let key in res){
             //   let obj = {};
             //   this.list.push(res[key]);
@@ -42,6 +43,33 @@ export class ViewSelectionComponent  {
 
       console.log(this);
 
+  }
+
+  buildStructuredList(listUnstructed: any[]){
+    let structured = [];
+    for (let item of listUnstructed) {
+      if(item.hasOwnProperty('structure')){
+        for(let i = 0; i < item['structure'].length; i++){
+          let structString = 'structured';
+            for(let a = 0; a < item['structure'].length; a++){
+              let newString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
+              let evalString = 'if(' + structString + '.hasOwnProperty("' + item['structure'][a]  + '")){ } else { ' + newString + ' = {} }';
+              eval(evalString);
+              structString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
+              // check if structString exists, if true do nothing, if false create object
+              console.log(structString);
+              //eval(structString + 'hasOwnProperty(' + a + ')');
+            }
+
+          let fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';');
+          eval(fileBuildString);
+
+        //    if(structured[a][1]);
+        }
+      }
+
+      console.log(item); // 1, "string", false
+    }
   }
 
   structureChanged(){

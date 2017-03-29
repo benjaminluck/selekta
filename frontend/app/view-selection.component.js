@@ -8,17 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var api_service_1 = require("./api.service");
-var core_2 = require("@angular/core");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var api_service_1 = require('./api.service');
+var core_2 = require('@angular/core');
 var ViewSelectionComponent = (function () {
     function ViewSelectionComponent(API, zone, route) {
         var _this = this;
         this.API = API;
         this.zone = zone;
         var response;
-        this.listShape = "structured";
+        this.listShape = "unstructured";
         this.selectedTags = [];
         if (route.snapshot.data[0]) {
             this.listShape = route.snapshot.data[0].shapeData;
@@ -29,11 +29,38 @@ var ViewSelectionComponent = (function () {
             console.log(res);
             _this.list = [];
             _this.list = res;
+            _this.buildStructuredList(_this.list);
+            // for(let key in res){
+            //   let obj = {};
+            //   this.list.push(res[key]);
+            // }
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
         console.log(response);
         var data = [2, 3];
         console.log(this);
     }
+    ViewSelectionComponent.prototype.buildStructuredList = function (listUnstructed) {
+        var structured = [];
+        for (var _i = 0, listUnstructed_1 = listUnstructed; _i < listUnstructed_1.length; _i++) {
+            var item = listUnstructed_1[_i];
+            if (item.hasOwnProperty('structure')) {
+                for (var i = 0; i < item['structure'].length; i++) {
+                    var structString = 'structured';
+                    for (var a = 0; a < item['structure'].length; a++) {
+                        var newString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
+                        var evalString = 'if(' + structString + '.hasOwnProperty("' + item['structure'][a] + '")){ } else { ' + newString + ' = {} }';
+                        eval(evalString);
+                        structString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
+                        // check if structString exists, if true do nothing, if false create object
+                        console.log(structString);
+                    }
+                    var fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';';
+                    eval(fileBuildString);
+                }
+            }
+            console.log(item); // 1, "string", false
+        }
+    };
     ViewSelectionComponent.prototype.structureChanged = function () {
         var file = arguments[0];
         var structIndex = arguments[1];
@@ -73,17 +100,21 @@ var ViewSelectionComponent = (function () {
             console.log(res);
             _this.list = [];
             _this.list = res;
+            // for(let key in res){
+            //   let obj = {};
+            //   this.list.push(res[key]);
+            // }
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
+    ViewSelectionComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            providers: [api_service_1.ApiService],
+            templateUrl: 'app/view/ViewSelectionTpl.html'
+        }), 
+        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
+    ], ViewSelectionComponent);
     return ViewSelectionComponent;
 }());
-ViewSelectionComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        providers: [api_service_1.ApiService],
-        templateUrl: 'app/view/ViewSelectionTpl.html'
-    }),
-    __metadata("design:paramtypes", [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
-], ViewSelectionComponent);
 exports.ViewSelectionComponent = ViewSelectionComponent;
 //# sourceMappingURL=view-selection.component.js.map
