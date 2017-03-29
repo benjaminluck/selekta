@@ -14,7 +14,6 @@ A set of tools to keep you sane when organising your music selection
 - Energy level rating
 - Custom params
 
-- API: FileWriter writeToLog : write based on 'structure' instead of 'relPath'
 - API : check if directory exists before constructing
 - refactor update scripting to use json (to push objects instead of strings)
 - export ES selection to list.json

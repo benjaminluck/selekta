@@ -33,6 +33,12 @@ class FileWriter
 
   public function writeToLog($file){
     $dest = $file[$this->logParams['rel_path']];
+
+    if(!empty($file['structure'])){
+      $structSuffix = implode('/',$file['structure']);
+      $dest = $structSuffix .  $file[$this->logParams['filename']];
+    }
+
     if($this->logParams['flat']){
       $dest = $file[$this->logParams['filename']];
     }
