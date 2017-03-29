@@ -33,5 +33,5 @@ all items are stored in elasticsearch index to link everything together.
 simple webapp / ios app with bpm count by tap, swipe to different screens to see additional details: how much seconds 16/32/64 bars take at current bpm etc.
 
 
-#cleanups
+# cleanups
 - the list and vault are now fetched from item [6] instead of a specified index name

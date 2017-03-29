@@ -32,10 +32,14 @@ class FileList
         $folder_array = explode('/', $it['relPath']);
         $file_array = explode(' ', $file);
         $it['structure'] = $folder_array;
-        $it['songGroup'] = $folder_array[0];
+        if(isset($folder_array[0])){
+            $it['songGroup'] = $folder_array[0];
+        }
         $it['key'] = $file_array[0];
         $it['bpm'] = $file_array[1];
-        $it['bpmGroup'] = $folder_array[1];
+        if(isset($folder_array[1])){
+            $it['songGroup'] = $folder_array[1];
+        }
 
         // remove last item from structure array since this is the filename
         unset($it['structure'][count($it['structure']) - 1]);
