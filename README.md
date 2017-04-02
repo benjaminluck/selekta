@@ -4,6 +4,7 @@ A set of tools to keep you sane when organising your music selection
 # todo
 - IDEA: structure = { "selectionv-10" : ['A','1'] "selection-v2323" : --- etc }
 - IDEA: structure by Elastic type
+- Remove tag
 - Versions of files in /vault/
 - Frontend: button to duplicate a selection
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)

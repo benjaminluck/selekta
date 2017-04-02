@@ -50,6 +50,44 @@ class ElasticHandler
     return $resp;
   }
 
+  public function scrollThroughIndex($indexName, $typeName = ""){
+    // read all items from an index with given 'type'
+    $params = [
+        "scroll" => "3s",          // how long between scroll requests. should be small!
+        "size" => 500,               // how many results *per shard* you want back
+        "index" => $indexName,
+        "body" => [
+            "query" => [
+                "match_all" => new \stdClass()
+            ]
+        ]
+    ];
+
+    // Execute the search
+    // The response will contain the first batch of documents
+    // and a scroll_id
+    $response = $this->connection->search($params);
+    $items = [];
+
+    // Now we loop until the scroll "cursors" are exhausted
+    while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
+        $scroll_id = $response['_scroll_id'];
+      //  print_r($response['hits']['hits']);
+        foreach($response['hits']['hits'] as $item){
+          $items[] = $item;
+        }
+        // Execute a Scroll request and repeat
+        $response = $this->connection->scroll([
+                "scroll_id" => $scroll_id,  //...using our previously obtained _scroll_id
+                "scroll" => "30s"           // and the same timeout window
+            ]
+        );
+    }
+    // save items with new type value
+    
+    return $items;
+  }
+
   public function updateSingleDocument($index, $type, $doc_id, $data = ''){
     $params = [
       'index' => $index,

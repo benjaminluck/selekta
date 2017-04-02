@@ -128,6 +128,18 @@ class API {
 
     $list = $this->shapeData($list, $listShape);
 
+
+    return $list;
+  }
+
+  public function duplicateSelection($targetIndex, $targetType, $sourceIndex = ''){
+    // read all items from an index with given 'type'
+    $index = "selection-v10";
+    $resultScroll = $this->dbClient->scrollThroughIndex($index);
+    $resultInsert = $this->bulkInsertFromArray($resultScroll, $targetIndex, $targetType);
+
+    // save items with new type value
+
     return $list;
   }
 
@@ -162,6 +174,35 @@ class API {
     return $responses;
 
   }
+
+  public function bulkInsertFromArray($inputArray, $targetIndex = '', $targetType = ''){
+    $client = $this->dbClient;
+
+    $params = ['body' => []];
+
+    for ($i = 0; $i < sizeof($inputArray); ++$i) {
+        $params['body'][] = [
+            'index' => [
+                '_index' => $targetIndex,
+                '_type' => $targetType,
+                '_id' => $i,
+            ],
+        ];
+
+        $params['body'][] = json_encode($inputArray[$i]["_source"]);
+    }
+
+    // Send the last batch if it exists
+    if (!empty($params['body'])) {
+        $responses = $client->bulk($params);
+    }
+
+    print_r($responses);
+
+    return $responses;
+
+  }
+
 
   public function createList(){
     $tree = new StructuredTree($this->dir);
