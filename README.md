@@ -10,9 +10,6 @@ A set of tools to keep you sane when organising your music selection
 - [ ] Bulk actions: move selected items to other path,
 - [ ] Simple smart structure: items will be forced in bpm structure (0,1,2 etc) if true
 
-# cleanups
-- the list and vault are now fetched from item [6] instead of a specified index name
-
 # todo
 - Update struct into new struct name
 - IDEA (A): structure = { "selectionv-10" : ['A','1'] "selection-v2323" : --- etc }
