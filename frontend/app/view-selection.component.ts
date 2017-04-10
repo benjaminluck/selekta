@@ -24,13 +24,13 @@ export class ViewSelectionComponent  {
         console.log(this.listShape);
       }
       this.zone = zone;
-      this.API.getList("unstructured").subscribe(
+      this.API.getList(this.listShape).subscribe(
           res => {
             console.log(res);
             this.list = [];
             this.list = res;
-            if(this.listShape == 'structured'){ 
-              this.list = this.buildStructuredList(this.list);
+            if(this.listShape == 'structured'){
+              // this.list = this.buildStructuredList(this.list); disabled for now since this takes too long
             }
 
             // for(let key in res){
@@ -63,9 +63,9 @@ export class ViewSelectionComponent  {
               console.log(structString);
               //eval(structString + 'hasOwnProperty(' + a + ')');
             }
-
-          let fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';');
-          eval(fileBuildString);
+ 
+            let fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';';
+            eval(fileBuildString);
 
         //    if(structured[a][1]);
         }

@@ -17,6 +17,26 @@ A set of tools to keep you sane when organising your music selection
 - Frontend: button to duplicate a selection
 - Remove tag
 
+# dynamic-structure:
+- Decide what to do with name:
+    structure
+      selection-v10
+        0 => B
+        1 => 2
+    OR
+
+    structure
+      [
+        [
+          0 => B
+          1 => 2
+        ]
+      ]
+  And how does this work when a file is placed in multiple structures?
+
+
+- Make sure frontend understands new structure
+
 # todo-future
 - Versions of files in /vault/
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)

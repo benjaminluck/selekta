@@ -45,8 +45,10 @@ class API {
         $fileName = $data['fileName'];
 
         if(isset($data['structure'])){
-        $execstring = '$newArray["' . implode('"]["', $data['structure']) . '"]["'. $fileName .'"] = $data;';
-        eval($execstring);
+          foreach($data['structure'] as $selectionName => $selectionVal){
+            $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
+            eval($execstring);
+          }
         }
       }
       break;
