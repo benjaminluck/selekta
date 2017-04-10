@@ -29,7 +29,7 @@ export class ViewSelectionComponent  {
             console.log(res);
             this.list = [];
             this.list = res;
-            if(this.listShape == 'structured'){
+            if(this.listShape == 'structured'){ 
               this.list = this.buildStructuredList(this.list);
             }
 
