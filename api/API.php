@@ -116,9 +116,8 @@ class API {
   //   return $list;
   // }
 
-  public function getListFromIndex($listShape, $tags = []){
+  public function getListFromIndex($selectedIndex, $listShape, $tags = []){
     $indices = $this->dbClient->listIndices();
-    $selectedIndex = $indices[7];
     $selectedType = 'mp3';
     if(!empty($tags)){
       $list = $this->dbClient->searchIndexByTags($selectedIndex, $selectedType, $tags[0]);

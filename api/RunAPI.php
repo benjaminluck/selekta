@@ -67,12 +67,13 @@ switch($request){
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
       $shape = $request[1];
+      $selectedIndex = 'selection-v10';
 
       if(!empty($request[2])){
         $tags[] = $request[2];
-        $list = $apiInstance->getListFromIndex($shape,$tags);
+        $list = $apiInstance->getListFromIndex($selectedIndex, $shape,$tags);
       }else{
-        $list = $apiInstance->getListFromIndex($shape);
+        $list = $apiInstance->getListFromIndex($selectedIndex, $shape);
       }
       // if($request[1] == 'unstructured'){
       //   $list = $apiInstance->getListFromIndex();

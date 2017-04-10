@@ -13,6 +13,8 @@
 
     define('DESTINATION', $destination);
 
+    $indexToSelect = 'selection-v10';
+
     $params = [
       'dir' => $dir,
       'writeDir' => $writeDir,
@@ -22,7 +24,7 @@
     $apiInstance = new API($params);
 
   //  $json = file_get_contents("../list.json");
-    $json = $apiInstance->getListFromIndex($shape);
+    $json = $apiInstance->getListFromIndex($indexToSelect, $shape);
 
     $writer = new FileWriter($json, $destination);
     $writer->writeFilesToDestination();
