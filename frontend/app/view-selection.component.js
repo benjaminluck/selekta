@@ -28,9 +28,13 @@ var ViewSelectionComponent = (function () {
         this.API.getList(this.listShape).subscribe(function (res) {
             console.log(res);
             _this.list = [];
-            _this.list = res;
             if (_this.listShape == 'structured') {
+                for (var key in res) {
+                    _this.list = res[key];
+                    _this.currentSelection = key;
+                }
             }
+            console.log(_this.currentSelection);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
         console.log(response);
         var data = [2, 3];

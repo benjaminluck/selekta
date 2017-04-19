@@ -14,6 +14,7 @@ export class ViewSelectionComponent  {
   list : any[];
   listShape : string;
   selectedTags : any[];
+  currentSelection: string;
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
@@ -28,11 +29,14 @@ export class ViewSelectionComponent  {
           res => {
             console.log(res);
             this.list = [];
-            this.list = res;
             if(this.listShape == 'structured'){
+              for(let key in res){
+                  this.list = res[key];
+                  this.currentSelection = key;
+              }
               // this.list = this.buildStructuredList(this.list); disabled for now since this takes too long
             }
-
+            console.log(this.currentSelection);
             // for(let key in res){
             //   let obj = {};
             //   this.list.push(res[key]);
@@ -63,7 +67,7 @@ export class ViewSelectionComponent  {
               console.log(structString);
               //eval(structString + 'hasOwnProperty(' + a + ')');
             }
- 
+
             let fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';';
             eval(fileBuildString);
 
