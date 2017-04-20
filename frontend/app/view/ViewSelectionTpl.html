@@ -25,8 +25,7 @@
                       <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
                       <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
                       <clr-dg-cell>
-                        {{key3.value.structure}} 
-                        {{ currentSelection }}
+                        <span *ngIf="key3.value.structure"> {{key3.value.structure[currentSelection]}}</span> 
                         <form>
                           <section class="form-block">
                               <div class="form-group">

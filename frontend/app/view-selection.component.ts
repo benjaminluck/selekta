@@ -85,7 +85,8 @@ export class ViewSelectionComponent  {
     let file = arguments[0];
     let structIndex = arguments[1];
     let struct = arguments[2];
-    file.structure[structIndex] = struct;
+    let selectionName = this.currentSelection; 
+    file.structure[selectionName][structIndex] = struct;
     this.updateDoc(file);
   }
 

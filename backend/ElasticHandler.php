@@ -6,6 +6,8 @@ class ElasticHandler
 {
   public $connection;
 
+  public $selectedIndex = "selection-v10";
+
   public function __construct(){
     $this->connection = ClientBuilder::create()->build();
   }
@@ -84,7 +86,7 @@ class ElasticHandler
         );
     }
     // save items with new type value
-    
+
     return $items;
   }
 

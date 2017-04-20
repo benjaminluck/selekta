@@ -66,7 +66,8 @@ var ViewSelectionComponent = (function () {
         var file = arguments[0];
         var structIndex = arguments[1];
         var struct = arguments[2];
-        file.structure[structIndex] = struct;
+        var selectionName = this.currentSelection;
+        file.structure[selectionName][structIndex] = struct;
         this.updateDoc(file);
     };
     ViewSelectionComponent.prototype.documentAppendTag = function (doc) {
