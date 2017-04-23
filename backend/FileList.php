@@ -31,7 +31,12 @@ class FileList
     {
         $folder_array = explode('/', $it['relPath']);
         $file_array = explode(' ', $file);
-        $it['structure'] = $folder_array;
+
+        // add the name of the selection to the structure object
+        $selectionName= $this->getFolderName();
+        $it['structure'] = [];
+        $it['structure'][$selectionName] = $folder_array;
+
         if(isset($folder_array[0])){
             $it['songGroup'] = $folder_array[0];
         }
@@ -41,8 +46,11 @@ class FileList
             $it['songGroup'] = $folder_array[1];
         }
 
+
         // remove last item from structure array since this is the filename
-        unset($it['structure'][count($it['structure']) - 1]);
+      // unset($it['structure'][$selectionName][count($it[$selectionName]['structure'])]);
+      $indexOfLastItemInStruct = count($it['structure'][$selectionName]) - 1;
+      unset($it['structure'][$selectionName][$indexOfLastItemInStruct]);
         $stripe_location = array_search('-', $file_array);
         $it['artist'] = '';
 

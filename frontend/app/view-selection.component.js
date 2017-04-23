@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var api_service_1 = require('./api.service');
-var core_2 = require('@angular/core');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var api_service_1 = require("./api.service");
+var core_2 = require("@angular/core");
 var ViewSelectionComponent = (function () {
     function ViewSelectionComponent(API, zone, route) {
         var _this = this;
@@ -20,22 +20,25 @@ var ViewSelectionComponent = (function () {
         var response;
         this.listShape = "structured";
         this.selectedTags = [];
+        this.selectedDocs = [];
         if (route.snapshot.data[0]) {
             this.listShape = route.snapshot.data[0].shapeData;
             console.log(this.listShape);
         }
         this.zone = zone;
-        this.API.getList("unstructured").subscribe(function (res) {
+        this.API.getList(this.listShape).subscribe(function (res) {
             console.log(res);
             _this.list = [];
-            _this.list = res;
             if (_this.listShape == 'structured') {
-                _this.list = _this.buildStructuredList(_this.list);
+                for (var key in res) {
+                    _this.list = res[key];
+                    _this.currentSelection = key;
+                }
             }
-            // for(let key in res){
-            //   let obj = {};
-            //   this.list.push(res[key]);
-            // }
+            else {
+                _this.list = res;
+            }
+            console.log(_this.currentSelection);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
         console.log(response);
         var data = [2, 3];
@@ -53,14 +56,13 @@ var ViewSelectionComponent = (function () {
                         var evalString = 'if(' + structString + '.hasOwnProperty("' + item['structure'][a] + '")){ } else { ' + newString + ' = {} }';
                         eval(evalString);
                         structString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
-                        // check if structString exists, if true do nothing, if false create object
                         console.log(structString);
                     }
                     var fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';';
                     eval(fileBuildString);
                 }
             }
-            console.log(item); // 1, "string", false
+            console.log(item);
         }
         return structured;
     };
@@ -68,7 +70,8 @@ var ViewSelectionComponent = (function () {
         var file = arguments[0];
         var structIndex = arguments[1];
         var struct = arguments[2];
-        file.structure[structIndex] = struct;
+        var selectionName = this.currentSelection;
+        file.structure[selectionName][structIndex] = struct;
         this.updateDoc(file);
     };
     ViewSelectionComponent.prototype.documentAppendTag = function (doc) {
@@ -93,6 +96,99 @@ var ViewSelectionComponent = (function () {
             console.log(res);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
+    ViewSelectionComponent.prototype.updDoc = function (data) {
+        this.API.updateDoc(data).subscribe(function (res) {
+            console.log(res);
+        }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
+    };
+    ViewSelectionComponent.prototype.clearSelection = function () {
+        this.selectedDocs.forEach(function (item, key) {
+            item.selected = false;
+        });
+        this.selectedDocs = [];
+    };
+    ViewSelectionComponent.prototype.bulkClearTag = function () {
+        console.log(this);
+        console.log('bulkClearTag');
+        var self = this;
+        this.selectedDocs.forEach(function (doc, key) {
+            doc['tags'] = [];
+            self.updDoc(doc);
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkAddStruct = function () {
+        console.log(this);
+        console.log('bulkAddStruct');
+        var self = this;
+        var newStructureName = self.newBulkStruct;
+        console.log(newStructureName);
+        if (newStructureName.length > 0) {
+            this.selectedDocs.forEach(function (doc, key) {
+                if (doc['structure']) {
+                    for (var structureName in doc['structure']) {
+                        var newStructObj = doc['structure'][structureName];
+                        doc['structure'][newStructureName] = newStructObj;
+                        break;
+                    }
+                }
+                self.updDoc(doc);
+            });
+        }
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkClearStruct = function () {
+        console.log(this);
+        console.log('bulkClearStruct');
+        var self = this;
+        this.selectedDocs.forEach(function (doc, key) {
+            if (doc['structure']) {
+                console.log(doc);
+                doc['structure'] = {};
+            }
+            self.updDoc(doc);
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkAddTag = function () {
+        console.log(this);
+        console.log('bulkAddTag');
+        var self = this;
+        var tag = this.newBulkTag;
+        this.selectedDocs.forEach(function (doc, key) {
+            console.log(doc);
+            if (tag.length > 0) {
+                if (doc['tags']) {
+                    doc['tags'].push(tag);
+                    self.updDoc(doc);
+                }
+                else {
+                    doc['tags'] = [];
+                    doc['tags'].push(tag);
+                    self.updDoc(doc);
+                }
+            }
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.selectDocument = function (doc) {
+        console.log(this.selectedDocs);
+        console.log(doc);
+        doc.selected = true;
+        var id = doc['id'];
+        var inSelection = -1;
+        this.selectedDocs.forEach(function (item, key) {
+            if (item.id == id) {
+                inSelection = key;
+            }
+        });
+        if (inSelection > -1) {
+            this.selectedDocs.splice(inSelection, 1);
+        }
+        else {
+            this.selectedDocs.push(doc);
+        }
+    };
     ViewSelectionComponent.prototype.selectTag = function (tagName) {
         var _this = this;
         console.log(tagName);
@@ -102,21 +198,17 @@ var ViewSelectionComponent = (function () {
             console.log(res);
             _this.list = [];
             _this.list = res;
-            // for(let key in res){
-            //   let obj = {};
-            //   this.list.push(res[key]);
-            // }
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
-    ViewSelectionComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            providers: [api_service_1.ApiService],
-            templateUrl: 'app/view/ViewSelectionTpl.html'
-        }), 
-        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
-    ], ViewSelectionComponent);
     return ViewSelectionComponent;
 }());
+ViewSelectionComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        providers: [api_service_1.ApiService],
+        templateUrl: 'app/view/ViewSelectionTpl.html'
+    }),
+    __metadata("design:paramtypes", [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
+], ViewSelectionComponent);
 exports.ViewSelectionComponent = ViewSelectionComponent;
 //# sourceMappingURL=view-selection.component.js.map

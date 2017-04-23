@@ -1,3 +1,10 @@
+<button (click)="clearSelection();"> clear selection </button>
+<button (click)="bulkAddTag();"> add tag </button>
+<input type="text" [(ngModel)]="newBulkTag" placeholder="New tag">
+<button (click)="bulkClearTag();"> clear tags </button>
+<button (click)="bulkAddStruct();"> add to struct </button>
+<input type="text" [(ngModel)]="newBulkStruct" placeholder="New structure name">
+<button (click)="bulkClearStruct();"> remove from all selections </button>
 <span class="badge" *ngFor='let tag of selectedTags'>{{tag}}</span>
 
 <div *ngIf="listShape == 'structured'">
@@ -7,6 +14,7 @@
           {{key2.key}}
           <clr-tree-node [clrTreeNodeExpanded]="true">
               <clr-datagrid>
+                  <clr-dg-column></clr-dg-column>
                   <clr-dg-column>Title</clr-dg-column>
                   <clr-dg-column>Artist</clr-dg-column>
                   <clr-dg-column>Tags</clr-dg-column>
@@ -15,7 +23,10 @@
                   <clr-dg-column>Structure</clr-dg-column>
 
                   <clr-dg-row *ngFor='let key3 of key2.value | keys'>
-                      <clr-dg-cell >{{key3.value.title}}</clr-dg-cell>
+                    <clr-dg-cell>
+                      <input type="checkbox" id="checkrads_1">
+                    </clr-dg-cell>
+                      <clr-dg-cell>{{key3.value.title}}</clr-dg-cell>
                       <clr-dg-cell>{{key3.value.artist}}</clr-dg-cell>
                       <clr-dg-cell>
                         <span class="badge" (click)="selectTag(tag);" *ngFor='let tag of key3.value.tags'>{{tag}}</span>
@@ -25,7 +36,7 @@
                       <clr-dg-cell>{{key3.value.bpm}}</clr-dg-cell>
                       <clr-dg-cell>{{key3.value.key}}</clr-dg-cell>
                       <clr-dg-cell>
-                        {{key3.value.structure}}
+                        <span *ngIf="key3.value.structure"> {{key3.value.structure[currentSelection]}}</span>
                         <form>
                           <section class="form-block">
                               <div class="form-group">
@@ -54,6 +65,7 @@
 <div *ngIf="listShape == 'unstructured'">
   <clr-tree-node [clrTreeNodeExpanded]="true">
       <clr-datagrid>
+          <clr-dg-column></clr-dg-column>
           <clr-dg-column>Title</clr-dg-column>
           <clr-dg-column>Artist</clr-dg-column>
           <clr-dg-column>Tags</clr-dg-column>
@@ -62,6 +74,9 @@
           <clr-dg-column>Structure</clr-dg-column>
 
           <clr-dg-row *ngFor='let key of list | keys'>
+              <clr-dg-cell>
+                <input type="checkbox" [checked]="key.value.selected" (click)="selectDocument(key.value)">
+              </clr-dg-cell>
               <clr-dg-cell >{{key.value.title}}</clr-dg-cell>
               <clr-dg-cell>{{key.value.artist}}</clr-dg-cell>
               <clr-dg-cell>

@@ -22,7 +22,7 @@ class API {
 
   public function updateDoc($params, $data){
     $indices = $this->dbClient->listIndices();
-    $selectedIndex = $indices[6];
+    $selectedIndex = $this->dbClient->selectedIndex;
     $selectedType = 'mp3';
 
     // combine newTag with tags
@@ -45,8 +45,10 @@ class API {
         $fileName = $data['fileName'];
 
         if(isset($data['structure'])){
-        $execstring = '$newArray["' . implode('"]["', $data['structure']) . '"]["'. $fileName .'"] = $data;';
-        eval($execstring);
+          foreach($data['structure'] as $selectionName => $selectionVal){
+            $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
+            eval($execstring);
+          }
         }
       }
       break;
@@ -134,7 +136,7 @@ class API {
 
   public function duplicateSelection($targetIndex, $targetType, $sourceIndex = ''){
     // read all items from an index with given 'type'
-    $index = "selection-v10";
+    $index = $this->dbClient->selectedIndex;
     $resultScroll = $this->dbClient->scrollThroughIndex($index);
     $resultInsert = $this->bulkInsertFromArray($resultScroll, $targetIndex, $targetType);
 
