@@ -15,11 +15,15 @@ export class ViewSelectionComponent  {
   listShape : string;
   selectedTags : any[];
   currentSelection: string;
+  selectedDocs : any[];
+  newBulkTag: string;
+  newBulkStruct: string;
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
       this.listShape = "structured";
       this.selectedTags = [];
+      this.selectedDocs = [];
       if(route.snapshot.data[0]){
         this.listShape = route.snapshot.data[0].shapeData;
         console.log(this.listShape);
@@ -35,6 +39,8 @@ export class ViewSelectionComponent  {
                   this.currentSelection = key;
               }
               // this.list = this.buildStructuredList(this.list); disabled for now since this takes too long
+            }else{
+              this.list = res;
             }
             console.log(this.currentSelection);
             // for(let key in res){
@@ -85,7 +91,7 @@ export class ViewSelectionComponent  {
     let file = arguments[0];
     let structIndex = arguments[1];
     let struct = arguments[2];
-    let selectionName = this.currentSelection; 
+    let selectionName = this.currentSelection;
     file.structure[selectionName][structIndex] = struct;
     this.updateDoc(file);
   }
@@ -104,7 +110,7 @@ export class ViewSelectionComponent  {
     console.log(doc);
   }
 
-  updateDoc(data: any[]){
+  updateDoc(data: any[]){ // todo: refactor into append and update functions instead of one that does both
     this.documentAppendTag(data);
     console.log(arguments);
     console.log(data);
@@ -116,6 +122,112 @@ export class ViewSelectionComponent  {
         err => console.error(err),
         () => console.log('Completed!')
       );
+  }
+
+  updDoc(data: any[]){ // todo: refactor this and function above
+    this.API.updateDoc(data).subscribe(
+        res => {
+          console.log(res);
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
+  }
+
+  clearSelection(){
+    this.selectedDocs.forEach(function(item, key){
+      item.selected = false;
+    })
+    this.selectedDocs = [];
+  }
+
+  bulkClearTag(){
+    console.log(this);
+    console.log('bulkClearTag');
+    var self = this;
+    this.selectedDocs.forEach(function(doc,key){
+      doc['tags'] = [];
+      self.updDoc(doc);
+    });
+    console.log(this.list);
+  }
+
+  bulkAddStruct(){
+    console.log(this);
+    console.log('bulkAddStruct');
+    var self = this;
+    var newStructureName = self.newBulkStruct;
+    console.log(newStructureName);
+    if(newStructureName.length > 0){
+      this.selectedDocs.forEach(function(doc,key){
+        if(doc['structure']){
+          for(let structureName in doc['structure']){
+              let newStructObj = doc['structure'][structureName];
+              doc['structure'][newStructureName] = newStructObj;
+              break;
+          }
+        }
+        self.updDoc(doc);
+      });
+    }
+    console.log(this.list);
+  }
+
+  bulkClearStruct(){
+    console.log(this);
+    console.log('bulkClearStruct');
+    var self = this;
+    this.selectedDocs.forEach(function(doc,key){
+      if(doc['structure']){
+        console.log(doc);
+        doc['structure'] = {};
+      }
+      self.updDoc(doc);
+    });
+
+    console.log(this.list);
+  }
+
+
+  bulkAddTag(){
+    console.log(this);
+    console.log('bulkAddTag');
+    var self = this;
+    let tag = this.newBulkTag;
+    this.selectedDocs.forEach(function(doc,key){
+        console.log(doc);
+        if(tag.length > 0){
+          if(doc['tags']){
+              doc['tags'].push(tag);
+              self.updDoc(doc);
+          }
+          else{
+            doc['tags'] = [];
+            doc['tags'].push(tag);
+            self.updDoc(doc);
+          }
+        }
+    });
+    console.log(this.list);
+    //
+  }
+
+  selectDocument(doc: any[]){
+    console.log(this.selectedDocs);
+    console.log(doc);
+    doc.selected = true;
+    let id = doc['id'];
+    var inSelection = -1;
+    this.selectedDocs.forEach(function(item, key){
+      if(item.id == id){
+        inSelection = key;
+      }
+    });
+    if(inSelection > -1){
+      this.selectedDocs.splice(inSelection, 1);
+    }else{
+      this.selectedDocs.push(doc);
+    }
   }
 
   selectTag(tagName: string){

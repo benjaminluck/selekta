@@ -20,6 +20,7 @@ var ViewSelectionComponent = (function () {
         var response;
         this.listShape = "structured";
         this.selectedTags = [];
+        this.selectedDocs = [];
         if (route.snapshot.data[0]) {
             this.listShape = route.snapshot.data[0].shapeData;
             console.log(this.listShape);
@@ -33,6 +34,9 @@ var ViewSelectionComponent = (function () {
                     _this.list = res[key];
                     _this.currentSelection = key;
                 }
+            }
+            else {
+                _this.list = res;
             }
             console.log(_this.currentSelection);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
@@ -91,6 +95,99 @@ var ViewSelectionComponent = (function () {
         this.API.updateDoc(data).subscribe(function (res) {
             console.log(res);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
+    };
+    ViewSelectionComponent.prototype.updDoc = function (data) {
+        this.API.updateDoc(data).subscribe(function (res) {
+            console.log(res);
+        }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
+    };
+    ViewSelectionComponent.prototype.clearSelection = function () {
+        this.selectedDocs.forEach(function (item, key) {
+            item.selected = false;
+        });
+        this.selectedDocs = [];
+    };
+    ViewSelectionComponent.prototype.bulkClearTag = function () {
+        console.log(this);
+        console.log('bulkClearTag');
+        var self = this;
+        this.selectedDocs.forEach(function (doc, key) {
+            doc['tags'] = [];
+            self.updDoc(doc);
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkAddStruct = function () {
+        console.log(this);
+        console.log('bulkAddStruct');
+        var self = this;
+        var newStructureName = self.newBulkStruct;
+        console.log(newStructureName);
+        if (newStructureName.length > 0) {
+            this.selectedDocs.forEach(function (doc, key) {
+                if (doc['structure']) {
+                    for (var structureName in doc['structure']) {
+                        var newStructObj = doc['structure'][structureName];
+                        doc['structure'][newStructureName] = newStructObj;
+                        break;
+                    }
+                }
+                self.updDoc(doc);
+            });
+        }
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkClearStruct = function () {
+        console.log(this);
+        console.log('bulkClearStruct');
+        var self = this;
+        this.selectedDocs.forEach(function (doc, key) {
+            if (doc['structure']) {
+                console.log(doc);
+                doc['structure'] = {};
+            }
+            self.updDoc(doc);
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.bulkAddTag = function () {
+        console.log(this);
+        console.log('bulkAddTag');
+        var self = this;
+        var tag = this.newBulkTag;
+        this.selectedDocs.forEach(function (doc, key) {
+            console.log(doc);
+            if (tag.length > 0) {
+                if (doc['tags']) {
+                    doc['tags'].push(tag);
+                    self.updDoc(doc);
+                }
+                else {
+                    doc['tags'] = [];
+                    doc['tags'].push(tag);
+                    self.updDoc(doc);
+                }
+            }
+        });
+        console.log(this.list);
+    };
+    ViewSelectionComponent.prototype.selectDocument = function (doc) {
+        console.log(this.selectedDocs);
+        console.log(doc);
+        doc.selected = true;
+        var id = doc['id'];
+        var inSelection = -1;
+        this.selectedDocs.forEach(function (item, key) {
+            if (item.id == id) {
+                inSelection = key;
+            }
+        });
+        if (inSelection > -1) {
+            this.selectedDocs.splice(inSelection, 1);
+        }
+        else {
+            this.selectedDocs.push(doc);
+        }
     };
     ViewSelectionComponent.prototype.selectTag = function (tagName) {
         var _this = this;
