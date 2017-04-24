@@ -23,4 +23,14 @@ export class ConfigurationsComponent  {
 
   }
 
+  createVault(){
+    this.API.createVault().subscribe(
+        res => {
+          console.log(res);
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
+  } 
+
 }

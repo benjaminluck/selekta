@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var api_service_1 = require('./api.service');
+var core_1 = require("@angular/core");
+var api_service_1 = require("./api.service");
 var ConfigurationsComponent = (function () {
     function ConfigurationsComponent(API) {
         var _this = this;
@@ -20,15 +20,20 @@ var ConfigurationsComponent = (function () {
         API.getParams().subscribe(function (res) { console.log(res); _this.parameters = res; }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
         console.log(this);
     }
-    ConfigurationsComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            providers: [api_service_1.ApiService],
-            templateUrl: 'app/view/ConfigurationsTpl.html'
-        }), 
-        __metadata('design:paramtypes', [api_service_1.ApiService])
-    ], ConfigurationsComponent);
+    ConfigurationsComponent.prototype.createVault = function () {
+        this.API.createVault().subscribe(function (res) {
+            console.log(res);
+        }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
+    };
     return ConfigurationsComponent;
 }());
+ConfigurationsComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        providers: [api_service_1.ApiService],
+        templateUrl: 'app/view/ConfigurationsTpl.html'
+    }),
+    __metadata("design:paramtypes", [api_service_1.ApiService])
+], ConfigurationsComponent);
 exports.ConfigurationsComponent = ConfigurationsComponent;
 //# sourceMappingURL=configurations.component.js.map
