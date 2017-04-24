@@ -169,7 +169,7 @@ class API {
             'index' => [
                 '_index' => $selectionName,
                 '_type' => 'mp3',
-                '_id' => $i,
+                '_id' => $fileList[$i]['hash'],
             ],
         ];
 
