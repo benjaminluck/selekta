@@ -25,6 +25,11 @@ var ConfigurationsComponent = (function () {
             console.log(res);
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
+    ConfigurationsComponent.prototype.writeTodo = function (selection, shape) {
+        this.API.writeTodo(selection, shape).subscribe(function (res) {
+            console.log(res);
+        }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
+    };
     return ConfigurationsComponent;
 }());
 ConfigurationsComponent = __decorate([
