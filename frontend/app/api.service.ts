@@ -50,6 +50,13 @@ export class ApiService{
       .map(response => response.json());
   }
 
+  writeTodo(selection: string, shape: string){ 
+    console.log("write todo list");
+    let params = {};
+    return this.http.post(this.baseUrl + 'write-todo/' + selection + '/' + shape + '/', params)
+      .map(response => response.json());
+  }
+
   updateDoc(data: any[]){
     console.log("updateDoc");
     console.log(data);
@@ -62,7 +69,7 @@ export class ApiService{
     console.log("listShape");
     let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/'
     return this.http.get(endpoint + listShape)
-      .map(response => response.json()); 
+      .map(response => response.json());
   }
 
   getListByTags(listShape: string, tags: any[]) {

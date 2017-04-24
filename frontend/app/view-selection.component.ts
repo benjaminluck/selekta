@@ -215,7 +215,7 @@ export class ViewSelectionComponent  {
   selectDocument(doc: any[]){
     console.log(this.selectedDocs);
     console.log(doc);
-    doc.selected = true;
+    doc['selected'] = true; 
     let id = doc['id'];
     var inSelection = -1;
     this.selectedDocs.forEach(function(item, key){

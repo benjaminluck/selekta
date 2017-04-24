@@ -180,7 +180,7 @@ var ViewSelectionComponent = (function () {
     ViewSelectionComponent.prototype.selectDocument = function (doc) {
         console.log(this.selectedDocs);
         console.log(doc);
-        doc.selected = true;
+        doc['selected'] = true;
         var id = doc['id'];
         var inSelection = -1;
         this.selectedDocs.forEach(function (item, key) {

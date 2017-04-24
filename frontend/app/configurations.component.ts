@@ -31,6 +31,16 @@ export class ConfigurationsComponent  {
         err => console.error(err),
         () => console.log('Completed!')
       );
-  } 
+  }
+
+  writeTodo(selection: string, shape: string){ 
+    this.API.writeTodo(selection, shape).subscribe(
+        res => {
+          console.log(res);
+        },
+        err => console.error(err),
+        () => console.log('Completed!')
+      );
+  }
 
 }

@@ -52,6 +52,12 @@ var ApiService = (function () {
         return this.http.post(this.baseUrl + 'create-vault/', params)
             .map(function (response) { return response.json(); });
     };
+    ApiService.prototype.writeTodo = function (selection, shape) {
+        console.log("write todo list");
+        var params = {};
+        return this.http.post(this.baseUrl + 'write-todo/' + selection + '/' + shape + '/', params)
+            .map(function (response) { return response.json(); });
+    };
     ApiService.prototype.updateDoc = function (data) {
         console.log("updateDoc");
         console.log(data);

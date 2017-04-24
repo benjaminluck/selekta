@@ -66,6 +66,10 @@ switch($request){
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
+      if(empty($request[1])){
+        echo 'Please define a list shape';
+        return false;
+      }
       $shape = $request[1];
       $selectedIndex = 'selection-v10';
 
@@ -82,6 +86,31 @@ switch($request){
       // }
 
       print_r($list);
+      break;
+  case ($request[0] == 'write-todo') :
+      $request_body = file_get_contents('php://input');
+      $data = json_decode($request_body, true);
+
+      if(empty($request[1])){
+        echo 'Please define a selection';
+        return false;
+      }
+
+      if(empty($request[2])){
+        echo 'Please define a shape';
+        return false;
+      }
+
+      $selection = $request[1];
+      $shape = $request[2];
+
+
+      if($shape){
+          $result = $apiInstance->writeRsync($selection, $shape);
+      }
+
+      print_r($result);
+      return true;
       break;
   case ($request[0] == 'test') :
       //echo 'test';

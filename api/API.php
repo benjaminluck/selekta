@@ -20,6 +20,16 @@ class API {
     $this->dbClient = new ElasticHandler();
   }
 
+  public function writeRsync($selection, $shape){
+    $indexToSelect = $this->dbClient->selectedIndex;
+
+    $json = $this->getListFromIndex($indexToSelect,$shape);
+
+    $writer = new FileWriter($json, $this->destination, $selection);
+
+    return $json;
+  }
+
   public function updateDoc($params, $data){
     $indices = $this->dbClient->listIndices();
     $selectedIndex = $this->dbClient->selectedIndex;
