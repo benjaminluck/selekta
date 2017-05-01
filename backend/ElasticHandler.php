@@ -198,6 +198,12 @@ class ElasticHandler
     return $results;
   }
 
+  public function update($params){
+    $results = $this->connection->update($params);
+
+    return $results;
+  }
+
   public function listIndices(){
     $resp = $this->elasticGET('_cat/indices/');
 

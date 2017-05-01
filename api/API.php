@@ -162,6 +162,43 @@ class API {
     $fileList = $flatList->Array();
     $selectionName = $flatList->getFolderName();
 
+    $responses = [];
+
+    for ($i = 0; $i < sizeof($fileList); ++$i) {
+        if(empty($fileList[$i]['structure'][$selectionName])){
+          $fileList[$i]['structure'][$selectionName] = [1,2,3];
+        }
+        $params = [
+            'index' => $selectionName,
+            'type' => 'mp3',
+            'id' => $fileList[$i]['hash'],
+            'body' => [
+              'script' => 'doc["structure"] = params.dummy',
+              'params' => [
+                'structure' => $fileList[$i]['structure'][$selectionName],
+                'selectionName' => 'test',
+                'dummy' => [1,2,3]
+              ],
+              'upsert' => $fileList[$i]
+            ]
+        ];
+
+        $response = $client->update($params);
+        $responses[] = $response;
+    }
+
+
+    return json_encode($responses);
+
+  }
+
+  public function createIndexFromFolderInit(){
+    $client = $this->dbClient;
+    $flatList = new FlatList($this->dir, $this->dir);
+    $flatList->buildList();
+    $fileList = $flatList->Array();
+    $selectionName = $flatList->getFolderName();
+
     $params = ['body' => []];
 
     for ($i = 0; $i < sizeof($fileList); ++$i) {
