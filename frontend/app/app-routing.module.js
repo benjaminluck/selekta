@@ -15,7 +15,7 @@ var dashboard_component_1 = require('./dashboard.component');
 var configurations_component_1 = require('./configurations.component');
 var routes = [
     { path: 'view-vault', component: view_selection_component_1.ViewSelectionComponent, data: [{ "shapeData": "unstructured" }] },
-    { path: 'view-selection', component: view_selection_component_1.ViewSelectionComponent },
+    { path: 'view-selection/:selection/:structure', component: view_selection_component_1.ViewSelectionComponent },
     { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
     { path: 'configurations', component: configurations_component_1.ConfigurationsComponent },
     { path: '',

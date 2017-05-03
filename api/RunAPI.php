@@ -44,6 +44,7 @@ switch($request){
       $json = json_encode($resp);
       print_r($json);
       break;
+      return $resp;
   case ($request[0] == 'duplicate-selection') :
       // $request_body = file_get_contents('php://input');
       // $data = json_decode($request_body, true);
@@ -63,21 +64,35 @@ switch($request){
       $result = $apiInstance->updateDoc($params, $data);
       print_r($result);
       break;
+    case ($request[0] == 'vault') :
+          $request_body = file_get_contents('php://input');
+          $data = json_decode($request_body, true);
+
+          $list = $apiInstance->getVaultFromIndex();  
+
+          print_r($list);
+          break;
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
+
       if(empty($request[1])){
+        echo 'Please define a selection';
+        return false;
+      }
+      $selectedIndex = $request[1];
+
+      if(empty($request[2])){
         echo 'Please define a list shape';
         return false;
       }
-      $shape = $request[1];
-      $selectedIndex = 'selection-v10';
+      $shape = $request[2];
 
-      if(!empty($request[2])){
-        $tags[] = $request[2];
-        $list = $apiInstance->getListFromIndex($selectedIndex, $shape,$tags);
+      if(!empty($request[3])){
+        $tags[] = $request[3];
+        $list = $apiInstance->getListFromIndex($apiInstance->getSelectedIndex(), $shape, $tags);
       }else{
-        $list = $apiInstance->getListFromIndex($selectedIndex, $shape);
+        $list = $apiInstance->getListFromIndex($apiInstance->getSelectedIndex(), $shape);
       }
       // if($request[1] == 'unstructured'){
       //   $list = $apiInstance->getListFromIndex();

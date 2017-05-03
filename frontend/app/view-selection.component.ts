@@ -29,28 +29,50 @@ export class ViewSelectionComponent  {
         console.log(this.listShape);
       }
       this.zone = zone;
-      this.API.getList(this.listShape).subscribe(
-          res => {
-            console.log(res);
-            this.list = [];
-            if(this.listShape == 'structured'){
-              for(let key in res){
-                  this.list = res[key];
-                  this.currentSelection = key;
+
+      route.params.subscribe(params => {
+        this.currentSelection = params['selection'];
+        if(params['structure']){
+          this.listShape = params['structure'];
+        }
+        if(params['selection']){
+          this.API.getListSelection(this.currentSelection, this.listShape).subscribe(
+            res => {
+              console.log(res);
+              this.list = [];
+              if(this.listShape == 'structured'){
+                for(let key in res){
+                    this.list = res[key];
+                }
+
+              }else{
+                this.list = res;
               }
-              // this.list = this.buildStructuredList(this.list); disabled for now since this takes too long
-            }else{
+              console.log(this.currentSelection);
+            },
+            err => console.error(err),
+            () => console.log('Completed!')
+          );
+        }else{
+          this.API.getVault().subscribe(
+            res => {
+              console.log(res);
+              this.list = [];
+              this.listShape = 'unstructured'
+
               this.list = res;
-            }
-            console.log(this.currentSelection);
-            // for(let key in res){
-            //   let obj = {};
-            //   this.list.push(res[key]);
-            // }
-          },
-          err => console.error(err),
-          () => console.log('Completed!')
-        );
+              console.log(this.currentSelection);
+              // for(let key in res){
+              //   let obj = {};
+              //   this.list.push(res[key]);
+              // }
+            },
+            err => console.error(err),
+            () => console.log('Completed!')
+          );
+        }
+      });
+
       console.log(response);
       let data = [2,3];
 
@@ -215,7 +237,7 @@ export class ViewSelectionComponent  {
   selectDocument(doc: any[]){
     console.log(this.selectedDocs);
     console.log(doc);
-    doc['selected'] = true; 
+    doc['selected'] = true;
     let id = doc['id'];
     var inSelection = -1;
     this.selectedDocs.forEach(function(item, key){

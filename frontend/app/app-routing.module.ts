@@ -7,14 +7,14 @@ import { ConfigurationsComponent }   from './configurations.component';
 
 const routes: Routes = [
   { path: 'view-vault',  component: ViewSelectionComponent, data: [{ "shapeData" : "unstructured"}] },
-  { path: 'view-selection',  component: ViewSelectionComponent},
+  { path: 'view-selection/:selection/:structure',  component: ViewSelectionComponent},
   { path: 'dashboard',  component: DashboardComponent },
   { path: 'configurations',  component: ConfigurationsComponent },
   { path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
   }
-]; 
+];
 
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],

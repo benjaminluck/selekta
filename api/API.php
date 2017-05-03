@@ -20,6 +20,10 @@ class API {
     $this->dbClient = new ElasticHandler();
   }
 
+  public function getSelectedIndex(){
+    return $this->dbClient->selectedIndex;
+  }
+
   public function writeRsync($selection, $shape){
     $indexToSelect = $this->dbClient->selectedIndex;
 
@@ -65,7 +69,7 @@ class API {
       case 'unstructured':
       foreach($array as $item){
         $data = $item['_source'];
-        $data['id'] = $item['_id'];
+        $data['id'] = $item['_id']; 
         $fileName = $data['fileName'];
         $newArray[] = $data;
       }
@@ -128,6 +132,17 @@ class API {
   //   return $list;
   // }
 
+  public function getVaultFromIndex(){
+    $indices = $this->dbClient->listIndices();
+    $selectedType = 'mp3';
+
+    $list = $this->dbClient->searchIndex($this->dbClient->getSelectedIndex(), $selectedType);
+    $list = $this->shapeData($list, 'unstructured');
+
+
+    return $list;
+  }
+
   public function getListFromIndex($selectedIndex, $listShape, $tags = []){
     $indices = $this->dbClient->listIndices();
     $selectedType = 'mp3';
@@ -136,7 +151,6 @@ class API {
     }else{
       $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
     }
-
 
     $list = $this->shapeData($list, $listShape);
 
@@ -165,49 +179,50 @@ class API {
     $responses = [];
 
     for ($i = 0; $i < sizeof($fileList); ++$i) {
+        $doc = $fileList[$i];
         if(empty($fileList[$i]['structure'][$selectionName])){
           $fileList[$i]['structure'][$selectionName] = [1,2,3];
         }
-        $response = $client->updateSingleDoc($fileList[$i]['hash'],'mp3', 'test', $fileList[$i]['structure'][$selectionName]);
+        $response = $client->updateSingleDoc($doc,'mp3', $selectionName, $fileList[$i]['structure'][$selectionName]);
         $responses[] = $response;
     }
 
 
-    return json_encode($responses);
-
-  }
-
-  public function createIndexFromFolderInit(){
-    $client = $this->dbClient;
-    $flatList = new FlatList($this->dir, $this->dir);
-    $flatList->buildList();
-    $fileList = $flatList->Array();
-    $selectionName = $flatList->getFolderName();
-
-    $params = ['body' => []];
-
-    for ($i = 0; $i < sizeof($fileList); ++$i) {
-        $params['body'][] = [
-            'index' => [
-                '_index' => $selectionName,
-                '_type' => 'mp3',
-                '_id' => $fileList[$i]['hash'],
-            ],
-        ];
-
-        $params['body'][] = json_encode($fileList[$i]);
-    }
-
-    // Send the last batch if it exists
-    if (!empty($params['body'])) {
-        $responses = $client->bulk($params);
-    }
-
-    print_r($responses);
-
     return $responses;
-
   }
+
+  // -- delete (obsolete)
+  // public function createIndexFromFolderInit(){
+  //   $client = $this->dbClient;
+  //   $flatList = new FlatList($this->dir, $this->dir);
+  //   $flatList->buildList();
+  //   $fileList = $flatList->Array();
+  //   $selectionName = $flatList->getFolderName();
+  //
+  //   $params = ['body' => []];
+  //
+  //   for ($i = 0; $i < sizeof($fileList); ++$i) {
+  //       $params['body'][] = [
+  //           'index' => [
+  //               '_index' => $selectionName,
+  //               '_type' => 'mp3',
+  //               '_id' => $fileList[$i]['hash'],
+  //           ],
+  //       ];
+  //
+  //       $params['body'][] = json_encode($fileList[$i]);
+  //   }
+  //
+  //   // Send the last batch if it exists
+  //   if (!empty($params['body'])) {
+  //       $responses = $client->bulk($params);
+  //   }
+  //
+  //   print_r($responses);
+  //
+  //   return $responses;
+  //
+  // }
 
   public function bulkInsertFromArray($inputArray, $targetIndex = '', $targetType = ''){
     $client = $this->dbClient;

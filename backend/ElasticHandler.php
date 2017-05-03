@@ -58,6 +58,7 @@ class ElasticHandler
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -118,8 +119,7 @@ class ElasticHandler
     ];
 
     $response = $this->connection->index($params);
-    $json = json_encode($response);
-    return $json;
+    return $response;
   }
 
   public function updateTags($index, $type, $doc_id, $data = ''){
@@ -202,8 +202,6 @@ class ElasticHandler
         'body' => $query
     ];
 
-    //$params['body'] = [];
-
 
     $results = $this->connection->search($params);
     $results = $this->formatResult($results);
@@ -217,8 +215,11 @@ class ElasticHandler
     return $results;
   }
 
-  public function updateSingleDoc($doc_id,$doc_type, $selectionName, $structure){
-    $end = $this->selectedIndex. '/' . $doc_type . '/' . $doc_id . '/update';
+  public function updateSingleDoc($doc, $doc_type, $selectionName, $structure){
+    $doc_id = $doc['hash'];
+    $doc_json = json_encode($doc);
+    $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
+    $end = $this->selectedIndex. '/' . $doc_type . '/' . $doc_id . '/_update';
 
     $payload = '{
         "script" : {
@@ -228,8 +229,12 @@ class ElasticHandler
                 "selectionName" : "'.$selectionName .'",
                 "structure" : '.json_encode($structure).'
             }
-        }
+        },
+        "upsert" : {'
+          . $doc_json .
+        '}
     }';
+
 
     $result = $this->elasticPOST($end, $payload);
 

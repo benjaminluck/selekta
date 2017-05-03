@@ -71,6 +71,20 @@ var ApiService = (function () {
         return this.http.get(endpoint + listShape)
             .map(function (response) { return response.json(); });
     };
+    ApiService.prototype.getVault = function () {
+        console.log("getVault");
+        console.log("listShape");
+        var endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/vault/';
+        return this.http.get(endpoint + listShape)
+            .map(function (response) { return response.json(); });
+    };
+    ApiService.prototype.getListSelection = function (selection, listShape) {
+        console.log("getList");
+        console.log("listShape");
+        var endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list/';
+        return this.http.get(endpoint + selection + '/' + listShape)
+            .map(function (response) { return response.json(); });
+    };
     ApiService.prototype.getListByTags = function (listShape, tags) {
         console.log("getList");
         console.log("listShape");
