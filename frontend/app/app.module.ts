@@ -7,6 +7,7 @@ import { ClarityModule } from 'clarity-angular';
 
 import { AppComponent }  from './app.component';
 import { ViewSelectionComponent }  from './view-selection.component';
+import { ViewVaultComponent }  from './view-vault.component'; 
 import { DashboardComponent }  from './dashboard.component';
 import { ConfigurationsComponent }  from './configurations.component';
 
@@ -27,6 +28,7 @@ import { KeysPipe } from './keys.pipe';
   declarations: [
     AppComponent,
     ViewSelectionComponent,
+    ViewVaultComponent, 
     DashboardComponent,
     ConfigurationsComponent,
     KeysPipe

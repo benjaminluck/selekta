@@ -16,6 +16,7 @@ var material_1 = require('@angular/material');
 var clarity_angular_1 = require('clarity-angular');
 var app_component_1 = require('./app.component');
 var view_selection_component_1 = require('./view-selection.component');
+var view_vault_component_1 = require('./view-vault.component');
 var dashboard_component_1 = require('./dashboard.component');
 var configurations_component_1 = require('./configurations.component');
 var app_routing_module_1 = require('./app-routing.module');
@@ -36,6 +37,7 @@ var AppModule = (function () {
             declarations: [
                 app_component_1.AppComponent,
                 view_selection_component_1.ViewSelectionComponent,
+                view_vault_component_1.ViewVaultComponent,
                 dashboard_component_1.DashboardComponent,
                 configurations_component_1.ConfigurationsComponent,
                 keys_pipe_1.KeysPipe

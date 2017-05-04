@@ -20,7 +20,7 @@ class API {
     $this->dbClient = new ElasticHandler();
   }
 
-  public function getSelectedIndex(){
+  public function getSelectedIndex(){ 
     return $this->dbClient->selectedIndex;
   }
 
@@ -136,9 +136,9 @@ class API {
     $indices = $this->dbClient->listIndices();
     $selectedType = 'mp3';
 
-    $list = $this->dbClient->searchIndex($this->dbClient->getSelectedIndex(), $selectedType);
+    $list = $this->dbClient->searchIndex($this->getSelectedIndex(), $selectedType);
     $list = $this->shapeData($list, 'unstructured');
-
+ 
 
     return $list;
   }

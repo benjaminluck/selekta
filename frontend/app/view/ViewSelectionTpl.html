@@ -6,7 +6,6 @@
 <input type="text" [(ngModel)]="newBulkStruct" placeholder="New structure name">
 <button (click)="bulkClearStruct();"> remove from all selections </button>
 <span class="badge" *ngFor='let tag of selectedTags'>{{tag}}</span>
-
 <div *ngIf="listShape == 'structured'">
   <clr-tree-node *ngFor='let key of list | keys' [clrTreeNodeExpanded]="false">
       {{key.key}}
@@ -38,7 +37,7 @@
                       <clr-dg-cell>
                         <span *ngIf="key3.value.structure"> {{key3.value.structure[currentSelection]}}</span>
                         <form>
-                          <section class="form-block">
+                          <section class="form-block"> 
                               <div class="form-group">
                                   <div class="select">
                                       <select [(ngModel)]="struct" (change)="structureChanged(key3.value, 0, struct)" name="selectItem">

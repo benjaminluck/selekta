@@ -75,7 +75,7 @@ var ApiService = (function () {
         console.log("getVault");
         console.log("listShape");
         var endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/vault/';
-        return this.http.get(endpoint + listShape)
+        return this.http.get(endpoint)
             .map(function (response) { return response.json(); });
     };
     ApiService.prototype.getListSelection = function (selection, listShape) {

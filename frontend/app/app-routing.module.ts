@@ -2,14 +2,15 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ViewSelectionComponent }   from './view-selection.component';
+import { ViewVaultComponent }   from './view-vault.component';
 import { DashboardComponent }   from './dashboard.component';
 import { ConfigurationsComponent }   from './configurations.component';
 
 const routes: Routes = [
-  { path: 'view-vault',  component: ViewSelectionComponent, data: [{ "shapeData" : "unstructured"}] },
+  { path: 'view-vault',  component: ViewVaultComponent },  
   { path: 'view-selection/:selection/:structure',  component: ViewSelectionComponent},
   { path: 'dashboard',  component: DashboardComponent },
-  { path: 'configurations',  component: ConfigurationsComponent },
+  { path: 'configurations',  component: ConfigurationsComponent }, 
   { path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'

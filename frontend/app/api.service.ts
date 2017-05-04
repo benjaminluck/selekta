@@ -76,7 +76,7 @@ export class ApiService{
     console.log("getVault");
     console.log("listShape");
     let endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/vault/'
-    return this.http.get(endpoint + listShape)
+    return this.http.get(endpoint) 
       .map(response => response.json());
   }
 
