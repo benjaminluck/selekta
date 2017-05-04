@@ -64,14 +64,22 @@ switch($request){
       $result = $apiInstance->updateDoc($params, $data);
       print_r($result);
       break;
-    case ($request[0] == 'vault') :
-          $request_body = file_get_contents('php://input');
-          $data = json_decode($request_body, true);
+  case ($request[0] == 'vault') :
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
 
-          $list = $apiInstance->getVaultFromIndex();  
+        $list = $apiInstance->getVaultFromIndex();
 
-          print_r($list);
-          break;
+        print_r($list);
+        break;
+  case ($request[0] == 'list-selections') :
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true);
+
+        $selections = $apiInstance->getSelections();
+        $selections = json_encode($selections);
+        print_r($selections);
+        break;
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);

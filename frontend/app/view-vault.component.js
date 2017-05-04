@@ -8,10 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var api_service_1 = require("./api.service");
-var core_2 = require("@angular/core");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var api_service_1 = require('./api.service');
+var core_2 = require('@angular/core');
 var ViewVaultComponent = (function () {
     function ViewVaultComponent(API, zone, route) {
         var _this = this;
@@ -134,6 +134,7 @@ var ViewVaultComponent = (function () {
             }
         });
         console.log(this.list);
+        //
     };
     ViewVaultComponent.prototype.selectDocument = function (doc) {
         console.log(this.selectedDocs);
@@ -162,17 +163,21 @@ var ViewVaultComponent = (function () {
             console.log(res);
             _this.list = [];
             _this.list = res;
+            // for(let key in res){
+            //   let obj = {};
+            //   this.list.push(res[key]);
+            // }
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
+    ViewVaultComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            providers: [api_service_1.ApiService],
+            templateUrl: 'app/view/ViewVaultTpl.html'
+        }), 
+        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
+    ], ViewVaultComponent);
     return ViewVaultComponent;
 }());
-ViewVaultComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        providers: [api_service_1.ApiService],
-        templateUrl: 'app/view/ViewVaultTpl.html'
-    }),
-    __metadata("design:paramtypes", [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
-], ViewVaultComponent);
 exports.ViewVaultComponent = ViewVaultComponent;
 //# sourceMappingURL=view-vault.component.js.map

@@ -78,6 +78,12 @@ var ApiService = (function () {
         return this.http.get(endpoint)
             .map(function (response) { return response.json(); });
     };
+    ApiService.prototype.getSelections = function () {
+        console.log("getSelections");
+        var endpoint = 'http://localhost:8888/selekta/api/RunAPI.php/list-selections/';
+        return this.http.get(endpoint)
+            .map(function (response) { return response.json(); });
+    };
     ApiService.prototype.getListSelection = function (selection, listShape) {
         console.log("getList");
         console.log("listShape");

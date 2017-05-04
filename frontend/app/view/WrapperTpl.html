@@ -21,8 +21,10 @@
               </ul>
               <label for="tabexample2">Selections</label>
               <ul class="nav-list">
-                  <li><a class="nav-link" routerLink="/view-selection/selection-v10/unstructured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> selection v10 (unstructured)</a></li>
-                  <li><a class="nav-link" routerLink="/view-selection/selection-v10/structured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> selection v10 (structured)</a></li>
+                  <li *ngFor='let selectionName of selections'>
+                    <a class="nav-link" routerLink="/view-selection/{{selectionName}}/structured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> {{ selectionName }} (structured)</a>
+                    <a class="nav-link" routerLink="/view-selection/{{selectionName}}/unstructured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> {{ selectionName }} (unstructured)</a>
+                  </li>
               </ul>
             </section>
             <section class="nav-group">

@@ -20,7 +20,7 @@ class API {
     $this->dbClient = new ElasticHandler();
   }
 
-  public function getSelectedIndex(){ 
+  public function getSelectedIndex(){
     return $this->dbClient->selectedIndex;
   }
 
@@ -69,7 +69,7 @@ class API {
       case 'unstructured':
       foreach($array as $item){
         $data = $item['_source'];
-        $data['id'] = $item['_id']; 
+        $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
         $newArray[] = $data;
       }
@@ -138,7 +138,7 @@ class API {
 
     $list = $this->dbClient->searchIndex($this->getSelectedIndex(), $selectedType);
     $list = $this->shapeData($list, 'unstructured');
- 
+
 
     return $list;
   }
@@ -156,6 +156,21 @@ class API {
 
 
     return $list;
+  }
+
+  public function getSelections(){
+    $indices = $this->dbClient->listIndices();
+    $selectedIndex = $this->getSelectedIndex();
+    $selectedType = 'mp3';
+    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+    $list = $this->shapeData($list, 'structured');
+    $list = json_decode($list);
+    $selections = [];
+    foreach($list as $selectionName => $selectionValues){
+      $selections[] = $selectionName;
+    }
+
+    return $selections;
   }
 
   public function duplicateSelection($targetIndex, $targetType, $sourceIndex = ''){
