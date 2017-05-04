@@ -41,7 +41,7 @@ class FlatList extends FileList
         if (is_null($dir2)) {
             $dir2 = $this->startDir;
         }
-        echo $dir1;
+
         chdir($dir1);
         $tree = [];
         $list = [];

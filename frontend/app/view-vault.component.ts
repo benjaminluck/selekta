@@ -8,9 +8,9 @@ import { KeysPipe } from './keys.pipe';
 @Component({
   selector: 'my-app',
   providers: [ApiService],
-  templateUrl: 'app/view/ViewSelectionTpl.html'
+  templateUrl: 'app/view/ViewVaultTpl.html' 
 })
-export class ViewSelectionComponent  {
+export class ViewVaultComponent {
   list : any[];
   listShape : string;
   selectedTags : any[];
@@ -21,92 +21,26 @@ export class ViewSelectionComponent  {
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
-      this.listShape = "structured";
+
       this.selectedTags = [];
       this.selectedDocs = [];
-      if(route.snapshot.data[0]){
-        this.listShape = route.snapshot.data[0].shapeData;
-        console.log(this.listShape);
-      }
+
       this.zone = zone;
 
-      route.params.subscribe(params => {
-        this.currentSelection = params['selection'];
-        if(params['structure']){
-          this.listShape = params['structure'];
-        }
-        if(params['selection']){
-          this.API.getListSelection(this.currentSelection, this.listShape).subscribe(
+      this.API.getVault().subscribe(
             res => {
               console.log(res);
               this.list = [];
-              if(this.listShape == 'structured'){
-                for(let key in res){
-                    this.list = res[key];
-                }
-
-              }else{
-                this.list = res;
-              }
-              console.log(this.currentSelection);
-            },
-            err => console.error(err),
-            () => console.log('Completed!')
-          );
-        }else{
-          this.API.getVault().subscribe(
-            res => {
-              console.log(res);
-              this.list = [];
-              this.listShape = 'unstructured'
-
               this.list = res;
-              console.log(this.currentSelection);
-              // for(let key in res){
-              //   let obj = {};
-              //   this.list.push(res[key]);
-              // }
             },
             err => console.error(err),
             () => console.log('Completed!')
           );
-        }
-      });
 
       console.log(response);
       let data = [2,3];
 
       console.log(this);
-
-  }
-
-  buildStructuredList(listUnstructed: any[]){
-    let structured = {};
-    for (let item of listUnstructed) {
-      if(item.hasOwnProperty('structure')){
-        for(let i = 0; i < item['structure'].length; i++){
-          let structString = 'structured';
-            for(let a = 0; a < item['structure'].length; a++){
-              let newString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
-              let evalString = 'if(' + structString + '.hasOwnProperty("' + item['structure'][a]  + '")){ } else { ' + newString + ' = {} }';
-              eval(evalString);
-              structString = structString + '[' + '"' + item['structure'][a] + '"' + ']';
-              // check if structString exists, if true do nothing, if false create object
-              console.log(structString);
-              //eval(structString + 'hasOwnProperty(' + a + ')');
-            }
-
-            let fileBuildString = structString + '[' + '"' + item.fileName + '"' + ']' + ' = ' + 'item' + ';';
-            eval(fileBuildString);
-
-        //    if(structured[a][1]);
-        }
-      }
-
-      console.log(item); // 1, "string", false
-    }
-
-    return structured;
   }
 
   structureChanged(){

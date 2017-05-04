@@ -15,10 +15,16 @@
         <nav class="sidenav">
           <section class="sidenav-content">
             <section class="nav-group">
+              <label for="tabexample2">Vault</label>
+              <ul class="nav-list">
+                  <li><a class="nav-link" routerLink="/view-vault" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> View Vault</a></li>
+              </ul>
               <label for="tabexample2">Selections</label>
               <ul class="nav-list">
-                  <li><a class="nav-link" routerLink="/view-selection" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> View Selection</a></li>
-                  <li><a class="nav-link" routerLink="/view-vault" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> View Vault</a></li>
+                  <li *ngFor='let selectionName of selections'>
+                    <a class="nav-link" routerLink="/view-selection/{{selectionName}}/structured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> {{ selectionName }} (structured)</a>
+                    <a class="nav-link" routerLink="/view-selection/{{selectionName}}/unstructured" routerLinkActive="active"><clr-icon shape="list" size="15"></clr-icon> {{ selectionName }} (unstructured)</a>
+                  </li>
               </ul>
             </section>
             <section class="nav-group">
@@ -32,4 +38,3 @@
         </nav>
     </div>
 </div>
- 

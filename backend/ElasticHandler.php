@@ -33,11 +33,11 @@ class ElasticHandler
     return $resp;
   }
 
-  private function elasticPOST($endpoint, $requestData = []){
+  private function elasticPOSTold($endpoint, $requestData = []){
     $base = $this->es_host;
     $data_string = json_encode($requestData);
 
-    $curl = curl_init();
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -48,6 +48,26 @@ class ElasticHandler
 
     $resp = curl_exec($curl);
     curl_close($curl);
+
+    return $resp;
+  }
+
+  private function elasticPOST($endpoint, $jsonData = []){
+    $base = $this->es_host;
+    $data_string = $jsonData;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json',
+      'Content-Length: ' . strlen($data_string))
+    );
+
+    $resp = curl_exec($ch);
+    curl_close($ch);
 
     return $resp;
   }
@@ -99,8 +119,7 @@ class ElasticHandler
     ];
 
     $response = $this->connection->index($params);
-    $json = json_encode($response);
-    return $json;
+    return $response;
   }
 
   public function updateTags($index, $type, $doc_id, $data = ''){
@@ -183,8 +202,6 @@ class ElasticHandler
         'body' => $query
     ];
 
-    //$params['body'] = [];
-
 
     $results = $this->connection->search($params);
     $results = $this->formatResult($results);
@@ -194,6 +211,38 @@ class ElasticHandler
 
   public function bulk($params){
     $results = $this->connection->bulk($params);
+
+    return $results;
+  }
+
+  public function updateSingleDoc($doc, $doc_type, $selectionName, $structure){
+    $doc_id = $doc['hash'];
+    $doc_json = json_encode($doc);
+    $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
+    $end = $this->selectedIndex. '/' . $doc_type . '/' . $doc_id . '/_update';
+
+    $payload = '{
+        "script" : {
+            "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure}",
+            "lang": "painless",
+            "params" : {
+                "selectionName" : "'.$selectionName .'",
+                "structure" : '.json_encode($structure).'
+            }
+        },
+        "upsert" : {'
+          . $doc_json .
+        '}
+    }';
+
+
+    $result = $this->elasticPOST($end, $payload);
+
+    return $result;
+  }
+
+  public function update($params){
+    $results = $this->connection->update($params);
 
     return $results;
   }
