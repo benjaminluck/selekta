@@ -4,8 +4,8 @@ A set of tools to keep you sane when organising your music selection
 # mvp
 - [x] Fluently get data in selekta vault from folder
 - [x] Export rsync execs as bash script
-- [ ] Bulk actions: move selected items to other path,
-- [ ] Update existing vaults with new items
+- [x] Bulk actions: move selected items to other path,
+- [x] Update existing vaults with new items 
 - [ ] Easily create, duplicate and delete selections
 - [ ] Update tags in vault, delete tags, search by tags.
 - [ ] Simple smart structure: items will be forced in bpm structure (0,1,2 etc) if true
