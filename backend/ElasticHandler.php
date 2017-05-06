@@ -6,7 +6,7 @@ class ElasticHandler
 {
   public $connection;
 
-  public $selectedIndex = "selection-v10";
+  public $selectedIndex = "selekta_db";
 
   public function __construct(){
     $this->connection = ClientBuilder::create()->build();
@@ -74,6 +74,7 @@ class ElasticHandler
 
   public function scrollThroughIndex($indexName, $typeName = ""){
     // read all items from an index with given 'type'
+    $indexName = $this->selectedIndex;
     $params = [
         "scroll" => "3s",          // how long between scroll requests. should be small!
         "size" => 500,               // how many results *per shard* you want back
@@ -111,6 +112,7 @@ class ElasticHandler
   }
 
   public function updateSingleDocument($index, $type, $doc_id, $data = ''){
+    $index = $this->selectedIndex;
     $params = [
       'index' => $index,
       'type' => $type,
@@ -123,6 +125,8 @@ class ElasticHandler
   }
 
   public function updateTags($index, $type, $doc_id, $data = ''){
+    $index = $this->selectedIndex;
+
         $params = [
         'index' => $index,
         'type' => $type,
@@ -164,6 +168,7 @@ class ElasticHandler
   }
 
   public function searchIndexByBPMGroup($index, $type, $bpmGroup){
+    $index = $this->selectedIndex;
     $q = [
           'query' => [
               'match' => [
@@ -179,6 +184,7 @@ class ElasticHandler
   }
 
   public function searchIndexByTags($index, $type, $tags){
+    $index = $this->selectedIndex;
     $q = [
           'query' => [
               'match' => [
@@ -194,6 +200,7 @@ class ElasticHandler
   }
 
   public function searchIndex($index, $type, $query = []){
+    $index = $this->selectedIndex;
     $size = 5000;
     $params = [
         'index' => $index,
@@ -242,7 +249,7 @@ class ElasticHandler
   }
 
   public function update($params){
-    $results = $this->connection->update($params);
+    $results = $this->connection->update($params); 
 
     return $results;
   }
