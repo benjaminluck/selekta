@@ -25,6 +25,7 @@
       //addtional bundles
       '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
       'clarity-angular': 'node_modules/clarity-angular/clarity-angular.umd.js',
+      'howler': 'node_modules/howler/dist/howler.core.min.js', 
 
       // other libraries
       'rxjs':                      'npm:rxjs',

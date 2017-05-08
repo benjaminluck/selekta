@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
-var api_service_1 = require('./api.service');
-var core_2 = require('@angular/core');
+var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var api_service_1 = require("./api.service");
+var core_2 = require("@angular/core");
+var howler_1 = require("howler");
 var ViewVaultComponent = (function () {
     function ViewVaultComponent(API, zone, route) {
         var _this = this;
@@ -21,6 +22,14 @@ var ViewVaultComponent = (function () {
         this.selectedTags = [];
         this.selectedDocs = [];
         this.zone = zone;
+        var trackOptions = {
+            autoplay: false,
+            loop: true,
+            html5: true,
+            volume: 1,
+            src: '../music-vault/10A 134 Ian Pooley - Chord Memory.mp3'
+        };
+        this.soundPlayer = new howler_1.Howl(trackOptions);
         this.API.getVault().subscribe(function (res) {
             console.log(res);
             _this.list = [];
@@ -30,6 +39,21 @@ var ViewVaultComponent = (function () {
         var data = [2, 3];
         console.log(this);
     }
+    ViewVaultComponent.prototype.updateSongSrc = function (src) {
+        console.log(src);
+        console.log(this.soundPlayer);
+        var root = '../music-vault/';
+        this.soundPlayer.pause();
+        var howlerSettings = {
+            autoplay: false,
+            loop: true,
+            html5: true,
+            volume: 1,
+            src: root + src
+        };
+        this.soundPlayer = new howler_1.Howl(howlerSettings);
+        this.soundPlayer.play();
+    };
     ViewVaultComponent.prototype.structureChanged = function () {
         var file = arguments[0];
         var structIndex = arguments[1];
@@ -134,7 +158,6 @@ var ViewVaultComponent = (function () {
             }
         });
         console.log(this.list);
-        //
     };
     ViewVaultComponent.prototype.selectDocument = function (doc) {
         console.log(this.selectedDocs);
@@ -163,21 +186,17 @@ var ViewVaultComponent = (function () {
             console.log(res);
             _this.list = [];
             _this.list = res;
-            // for(let key in res){
-            //   let obj = {};
-            //   this.list.push(res[key]);
-            // }
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     };
-    ViewVaultComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            providers: [api_service_1.ApiService],
-            templateUrl: 'app/view/ViewVaultTpl.html'
-        }), 
-        __metadata('design:paramtypes', [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
-    ], ViewVaultComponent);
     return ViewVaultComponent;
 }());
+ViewVaultComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        providers: [api_service_1.ApiService],
+        templateUrl: 'app/view/ViewVaultTpl.html'
+    }),
+    __metadata("design:paramtypes", [api_service_1.ApiService, core_2.NgZone, router_1.ActivatedRoute])
+], ViewVaultComponent);
 exports.ViewVaultComponent = ViewVaultComponent;
 //# sourceMappingURL=view-vault.component.js.map

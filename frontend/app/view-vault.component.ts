@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { ApiService } from './api.service';
 import { NgZone } from '@angular/core';
+import { Howl } from 'howler';
+
 
 import { KeysPipe } from './keys.pipe';
 
 @Component({
   selector: 'my-app',
   providers: [ApiService],
-  templateUrl: 'app/view/ViewVaultTpl.html' 
+  templateUrl: 'app/view/ViewVaultTpl.html'
 })
 export class ViewVaultComponent {
   list : any[];
@@ -18,6 +20,7 @@ export class ViewVaultComponent {
   selectedDocs : any[];
   newBulkTag: string;
   newBulkStruct: string;
+  soundPlayer: any;
 
   constructor (public API : ApiService, public zone: NgZone, route: ActivatedRoute){
       let response : any[];
@@ -26,6 +29,17 @@ export class ViewVaultComponent {
       this.selectedDocs = [];
 
       this.zone = zone;
+
+
+      let trackOptions = {
+        autoplay: false,
+        loop: true,
+        html5: true,
+        volume: 1,
+        src: '../music-vault/10A 134 Ian Pooley - Chord Memory.mp3'
+      };
+
+      this.soundPlayer = new Howl(trackOptions);
 
       this.API.getVault().subscribe(
             res => {
@@ -41,6 +55,22 @@ export class ViewVaultComponent {
       let data = [2,3];
 
       console.log(this);
+  }
+
+  updateSongSrc(src: string){
+    console.log(src);
+    console.log(this.soundPlayer);
+    let root = '../music-vault/';
+    this.soundPlayer.pause();
+    let howlerSettings = {
+      autoplay: false,
+      loop: true,
+      html5: true,
+      volume: 1,
+      src: root + src 
+    };
+    this.soundPlayer = new Howl(howlerSettings);
+    this.soundPlayer.play();
   }
 
   structureChanged(){

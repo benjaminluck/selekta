@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var api_service_1 = require("./api.service");
+var core_1 = require('@angular/core');
+var api_service_1 = require('./api.service');
 var AppComponent = (function () {
     function AppComponent(API) {
         var _this = this;
@@ -21,15 +21,15 @@ var AppComponent = (function () {
             _this.selections = res;
         }, function (err) { return console.error(err); }, function () { return console.log('Completed!'); });
     }
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: 'my-app',
+            providers: [api_service_1.ApiService],
+            templateUrl: 'app/view/WrapperTpl.html'
+        }), 
+        __metadata('design:paramtypes', [api_service_1.ApiService])
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'my-app',
-        providers: [api_service_1.ApiService],
-        templateUrl: 'app/view/WrapperTpl.html'
-    }),
-    __metadata("design:paramtypes", [api_service_1.ApiService])
-], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map
