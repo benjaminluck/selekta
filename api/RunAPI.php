@@ -88,7 +88,7 @@ switch($request){
         echo 'Please define a selection';
         return false;
       }
-      $selectedIndex = $request[1];
+      $selectionName = $request[1];
 
       if(empty($request[2])){
         echo 'Please define a list shape';
@@ -98,9 +98,9 @@ switch($request){
 
       if(!empty($request[3])){
         $tags[] = $request[3];
-        $list = $apiInstance->getListFromIndex($apiInstance->getSelectedIndex(), $shape, $tags);
+        $list = $apiInstance->getListFromIndex($selectionName, $shape, $tags);
       }else{
-        $list = $apiInstance->getListFromIndex($apiInstance->getSelectedIndex(), $shape);
+        $list = $apiInstance->getListFromIndex($selectionName, $shape);
       }
       // if($request[1] == 'unstructured'){
       //   $list = $apiInstance->getListFromIndex();

@@ -136,20 +136,20 @@ class API {
     $indices = $this->dbClient->listIndices();
     $selectedType = 'mp3';
 
-    $list = $this->dbClient->searchIndex($this->getSelectedIndex(), $selectedType);
+    $list = $this->dbClient->searchVault($selectedType);
     $list = $this->shapeData($list, 'unstructured');
 
 
     return $list;
   }
 
-  public function getListFromIndex($selectedIndex, $listShape, $tags = []){
+  public function getListFromIndex($selectionName, $listShape, $tags = []){
     $indices = $this->dbClient->listIndices();
     $selectedType = 'mp3';
     if(!empty($tags)){
-      $list = $this->dbClient->searchIndexByTags($selectedIndex, $selectedType, $tags[0]);
+      $list = $this->dbClient->searchIndexByTags($selectionName, $selectedType, $tags[0]);
     }else{
-      $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+      $list = $this->dbClient->searchIndex($selectionName, $selectedType);
     }
 
     $list = $this->shapeData($list, $listShape);
@@ -162,7 +162,7 @@ class API {
     $indices = $this->dbClient->listIndices();
     $selectedIndex = $this->getSelectedIndex();
     $selectedType = 'mp3';
-    $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
+    $list = $this->dbClient->searchVault($selectedIndex, $selectedType);
     $list = $this->shapeData($list, 'structured');
     $list = json_decode($list);
     $selections = [];
