@@ -54,6 +54,7 @@ class ElasticHandler
 
   private function elasticPOST($endpoint, $jsonData = []){
     $base = $this->es_host;
+    $base = $base . $this->selectedIndex . '/';
     $data_string = $jsonData;
 
     $ch = curl_init();
@@ -183,7 +184,7 @@ class ElasticHandler
     return $res;
   }
 
-  public function searchIndexByTags($index, $type, $tags){
+  public function searchIndexByTags($selectionName, $type, $tags){
     $index = $this->selectedIndex;
     $q = [
           'query' => [
@@ -199,18 +200,45 @@ class ElasticHandler
     return $res;
   }
 
-  public function searchIndex($index, $type, $query = []){
+  public function searchVault($type){
     $index = $this->selectedIndex;
     $size = 5000;
-    $params = [
-        'index' => $index,
-        'type' => $type,
-        'size' => $size,
-        'body' => $query
-    ];
+
+    $query = '{
+        "size": ' . $size . '
+    }';
 
 
-    $results = $this->connection->search($params);
+    $results = $this->elasticPOST('_search', $query);
+    $results = json_decode($results, true);
+    $results = $this->formatResult($results);
+
+    return $results;
+  }
+
+  public function searchIndex($selectionName, $type){
+    $index = $this->selectedIndex;
+    $size = 5000;
+
+    $selectionNm = 'selection-v10';
+    $fieldVar = 'structure' . '.' . $selectionName;
+
+    $query = '{
+        "size": ' . $size . ',
+        "query": {
+            "bool" : {
+                "must" : {
+                    "exists" : {
+                        "field" : "' .$fieldVar. '"
+                    }
+                }
+            }
+        }
+    }';
+
+
+    $results = $this->elasticPOST('_search', $query);
+    $results = json_decode($results, true);
     $results = $this->formatResult($results);
 
     return $results;
@@ -226,7 +254,7 @@ class ElasticHandler
     $doc_id = $doc['hash'];
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
-    $end = $this->selectedIndex. '/' . $doc_type . '/' . $doc_id . '/_update';
+    $end = $doc_type . '/' . $doc_id . '/_update';
 
     $payload = '{
         "script" : {
@@ -249,7 +277,7 @@ class ElasticHandler
   }
 
   public function update($params){
-    $results = $this->connection->update($params); 
+    $results = $this->connection->update($params);
 
     return $results;
   }
