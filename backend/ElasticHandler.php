@@ -254,7 +254,7 @@ class ElasticHandler
     $doc_id = $doc['hash'];
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
-    $end = $this->selectedIndex. '/' . $doc_type . '/' . $doc_id . '/_update';
+    $end = $doc_type . '/' . $doc_id . '/_update';
 
     $payload = '{
         "script" : {
