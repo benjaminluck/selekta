@@ -10,6 +10,10 @@ class API {
   public $writeDir = '';
   public $destination = '';
 
+  private $currentStructureDepth = 0;
+  private $structureDepth = 0;
+  private $structure = [];
+
   private $dbClient;
 
   public function __construct($constructParams){
@@ -49,6 +53,28 @@ class API {
     return $resp;
   }
 
+  public function shapeDataAsNumeric($array){
+  //  echo 'ts : ' . date('NOW()');
+    $numericArr = [];
+    $levelDepth = $this->structureDepth;
+    foreach($array as $firstKeys => $firstValues){
+            //$folder = ["folder_name" => $firstKeys, "folder_contents" => is_array($firstValues) ? $this->shapeDataAsNumeric($firstValues) : $firstValues];
+            if(is_array($firstValues)){
+                if(isset($firstValues['hash'])){
+                    $node = ["node_type" => 'file', "node_name" => $firstKeys, "node_contents" => $firstValues];
+                }else{
+                    $node = ["node_type" => 'folder', "node_name" => $firstKeys, "node_contents" => $this->shapeDataAsNumeric($firstValues)];
+                }
+            };
+          //  $node = ["node_type" => 'folder', "node_name" => $firstKeys, "node_contents" => $firstValues];
+            array_push($numericArr, $node);
+          }
+//    $this->currentStructureDepth++;
+//    print_r($numericArr);
+
+    return $numericArr;
+  }
+
   public function shapeData($array, $type){
     switch($type){
       case 'structured':
@@ -60,6 +86,7 @@ class API {
 
         if(isset($data['structure'])){
           foreach($data['structure'] as $selectionName => $selectionVal){
+            $this->structureDepth = sizeof($data['structure'][$selectionName]);
             $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
             eval($execstring);
           }
@@ -108,6 +135,13 @@ class API {
       $msg = 'No data found for selected parameters.';
   //    echo $msg . PHP_EOL;
       return $msg;
+    }
+
+    // make numeric Array
+    foreach($newArray as $selectionName => $selectionValues){
+        $numericArray = $this->shapeDataAsNumeric($selectionValues);
+        $newArray[$selectionName] = $numericArray;
+        break;
     }
 
     $json = json_encode($newArray);
