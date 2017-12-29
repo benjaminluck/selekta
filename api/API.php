@@ -76,6 +76,7 @@ class API {
   }
 
   public function shapeData($array, $type){
+    
     switch($type){
       case 'structured':
       foreach($array as $item){
@@ -100,6 +101,7 @@ class API {
         $fileName = $data['fileName'];
         $newArray[] = $data;
       }
+
       break;
       case 'song-bpm':
       foreach($array as $item){
@@ -136,13 +138,13 @@ class API {
   //    echo $msg . PHP_EOL;
       return $msg;
     }
-
+ 
     // make numeric Array
-    foreach($newArray as $selectionName => $selectionValues){
-        $numericArray = $this->shapeDataAsNumeric($selectionValues);
-        $newArray[$selectionName] = $numericArray;
-        break;
-    }
+    //foreach($newArray as $selectionName => $selectionValues){
+    //    $numericArray = $this->shapeDataAsNumeric($selectionValues);
+    //    $newArray[$selectionName] = $numericArray;
+    //    break;
+    //}
 
     $json = json_encode($newArray);
 

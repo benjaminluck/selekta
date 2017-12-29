@@ -22,8 +22,7 @@ $params = [
 ];
 
 $apiInstance = new API($params);
-$tlList = $apiInstance->createList();
-
+$tlList = $apiInstance->createList(); 
 // set content type
 header('Content-type: application/json');
 
@@ -65,9 +64,10 @@ switch($request){
       print_r($result);
       break;
   case ($request[0] == 'vault') :
+       
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
-
+      
         $list = $apiInstance->getVaultFromIndex();
 
         print_r($list);
@@ -102,13 +102,13 @@ switch($request){
       }else{
         $list = $apiInstance->getListFromIndex($selectionName, $shape);
       }
-      // if($request[1] == 'unstructured'){
-      //   $list = $apiInstance->getListFromIndex();
-      //   print_r($list);
-      //   break;
-      // }
+      if($request[1] == 'unstructured'){
+        $list = $apiInstance->getListFromIndex();
+        print_r($list);
+        break;
+      }
 
-      print_r($list);
+     // print_r($list);
       break;
   case ($request[0] == 'write-todo') :
       $request_body = file_get_contents('php://input');
