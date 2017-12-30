@@ -3,8 +3,14 @@
 
 */
 import React from 'react'; 
+import ReactHowler from 'react-howler';
 
 var Vault = React.createClass({
+  componentWillMount(){
+    this.setState({
+      playerSrc: 'http://localhost:8888/selekta/music-vault/108%20The%20Orb%20(ft.%20Lee%20Scratch%20Perry)%20-%20Hold%20Me%20Upsetter.mp3'
+    })
+  },
   componentDidMount(){
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/vault';
@@ -38,19 +44,27 @@ var Vault = React.createClass({
       console.log(event.target.props);
       console.log(arguments);
       console.log(self.state.list);
+      console.log(self);
       console.log('The link was clicked.');
     }; 
+
+    function handleClickDetails(item){
+      console.log(item);
+      self.setState({
+        playerSrc: 'http://localhost:8888/selekta/music-vault/' + item.fileName
+      });
+    }
 
     var template = '';
     if(this.state){
       if(this.state.list){
         return this.state.list.map(item => {
           return (
-            <div className="track-block -collapsed" key={item.hash} onClick={handleClick}>
-              <div className="title">
+            <div className="track-block -collapsed" key={item.hash}>
+              <div className="title" onClick={handleClick}>
                 { item.title }
               </div>
-              <div className="details"> 
+              <div className="details" onClick={() => handleClickDetails(item)}> 
                 <ul> 
                   <li>{ item.artist }</li>
                   <li>BPM: { item.bpm }</li>
@@ -73,9 +87,27 @@ var Vault = React.createClass({
     } 
   },
   render : function(){
+    var self = this;
+    console.log(self);
+
+    function handlePlay(){
+      console.log(arguments);
+      console.log(self);
+      self.player.play();
+      
+    }
     return (
       <header>  
         <h1>Vault</h1>
+        <div className="howl" onClick={handlePlay}>
+          <ReactHowler
+            src={this.state.playerSrc}
+            format={['mp3','aiff']}
+            playing={true}
+            html5={true}
+            ref={(ref) => (this.player = ref)}
+          />
+        </div>
         { this.renderList() }
       </header>
     )
