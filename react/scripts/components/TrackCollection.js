@@ -7,11 +7,11 @@ import Track from './Track';
 
 var TrackCollection = React.createClass({
   componentWillMount(){
-    this.props.updateAudioPlayerSrc('test.mp3');
+    //
   }, 
   renderTrack : function(val, key){
     var list = this.props.list;  
-    return <Track updateAudioPlayerSrc={this.props.updateAudioPlayerSrc} item={list[key]}/>
+    return <Track audioservice={this.props.audioservice} item={list[key]}/>
   },
   render : function(){
     var list = this.props.list;

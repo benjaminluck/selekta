@@ -6,11 +6,13 @@ import React from 'react';
 import ReactHowler from 'react-howler'; 
 import TrackCollection from './TrackCollection'; 
 import AudioPlayer from './AudioPlayer'; 
+import AudioService from './AudioService';
 
 var Vault = React.createClass({
   componentWillMount(){
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/vault';
+    this.audioservice = new AudioService(this);
 
     this.setState({ 
       list: {},
@@ -42,20 +44,13 @@ var Vault = React.createClass({
   componentDidMount(){
   //
   },
-  updateAudioPlayerSrc(filePath){
-    this.setState({
-      audioPlayer:{
-        src: filePath
-      }
-    });
-  },
   render : function(){
-    //
+    console.log(this.testSv);
     return (
-      <header>  
+      <header>   
         <h1>Vault</h1>
-          <AudioPlayer audioPlayer={this.state.audioPlayer}/> 
-          <TrackCollection updateAudioPlayerSrc={this.updateAudioPlayerSrc} list={this.state.list}/>
+          <AudioPlayer audioservice={this.audioservice}/> 
+          <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
       </header>
     )
   } 

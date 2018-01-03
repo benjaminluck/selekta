@@ -16,8 +16,9 @@ var Track = React.createClass({
     event.target.parentNode.classList.toggle("-collapsed"); 
   },
   handleClickDetails(item){
-    var src = 'http://localhost:8888/selekta/music-vault/' + item.fileName;
-    this.props.updateAudioPlayerSrc(src);
+    var filepath = 'http://localhost:8888/selekta/music-vault/' + item.fileName;
+    this.props.audioservice.setSrc(filepath); 
+    console.log(this.props.audioservice.getState());
   },
   render : function(){ 
     return (

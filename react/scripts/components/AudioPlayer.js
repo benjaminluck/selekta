@@ -7,7 +7,6 @@ import ReactHowler from 'react-howler';
 
 var AudioPlayer = React.createClass({
   componentWillMount(){
-    
   }, 
   componentDidMount(){
   //
@@ -18,7 +17,7 @@ var AudioPlayer = React.createClass({
      <div> 
       <div className="audioplayer-block"></div> 
       <ReactHowler
-        src={this.props.audioPlayer.src}
+        src={this.props.audioservice.getState().AudioService_Src}
         format={['mp3','aiff']}
         playing={true}
         html5={true}
