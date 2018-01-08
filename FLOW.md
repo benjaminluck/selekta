@@ -12,7 +12,7 @@ A set of tools to keep you sane when organising your music selection. The core i
   - Folder crawler (which crawls through a given folder and indexed audio tracks and their organization)
   - Backend logic to shape the Track Organization Database
 - React app
-- Rsync
+- Rsync 
 
 # flow
 1. Tracks are named in a certain fashion, so the crawler in the API can understands the properties of a track.

@@ -102,14 +102,16 @@ switch($request){
         $list = $apiInstance->getListFromIndex($selectionName, $shape, $tags);
       }else{
         $list = $apiInstance->getListFromIndex($selectionName, $shape);
-      }
-      if($request[1] == 'unstructured'){
-        $list = $apiInstance->getListFromIndex();
-        print_r($list);
-        break;
+        echo $list; 
       }
 
-     // print_r($list);
+      // OBSOLETE? -> DELETE
+      if($request[1] == 'unstructured'){
+        $list = $apiInstance->getListFromIndex();
+        break;
+      }
+      // 
+
       break;
   case ($request[0] == 'write-todo') :
       $request_body = file_get_contents('php://input');

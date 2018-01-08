@@ -14,17 +14,19 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 */
 
 import Vault from './components/Vault';
+import Selection from './components/Selection';
 import App from './components/App';
 
 /*
   Routes
 */
-
+ 
 var routes = (
   <Router history={createHistory()}>
     <Route path="/" component={App} />
     <Route path="/vault" component={Vault} />
+    <Route path="/selection/:selection/:structure/" component={Selection} />
   </Router>
-)
+) 
 
 ReactDOM.render(routes, document.querySelector('#main'));

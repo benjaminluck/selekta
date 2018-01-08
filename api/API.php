@@ -76,7 +76,6 @@ class API {
   }
 
   public function shapeData($array, $type){
-    
     switch($type){
       case 'structured':
       foreach($array as $item){
@@ -95,13 +94,14 @@ class API {
       }
       break;
       case 'unstructured':
+      
       foreach($array as $item){
         $data = $item['_source'];
         $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
         $newArray[] = $data;
       }
-
+  
       break;
       case 'song-bpm':
       foreach($array as $item){
@@ -147,7 +147,6 @@ class API {
     //}
 
     $json = json_encode($newArray);
-
     return $json;
   }
 
@@ -187,9 +186,9 @@ class API {
     }else{
       $list = $this->dbClient->searchIndex($selectionName, $selectedType);
     }
-
+    
     $list = $this->shapeData($list, $listShape);
-
+//    echo $list;exit();
 
     return $list;
   }

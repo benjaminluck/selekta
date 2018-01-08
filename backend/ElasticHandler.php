@@ -147,6 +147,10 @@ class ElasticHandler
 
   public function formatResult($es_response){
     // takes a regular search response and only extracts the hits
+    if (!isset($es_response['hits']['hits'])){
+      return [];
+    }
+
     return $es_response['hits']['hits'];
   }
 
@@ -239,8 +243,12 @@ class ElasticHandler
 
     $results = $this->elasticPOST('_search', $query);
     $results = json_decode($results, true);
-    $results = $this->formatResult($results);
 
+    if(!empty($results)){
+      $results = $this->formatResult($results);
+    }else{
+      echo $json_encode($results);
+    }
     return $results;
   }
 
