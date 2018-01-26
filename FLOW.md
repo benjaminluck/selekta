@@ -7,16 +7,17 @@ A set of tools to keep you sane when organising your music selection. The core i
 # components
 - Track Organization Database : Elasticsearch node
 - Webserver to serve the API and React app (Apache)
+- A vault: an unstructured folder holding all the source audio files of your collection
 - Symlink to vault folder (to expose the audio files to the app)
 - API (PHP) that provides a connection with:
-  - Folder crawler (which crawls through a given folder and indexed audio tracks and their organization)
+  - Folder crawler (which crawls through a given folder and indexes audio tracks and their organization)
   - Backend logic to shape the Track Organization Database
 - React app
 - Rsync 
 
 # flow
 1. Tracks are named in a certain fashion, so the crawler in the API can understands the properties of a track.
-2. A master copy of each track should be stored inthea VAULT, an unstructed folder with all tracks in the root
+2. A master copy of each track should be stored in the VAULT, an unstructed folder with all tracks in the root
 3. Whenever a structured selection of tracks (nested in any number of levels) is analyzed, it is stored as a DOCUMENT. A DOCUMENT contain the nested folder structure (saved under the name of the analyzed folder) and information about the track such as (artist, bpm, key etc.) is saved along with it.
 4. This DOCUMENT is send as XHR POST request to the API
 5. The API communicates with the Elasticsearch node and inserts the document(s) in an index named 'vault'. 
