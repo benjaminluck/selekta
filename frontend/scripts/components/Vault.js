@@ -42,16 +42,20 @@ var Vault = React.createClass({
     xhr.send(null);
   }, 
   componentDidMount(){
-  //
+  // 
   },
   render : function(){
     console.log(this.testSv);
     return (
+      <div>
+      <div className="container">
       <header>   
         <h1>Vault</h1>
+      </header> 
           <AudioPlayer audioservice={this.audioservice}/> 
           <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
-      </header>
+      </div>
+      </div>
     )
   } 
 });
