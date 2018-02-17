@@ -6,6 +6,30 @@ import React from 'react';
 import ReactHowler from 'react-howler'; 
 
 var Track = React.createClass({
+  updateDocument(item){
+    var host = 'http://localhost:8888';
+    var vaultEndpoint = '/selekta/api/RunAPI.php/update-doc/';
+
+    var reqBody = {'document': item, 'new-selection-name': 'selection-v11', 'new-structure': ['new','tracks']};  
+    console.log(item); 
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", host + vaultEndpoint, true);
+    xhr.onload = function(e){
+      if (xhr.readyState === 4){
+        if (xhr.status === 200){
+          var res = JSON.parse(xhr.response);  
+          console.log(res);
+        } else {
+          console.error(xhr.statusText); 
+        }
+      }
+    }.bind(this);
+    xhr.onerror = function(e){
+      console.error(xhr.statusText); 
+    }    
+    xhr.send(JSON.stringify(reqBody));
+  },
   componentWillMount(){
   //
   },
@@ -36,10 +60,14 @@ var Track = React.createClass({
               { this.props.item.structure ? Object.keys(this.props.item.structure).map(name => {
                 return (<ul>
                     {name}
-                    {this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}
+                    
                   </ul>);
               }) : ''} 
               </ul>
+            </li>
+            <li>
+              <input name="new-selection-name"></input>
+              <button type="submit" name="new-selection" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
             </li>
           </ul>
         </div>
@@ -48,3 +76,4 @@ var Track = React.createClass({
 });
 
 export default Track; 
+//{this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}

@@ -7,6 +7,7 @@ import ReactHowler from 'react-howler';
 import TrackCollection from './TrackCollection'; 
 import AudioPlayer from './AudioPlayer'; 
 import AudioService from './AudioService';
+import TopNavigation from './TopNavigation';
 
 var Selection = React.createClass({
   componentWillMount(){
@@ -51,11 +52,14 @@ var Selection = React.createClass({
   render : function(){
     console.log(this.testSv);
     return (
-      <header>   
-        <h1>List</h1>
-          <AudioPlayer audioservice={this.audioservice}/> 
-          <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
-      </header>
+      <div className="container">
+          <header>  
+            <TopNavigation/>   
+            <h1>{this.props.params.selection}</h1> 
+          </header> 
+            <AudioPlayer audioservice={this.audioservice}/> 
+            <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
+      </div>
     )
   } 
 });

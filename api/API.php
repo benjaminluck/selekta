@@ -38,17 +38,11 @@ class API {
     return $json;
   }
 
-  public function updateDoc($params, $data){
-    $indices = $this->dbClient->listIndices();
-    $selectedIndex = $this->dbClient->selectedIndex;
-    $selectedType = 'mp3';
+  public function updateDoc($data){
+    $selectedType = 'mp3'; 
 
-    // combine newTag with tags
-    // if(!empty($data['tags'])){
-    //   $data['tags'] = $data['tags'] . ',' . $data['newTag'];
-    // }
 
-    $resp = $this->dbClient->updateSingleDocument($selectedIndex, $selectedType, $params['id'], $data);
+    $resp = $this->dbClient->updateSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure']);
 
     return $resp;
   }
@@ -86,7 +80,7 @@ class API {
 
         if(isset($data['structure'])){
           foreach($data['structure'] as $selectionName => $selectionVal){
-            $this->structureDepth = sizeof($data['structure'][$selectionName]);
+            $this->structureDepth = sizeof($data['structure'][$selectionName]); 
             $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
             eval($execstring);
           }

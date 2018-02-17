@@ -58,10 +58,8 @@ switch($request){
   case ($request[0] == 'update-doc') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
-      $params = [
-        "id" => $data['id']
-      ];
-      $result = $apiInstance->updateDoc($params, $data);
+
+      $result = $apiInstance->updateDoc($data);
       print_r($result);
       break;
   case ($request[0] == 'vault') :
@@ -74,12 +72,9 @@ switch($request){
         print_r($list);
         break;
   case ($request[0] == 'list-selections') :
-        $request_body = file_get_contents('php://input');
-        $data = json_decode($request_body, true);
-
         $selections = $apiInstance->getSelections();
         $selections = json_encode($selections);
-        print_r($selections);
+        echo $selections;
         break;
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');

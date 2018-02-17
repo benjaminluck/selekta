@@ -263,8 +263,7 @@ class ElasticHandler
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
     $end = $doc_type . '/' . $doc_id . '/_update';
-
-    $payload = '{
+    $payload = '{ 
         "script" : {
             "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure}",
             "lang": "painless",

@@ -7,6 +7,7 @@ import ReactHowler from 'react-howler';
 import TrackCollection from './TrackCollection'; 
 import AudioPlayer from './AudioPlayer'; 
 import AudioService from './AudioService';
+import TopNavigation from './TopNavigation';
 
 var Vault = React.createClass({
   componentWillMount(){
@@ -45,16 +46,16 @@ var Vault = React.createClass({
   // 
   },
   render : function(){
-    console.log(this.testSv);
     return (
       <div>
-      <div className="container">
-      <header>   
-        <h1>Vault</h1>
-      </header> 
-          <AudioPlayer audioservice={this.audioservice}/> 
-          <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
-      </div>
+        <div className="container">
+          <header>  
+            <TopNavigation/>   
+            <h1>Vault</h1> 
+          </header> 
+            <AudioPlayer audioservice={this.audioservice}/> 
+            <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
+        </div>
       </div>
     )
   } 

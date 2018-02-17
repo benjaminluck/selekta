@@ -4,6 +4,7 @@
 */
 import React from 'react'; 
 import ReactHowler from 'react-howler'; 
+import TopNavigation from './TopNavigation';
 
 var App = React.createClass({
   componentWillMount(){ 
@@ -15,7 +16,14 @@ var App = React.createClass({
   render : function(){
     //
     return (
-     <div></div> 
+      <div>
+        <div className="container">
+          <header>  
+            <TopNavigation/>   
+            <h1>Selekta</h1> 
+          </header> 
+        </div>
+      </div>
     )
   } 
 });
