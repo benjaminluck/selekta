@@ -163,13 +163,18 @@ class API {
 
   public function getVaultFromIndex(){
     $indices = $this->dbClient->listIndices();
-    $selectedType = 'mp3';
+    $selectedType = 'mp3'; 
 
     $list = $this->dbClient->searchVault($selectedType);
     $list = $this->shapeData($list, 'unstructured');
 
 
     return $list;
+  }
+
+  public function deleteVault(){
+    $res = $this->dbClient->deleteVault(); 
+    return $res;
   }
 
   public function getListFromIndex($selectionName, $listShape, $tags = []){

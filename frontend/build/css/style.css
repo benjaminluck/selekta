@@ -12,6 +12,10 @@ body {
   .track-block.-collapsed .details {
     display: none; }
 
+.tracklist {
+  max-height: 600px;
+  overflow-y: scroll; }
+
 .audioplayer-block {
   position: fixed;
   bottom: 0px;

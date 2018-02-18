@@ -11,7 +11,7 @@ var TopNavigation = React.createClass({
   render : function(){ 
     return ( 
         <div class="topnav col-xs-12">  
-        <a href="/vault">vault </a> | <a href="/selections/">selections </a> 
+          <a href="/vault">vault </a> | <a href="/selections/">selections </a> | <a href="/config/">config </a> 
         </div>
       )  
   } 

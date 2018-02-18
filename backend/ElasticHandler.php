@@ -73,6 +73,30 @@ class ElasticHandler
     return $resp;
   }
 
+  private function elasticDELETE(){
+    $base = $this->es_host;
+    $base = $base . $this->selectedIndex . '/';
+    $data_string = $jsonData;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json'
+    ));
+
+    $resp = curl_exec($ch);
+    curl_close($ch);
+
+    return $resp;
+  }
+
+  public function deleteVault(){
+    $this->elasticDELETE();
+  }
+
   public function scrollThroughIndex($indexName, $typeName = ""){
     // read all items from an index with given 'type'
     $indexName = $this->selectedIndex;

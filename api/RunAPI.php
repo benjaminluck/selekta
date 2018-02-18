@@ -36,6 +36,10 @@ switch($request){
     $json = json_encode($params);
     print_r($json);
     break;
+  case ($request[0] == 'delete-vault') :
+    $resp = $apiInstance->deleteVault();
+    print_r($resp); 
+    break;  
   case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;

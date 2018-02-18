@@ -60,7 +60,7 @@ var Track = React.createClass({
               { this.props.item.structure ? Object.keys(this.props.item.structure).map(name => {
                 return (<ul>
                     {name}
-                    
+                    {this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}
                   </ul>);
               }) : ''} 
               </ul>
