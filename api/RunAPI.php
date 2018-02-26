@@ -1,12 +1,10 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-header('Access-Control-Allow-Origin: *');
-error_reporting(E_ALL);
 
 require '../classmap.php';
 require '../params.php';
+
+header('Access-Control-Allow-Origin: *');
 
 // get the HTTP method, path and body of the request
 $method = $_SERVER['REQUEST_METHOD'];
