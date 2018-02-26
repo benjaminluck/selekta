@@ -2,3 +2,4 @@ vendor
 test_src
 test_unstruct
 test_destination
+node_modules

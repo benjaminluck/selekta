@@ -1,0 +1,25 @@
+body {
+  font-size: 16px;
+  font-family: sans-serif; }
+
+.track-block {
+  padding: 2px 5px 2px 5px; }
+  .track-block .title {
+    font-weight: 600; }
+  .track-block:hover {
+    background-color: black;
+    color: white; }
+  .track-block.-collapsed .details {
+    display: none; }
+
+.tracklist {
+  max-height: 600px;
+  overflow-y: scroll; }
+
+.audioplayer-block {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 50px;
+  background-color: black; }

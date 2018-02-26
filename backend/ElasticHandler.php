@@ -73,6 +73,30 @@ class ElasticHandler
     return $resp;
   }
 
+  private function elasticDELETE(){
+    $base = $this->es_host;
+    $base = $base . $this->selectedIndex . '/';
+    $data_string = $jsonData;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json'
+    ));
+
+    $resp = curl_exec($ch);
+    curl_close($ch);
+
+    return $resp;
+  }
+
+  public function deleteVault(){
+    $this->elasticDELETE();
+  }
+
   public function scrollThroughIndex($indexName, $typeName = ""){
     // read all items from an index with given 'type'
     $indexName = $this->selectedIndex;
@@ -147,6 +171,10 @@ class ElasticHandler
 
   public function formatResult($es_response){
     // takes a regular search response and only extracts the hits
+    if (!isset($es_response['hits']['hits'])){
+      return [];
+    }
+
     return $es_response['hits']['hits'];
   }
 
@@ -239,8 +267,12 @@ class ElasticHandler
 
     $results = $this->elasticPOST('_search', $query);
     $results = json_decode($results, true);
-    $results = $this->formatResult($results);
 
+    if(!empty($results)){
+      $results = $this->formatResult($results);
+    }else{
+      echo $json_encode($results);
+    }
     return $results;
   }
 
@@ -255,8 +287,7 @@ class ElasticHandler
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
     $end = $doc_type . '/' . $doc_id . '/_update';
-
-    $payload = '{
+    $payload = '{ 
         "script" : {
             "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure}",
             "lang": "painless",

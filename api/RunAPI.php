@@ -1,11 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require '../classmap.php';
 require '../params.php';
+
+header('Access-Control-Allow-Origin: *');
 
 // get the HTTP method, path and body of the request
 $method = $_SERVER['REQUEST_METHOD'];
@@ -15,15 +13,17 @@ if(!empty($_SERVER['PATH_INFO'])){
 }
 //$input = json_decode(file_get_contents('php://input'),true);
 
+
 $params = [
   'dir' => $dir,
   'writeDir' => $writeDir,
   'destination' => $destination
 ];
 
-$apiInstance = new API($params);
-$tlList = $apiInstance->createList();
 
+
+$apiInstance = new API($params);
+$tlList = $apiInstance->createList(); 
 // set content type
 header('Content-type: application/json');
 
@@ -36,6 +36,10 @@ switch($request){
     $json = json_encode($params);
     print_r($json);
     break;
+  case ($request[0] == 'delete-vault') :
+    $resp = $apiInstance->deleteVault();
+    print_r($resp); 
+    break;  
   case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;
@@ -46,11 +50,6 @@ switch($request){
       break;
       return $resp;
   case ($request[0] == 'duplicate-selection') :
-      // $request_body = file_get_contents('php://input');
-      // $data = json_decode($request_body, true);
-      // $params = [
-      //   "id" => $data['id']
-      // ];
       $resp = $apiInstance->duplicateSelection('test-duplicate', 'mp3');
       $json = json_encode($resp);
       print_r($json);
@@ -58,31 +57,27 @@ switch($request){
   case ($request[0] == 'update-doc') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
-      $params = [
-        "id" => $data['id']
-      ];
-      $result = $apiInstance->updateDoc($params, $data);
+
+      $result = $apiInstance->updateDoc($data);
       print_r($result);
       break;
-  case ($request[0] == 'vault') :
+  case ($request[0] == 'vault') : 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
-
+      
         $list = $apiInstance->getVaultFromIndex();
 
         print_r($list);
         break;
   case ($request[0] == 'list-selections') :
-        $request_body = file_get_contents('php://input');
-        $data = json_decode($request_body, true);
-
         $selections = $apiInstance->getSelections();
         $selections = json_encode($selections);
-        print_r($selections);
+        echo $selections;
         break;
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
+
 
       if(empty($request[1])){
         echo 'Please define a selection';
@@ -101,14 +96,16 @@ switch($request){
         $list = $apiInstance->getListFromIndex($selectionName, $shape, $tags);
       }else{
         $list = $apiInstance->getListFromIndex($selectionName, $shape);
+        echo $list; 
       }
-      // if($request[1] == 'unstructured'){
-      //   $list = $apiInstance->getListFromIndex();
-      //   print_r($list);
-      //   break;
-      // }
 
-      print_r($list);
+      // OBSOLETE? -> DELETE
+      if($request[1] == 'unstructured'){
+        $list = $apiInstance->getListFromIndex();
+        break;
+      }
+      // 
+
       break;
   case ($request[0] == 'write-todo') :
       $request_body = file_get_contents('php://input');

@@ -4,11 +4,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-class API {
+class API { 
 
   public $dir = '';
   public $writeDir = '';
   public $destination = '';
+
+  private $currentStructureDepth = 0;
+  private $structureDepth = 0;
+  private $structure = [];
 
   private $dbClient;
 
@@ -26,27 +30,36 @@ class API {
 
   public function writeRsync($selection, $shape){
     $indexToSelect = $this->dbClient->selectedIndex;
-
     $json = $this->getListFromIndex($indexToSelect,$shape);
-
     $writer = new FileWriter($json, $this->destination, $selection);
 
     return $json;
   }
 
-  public function updateDoc($params, $data){
-    $indices = $this->dbClient->listIndices();
-    $selectedIndex = $this->dbClient->selectedIndex;
-    $selectedType = 'mp3';
-
-    // combine newTag with tags
-    // if(!empty($data['tags'])){
-    //   $data['tags'] = $data['tags'] . ',' . $data['newTag'];
-    // }
-
-    $resp = $this->dbClient->updateSingleDocument($selectedIndex, $selectedType, $params['id'], $data);
+  public function updateDoc($data){
+    $selectedType = 'mp3'; 
+    $resp = $this->dbClient->updateSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure']);
 
     return $resp;
+  }
+
+  public function shapeDataAsNumeric($array){
+    $numericArr = [];
+    $levelDepth = $this->structureDepth;
+    foreach($array as $firstKeys => $firstValues){
+            //$folder = ["folder_name" => $firstKeys, "folder_contents" => is_array($firstValues) ? $this->shapeDataAsNumeric($firstValues) : $firstValues];
+            if(is_array($firstValues)){
+                if(isset($firstValues['hash'])){
+                    $node = ["node_type" => 'file', "node_name" => $firstKeys, "node_contents" => $firstValues];
+                }else{
+                    $node = ["node_type" => 'folder', "node_name" => $firstKeys, "node_contents" => $this->shapeDataAsNumeric($firstValues)];
+                }
+            };
+          //  $node = ["node_type" => 'folder', "node_name" => $firstKeys, "node_contents" => $firstValues];
+            array_push($numericArr, $node);
+          } 
+
+    return $numericArr;
   }
 
   public function shapeData($array, $type){
@@ -60,6 +73,7 @@ class API {
 
         if(isset($data['structure'])){
           foreach($data['structure'] as $selectionName => $selectionVal){
+            $this->structureDepth = sizeof($data['structure'][$selectionName]); 
             $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
             eval($execstring);
           }
@@ -67,80 +81,66 @@ class API {
       }
       break;
       case 'unstructured':
+      
       foreach($array as $item){
         $data = $item['_source'];
         $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
         $newArray[] = $data;
       }
+  
       break;
-      case 'song-bpm':
-      foreach($array as $item){
+        case 'song-bpm':
+          foreach($array as $item){
+              if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
+                $one = $item['_source']['songGroup'];
+                $two = $item['_source']['bpmGroup'];
+                $data = $item['_source'];
+                $data['id'] = $item['_id'];
+                $fileName = $data['fileName'];
 
-          if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
-            $one = $item['_source']['songGroup'];
-            $two = $item['_source']['bpmGroup'];
-            $data = $item['_source'];
-            $data['id'] = $item['_id'];
-            $fileName = $data['fileName'];
-
-            $newArray[$one][$two][$fileName] = $data;
+                $newArray[$one][$two][$fileName] = $data;
+              }
           }
-      }
-      break;
+        break;
       case 'bpm-song':
-      foreach($array as $item){
+        foreach($array as $item){ 
+            if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
+              $one = $item['_source']['bpmGroup'];
+              $two = $item['_source']['songGroup'];;
+              $data = $item['_source'];
+              $data['id'] = $item['_id'];
+              $fileName = $data['fileName'];
 
-          if(isset($item['_source']['songGroup']) && isset($item['_source']['bpmGroup'])){
-            $one = $item['_source']['bpmGroup'];
-            $two = $item['_source']['songGroup'];;
-            $data = $item['_source'];
-            $data['id'] = $item['_id'];
-            $fileName = $data['fileName'];
-
-            $newArray[$one][$two][$fileName] = $data;
-          }
-      }
-      break;
+              $newArray[$one][$two][$fileName] = $data;
+            }
+        }
+      break; 
     }
 
     if(empty($newArray)){
       $msg = 'No data found for selected parameters.';
-  //    echo $msg . PHP_EOL;
       return $msg;
     }
 
     $json = json_encode($newArray);
-
     return $json;
   }
 
-  // public function getVaultFromIndex($tags = []){
-  //   $indices = $this->dbClient->listIndices();
-  //   $selectedIndex = $indices[6];
-  //   $selectedType = 'mp3';
-  //
-  //
-  //   if(!empty($tags){
-  //     $list = $this->dbClient->searchIndexByTags($selectedIndex, $selectedType, $tags[0]);
-  //   }else{
-  //     $list = $this->dbClient->searchIndex($selectedIndex, $selectedType);
-  //   }
-  //
-  //   $list = $this->shapeData($list, 'unstructured');
-  //
-  //   return $list;
-  // }
-
   public function getVaultFromIndex(){
     $indices = $this->dbClient->listIndices();
-    $selectedType = 'mp3';
+    $selectedType = 'mp3'; 
 
     $list = $this->dbClient->searchVault($selectedType);
     $list = $this->shapeData($list, 'unstructured');
 
 
     return $list;
+  }
+
+  public function deleteVault(){
+    $res = $this->dbClient->deleteVault(); 
+    return $res;
   }
 
   public function getListFromIndex($selectionName, $listShape, $tags = []){
@@ -151,9 +151,8 @@ class API {
     }else{
       $list = $this->dbClient->searchIndex($selectionName, $selectedType);
     }
-
+    
     $list = $this->shapeData($list, $listShape);
-
 
     return $list;
   }
@@ -206,39 +205,6 @@ class API {
     return $responses;
   }
 
-  // -- delete (obsolete)
-  // public function createIndexFromFolderInit(){
-  //   $client = $this->dbClient;
-  //   $flatList = new FlatList($this->dir, $this->dir);
-  //   $flatList->buildList();
-  //   $fileList = $flatList->Array();
-  //   $selectionName = $flatList->getFolderName();
-  //
-  //   $params = ['body' => []];
-  //
-  //   for ($i = 0; $i < sizeof($fileList); ++$i) {
-  //       $params['body'][] = [
-  //           'index' => [
-  //               '_index' => $selectionName,
-  //               '_type' => 'mp3',
-  //               '_id' => $fileList[$i]['hash'],
-  //           ],
-  //       ];
-  //
-  //       $params['body'][] = json_encode($fileList[$i]);
-  //   }
-  //
-  //   // Send the last batch if it exists
-  //   if (!empty($params['body'])) {
-  //       $responses = $client->bulk($params);
-  //   }
-  //
-  //   print_r($responses);
-  //
-  //   return $responses;
-  //
-  // }
-
   public function bulkInsertFromArray($inputArray, $targetIndex = '', $targetType = ''){
     $client = $this->dbClient;
 
@@ -250,7 +216,7 @@ class API {
                 '_index' => $targetIndex,
                 '_type' => $targetType,
                 '_id' => $i,
-            ],
+            ], 
         ];
 
         $params['body'][] = json_encode($inputArray[$i]["_source"]);
