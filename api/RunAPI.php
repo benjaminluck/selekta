@@ -1,6 +1,5 @@
 <?php
 
-
 require '../classmap.php';
 require '../params.php';
 
@@ -14,11 +13,14 @@ if(!empty($_SERVER['PATH_INFO'])){
 }
 //$input = json_decode(file_get_contents('php://input'),true);
 
+
 $params = [
   'dir' => $dir,
   'writeDir' => $writeDir,
   'destination' => $destination
 ];
+
+
 
 $apiInstance = new API($params);
 $tlList = $apiInstance->createList(); 
@@ -48,11 +50,6 @@ switch($request){
       break;
       return $resp;
   case ($request[0] == 'duplicate-selection') :
-      // $request_body = file_get_contents('php://input');
-      // $data = json_decode($request_body, true);
-      // $params = [
-      //   "id" => $data['id']
-      // ];
       $resp = $apiInstance->duplicateSelection('test-duplicate', 'mp3');
       $json = json_encode($resp);
       print_r($json);
@@ -64,8 +61,7 @@ switch($request){
       $result = $apiInstance->updateDoc($data);
       print_r($result);
       break;
-  case ($request[0] == 'vault') :
-       
+  case ($request[0] == 'vault') : 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
       
@@ -81,6 +77,7 @@ switch($request){
   case ($request[0] == 'list') :
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
+
 
       if(empty($request[1])){
         echo 'Please define a selection';
