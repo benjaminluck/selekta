@@ -40,6 +40,13 @@ switch($request){
     $resp = $apiInstance->deleteVault();
     print_r($resp); 
     break;  
+  case ($request[0] == 'create-rsync-list') :
+    $selectionName = $request[1];
+    $shape = 'unstructured'; 
+    $list = $apiInstance->getListFromIndex($selectionName, $shape);
+    $writer = new FileWriter($list, $vaultDir, $destination, $selectionName); 
+    echo json_encode($writer->getRsyncFileDestination());
+    break;    
   case ($request[0] == 'create-list') :
       echo $tlList->JSON();
       break;
@@ -54,7 +61,7 @@ switch($request){
       $json = json_encode($resp);
       print_r($json);
       break;
-  case ($request[0] == 'update-doc') :
+  case ($request[0] == 'update-doc') : 
       $request_body = file_get_contents('php://input');
       $data = json_decode($request_body, true);
 

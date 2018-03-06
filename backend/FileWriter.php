@@ -18,14 +18,19 @@ class FileWriter
     "rel_path" => 'relPath',
     "flat" => false
   ];
+ 
+  public function getRsyncFileDestination(){
+    return $this->todoRSYNC;
+  }
 
   public $destination = '';
 
-  public function __construct($todoJSON, $destination, $selection = ''){
+  public function __construct($todoJSON, $vaultPath, $destination, $selection = ''){
       $this->destination = $destination;
       $this->logFilePath = $this->destination .'todo.log';
       $this->todoRSYNC = $this->destination .'todo.rsync.sh';
       $this->selectedStructure = $selection;
+      $this->vaultPath = $vaultPath;
 
       $this->todoJSON = $todoJSON;
       $this->todoArray = json_decode($this->todoJSON , true);
@@ -53,7 +58,7 @@ class FileWriter
     file_put_contents($this->logFilePath, '----'.PHP_EOL, FILE_APPEND | LOCK_EX);
   }
 
-  public function writeToLogRsync($file){
+  public function writeToLogRsync($file, $fromVault = true){
     $targetPath = '';
 
     if(!empty($this->selectedStructure)){
@@ -68,7 +73,13 @@ class FileWriter
     $closeChar = ';';
     $rsyncParams = '--delete --verbose --ignore-existing -r --partial';
     $rsyncParams = '--verbose -r --partial';
-    $rsyncIn = $file['srcPath'];
+
+    if($fromVault){
+      $rsyncIn = $this->vaultPath . $file['fileName'];
+    }else{
+      $rsyncIn = $file['srcPath'];
+    }
+
     $rsyncIn = escapeshellarg($rsyncIn);
     $rsyncOut = $this->destination . $structSuffix . '/' . $file[$this->logParams['filename']];
     $rsyncOut = escapeshellarg($rsyncOut);

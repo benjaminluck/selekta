@@ -271,7 +271,7 @@ class ElasticHandler
     if(!empty($results)){
       $results = $this->formatResult($results);
     }else{
-      echo $json_encode($results);
+      //echo $json_encode($results); 
     }
     return $results;
   }

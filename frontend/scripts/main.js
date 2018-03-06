@@ -12,7 +12,7 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 /* 
  Import components
 */
-
+ 
 import Vault from './components/Vault';
 import Selection from './components/Selection';
 import Selections from './components/Selections';
@@ -27,6 +27,7 @@ var routes = (
   <Router history={createHistory()}>
     <Route path="/" component={App} />
     <Route path="/config" component={Configuration} />
+    <Route path="/config/:selection" component={Configuration} />
     <Route path="/vault" component={Vault} />
     <Route path="/selections/" component={Selections} />
     <Route path="/selection/:selection/:structure/" component={Selection} />
