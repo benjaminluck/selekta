@@ -10,7 +10,7 @@ var Track = React.createClass({
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/update-doc/';
 
-    var reqBody = {'document': item, 'new-selection-name': 'selection-v11', 'new-structure': ['new','tracks']};  
+    var reqBody = {'document': item, 'new-selection-name': this.state.newSelectionName, 'new-structure': ['root']};  
     console.log(item); 
 
     var xhr = new XMLHttpRequest();
@@ -23,7 +23,7 @@ var Track = React.createClass({
         } else {
           console.error(xhr.statusText); 
         }
-      }
+      } 
     }.bind(this);
     xhr.onerror = function(e){
       console.error(xhr.statusText); 
@@ -32,6 +32,10 @@ var Track = React.createClass({
   },
   componentWillMount(){
   //
+  this.state = {
+    newSelectionName: ''
+  };
+
   },
   componentDidMount(){ 
   //
@@ -43,6 +47,9 @@ var Track = React.createClass({
     var filepath = 'http://localhost:8888/selekta/music-vault/' + item.fileName;
     this.props.audioservice.setSrc(filepath); 
     console.log(this.props.audioservice.getState());
+  },
+  handleChange(e) {
+    this.setState({ newSelectionName: e.target.value });
   },
   render : function(){ 
     return (
@@ -66,7 +73,7 @@ var Track = React.createClass({
               </ul>
             </li>
             <li>
-              <input name="new-selection-name"></input>
+              <input type="text" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
               <button type="submit" name="new-selection" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
             </li>
           </ul>
