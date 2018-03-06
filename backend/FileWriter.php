@@ -11,6 +11,7 @@ class FileWriter
   public $todoArray = [];
 
   public $items = [];
+  public $configs = [];
 
   public $logFilePath = '';
   public $logParams = [
@@ -23,18 +24,39 @@ class FileWriter
     return $this->todoRSYNC;
   }
 
-  public $destination = '';
+  public $destination = ''; 
 
-  public function __construct($todoJSON, $vaultPath, $destination, $selection = ''){
+  public function __construct($todoJSON, $vaultPath, $destination, $configs, $selection = ''){
       $this->destination = $destination;
       $this->logFilePath = $this->destination .'todo.log';
       $this->todoRSYNC = $this->destination .'todo.rsync.sh';
       $this->selectedStructure = $selection;
       $this->vaultPath = $vaultPath;
+      $this->configs = $configs;
 
       $this->todoJSON = $todoJSON;
       $this->todoArray = json_decode($this->todoJSON , true);
       $this->items = $this->initCreateTodo($this->todoArray);
+  }
+
+  public function getBPMFolder($file){
+    $bpmMap = [
+      '100' => '0',
+      '120' => '1',
+      '130' => '2',
+      '145' => '3',
+      '170' => '4',
+      '300' => '5' 
+    ];
+
+    foreach($bpmMap as $bpmValue => $segment){ 
+      if(isset($file['bpm'])){
+        if($file['bpm'] < $bpmValue){
+          return $segment;
+        }
+      }
+    }
+
   }
 
   public function writeToLog($file){
@@ -60,13 +82,17 @@ class FileWriter
 
   public function writeToLogRsync($file, $fromVault = true){
     $targetPath = '';
+    $bpmBasedFolder = false;
+    if(in_array('bpm-folders',$this->configs)){
+      $bpmBasedFolder = true; 
+    }
 
     if(!empty($this->selectedStructure)){
         $structure = $file['structure'][$this->selectedStructure];
     }
 
     if(empty($structure)){
-      return false;
+      return false; 
     }
 
     $structSuffix = implode('/',$structure);
@@ -81,10 +107,22 @@ class FileWriter
     }
 
     $rsyncIn = escapeshellarg($rsyncIn);
-    $rsyncOut = $this->destination . $structSuffix . '/' . $file[$this->logParams['filename']];
-    $rsyncOut = escapeshellarg($rsyncOut);
+
+    if($bpmBasedFolder){ 
+      $rsyncOut = $this->destination . $structSuffix . '/' . $this->getBPMFolder($file) . '/' . $file[$this->logParams['filename']];
+    }else{
+      $rsyncOut = $this->destination . $structSuffix . '/' . $file[$this->logParams['filename']];
+    }
+
+    $rsyncOut = escapeshellarg($rsyncOut); 
     $rsyncCmd = 'rsync '.$rsyncParams.' '.$rsyncIn.' '.$rsyncOut.$closeChar;
-    $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix) .$closeChar;
+
+    if($bpmBasedFolder){ 
+      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix . '/' . $this->getBPMFolder($file) . '/') .$closeChar;
+    }else{
+      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix) .$closeChar;
+    }
+    
     //rsync --delete --verbose --ignore-existing -r --partial /Volumes/2TB\ EXT\ Western\ Digital/_AUDIO/_ONSECK/_dj\:selection/selection-v10/ /Volumes/32GB\ D/
     file_put_contents($this->todoRSYNC, $makeDirCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
     file_put_contents($this->todoRSYNC, $rsyncCmd . PHP_EOL , FILE_APPEND | LOCK_EX);

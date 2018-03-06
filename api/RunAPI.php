@@ -44,7 +44,13 @@ switch($request){
     $selectionName = $request[1];
     $shape = 'unstructured'; 
     $list = $apiInstance->getListFromIndex($selectionName, $shape);
-    $writer = new FileWriter($list, $vaultDir, $destination, $selectionName); 
+    $configs = [];
+
+    if($request[2] == 'bpm-folders'){
+      $configs[] = $request[2];
+    } 
+
+    $writer = new FileWriter($list, $vaultDir, $destination, $configs, $selectionName); 
     echo json_encode($writer->getRsyncFileDestination());
     break;    
   case ($request[0] == 'create-list') :

@@ -53,11 +53,11 @@ var Configuration = React.createClass({
     }    
     xhr.send(null);
   },
-  createRsyncFile(){ 
+  createRsyncFile(configs){ 
     console.log(this.props);
     var selection = this.props.params.selection; 
     var host = 'http://localhost:8888';
-    var vaultEndpoint = '/selekta/api/RunAPI.php/create-rsync-list/' + selection;
+    var vaultEndpoint = '/selekta/api/RunAPI.php/create-rsync-list/' + selection + '/' + configs;
  
     var xhr = new XMLHttpRequest();
     xhr.open("POST", host + vaultEndpoint, true);
@@ -91,6 +91,7 @@ var Configuration = React.createClass({
               <li><div href="" onClick={() => this.deleteVaultRequest()}>Delete Vault</div></li>
               <li><div href="" onClick={() => this.createVaultRequest()}>Create/Update Vault</div></li>
               <li><div href="" onClick={() => this.createRsyncFile()}>Create RSYNC file</div></li>
+              <li><div href="" onClick={() => this.createRsyncFile('bpm-folders')}>Create RSYNC file (Bpm folders)</div></li>
             </ul>
           </div>  
         </div>
