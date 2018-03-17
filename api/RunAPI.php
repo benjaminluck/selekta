@@ -17,7 +17,8 @@ if(!empty($_SERVER['PATH_INFO'])){
 $params = [
   'dir' => $dir,
   'writeDir' => $writeDir,
-  'destination' => $destination
+  'destination' => $destination,
+  'prevaultDir' => $prevaultDir
 ];
 
 
@@ -62,6 +63,12 @@ switch($request){
       print_r($json);
       break;
       return $resp;
+  case ($request[0] == 'index-prevault') :
+      $resp = $apiInstance->updateVaultFromPrevault();
+      $json = json_encode($resp);
+      print_r($json);
+      break;
+      return $resp;    
   case ($request[0] == 'duplicate-selection') :
       $resp = $apiInstance->duplicateSelection('test-duplicate', 'mp3');
       $json = json_encode($resp);

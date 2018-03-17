@@ -18,7 +18,8 @@ class API {
 
   public function __construct($constructParams){
     // init params
-    $this->dir = $constructParams['dir'];
+    $this->dir = $constructParams['dir']; 
+    $this->prevaultDir = $constructParams['prevaultDir'];
     $this->writeDir = $constructParams['writeDir'];
     $this->destination = $constructParams['destination'];
     $this->dbClient = new ElasticHandler();
@@ -38,7 +39,7 @@ class API {
 
   public function updateDoc($data){
     $selectedType = 'mp3'; 
-    $resp = $this->dbClient->updateSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure']);
+    $resp = $this->dbClient->upsertSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure']);
 
     return $resp;
   }
@@ -197,8 +198,34 @@ class API {
         if(empty($fileList[$i]['structure'][$selectionName])){
           $fileList[$i]['structure'][$selectionName] = [1,2,3];
         }
-        $response = $client->updateSingleDoc($doc,'mp3', $selectionName, $fileList[$i]['structure'][$selectionName]);
+        $response = $client->upsertSingleDoc($doc,'mp3', $selectionName, $fileList[$i]['structure'][$selectionName]);
         $responses[] = $response;
+    }
+
+
+    return $responses;
+  }
+
+  public function updateVaultFromPrevault(){
+    $client = $this->dbClient;
+    $flatList = new FlatList($this->prevaultDir);
+    $flatList->buildList();
+    $fileList = $flatList->Array();
+    $selectionName = $flatList->getFolderName();
+
+    $responses = [];
+
+    for ($i = 0; $i < sizeof($fileList); ++$i) {
+        $doc = $fileList[$i];
+
+        // move files from prevault to vault folder
+        $path_a = $this->prevaultDir . '/' . $doc['fileName'];
+        $path_b = str_replace('_prevault','_vault', $path_a); 
+        rename($path_a,$path_b);
+        //
+
+        $response = $client->upsertSingleDoc($doc,'mp3');
+        $responses[] = $response; 
     }
 
 

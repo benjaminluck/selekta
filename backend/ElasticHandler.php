@@ -282,7 +282,7 @@ class ElasticHandler
     return $results;
   }
 
-  public function updateSingleDoc($doc, $doc_type, $selectionName, $structure){
+  public function upsertSingleDoc($doc, $doc_type, $selectionName = '', $structure = []){
     $doc_id = $doc['hash'];
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode

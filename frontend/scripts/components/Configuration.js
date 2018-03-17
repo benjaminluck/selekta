@@ -53,6 +53,27 @@ var Configuration = React.createClass({
     }    
     xhr.send(null);
   },
+  indexPrevaultRequest(){ 
+    var host = 'http://localhost:8888';
+    var vaultEndpoint = '/selekta/api/RunAPI.php/index-prevault';
+ 
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", host + vaultEndpoint, true);
+    xhr.onload = function(e){
+      if (xhr.readyState === 4){
+        if (xhr.status === 200){
+          var resp = JSON.parse(xhr.response); 
+          console.log(resp);
+        } else { 
+          console.error(xhr.statusText); 
+        }
+      }
+    }.bind(this);
+    xhr.onerror = function(e){
+      console.error(xhr.statusText); 
+    }    
+    xhr.send(null);
+  },
   createRsyncFile(configs){ 
     console.log(this.props);
     var selection = this.props.params.selection; 
@@ -90,6 +111,7 @@ var Configuration = React.createClass({
             <ul>
               <li><div href="" onClick={() => this.deleteVaultRequest()}>Delete Vault</div></li>
               <li><div href="" onClick={() => this.createVaultRequest()}>Create/Update Vault</div></li>
+              <li><div href="" onClick={() => this.indexPrevaultRequest()}>Index tracks in prevault</div></li>
               <li><div href="" onClick={() => this.createRsyncFile()}>Create RSYNC file</div></li>
               <li><div href="" onClick={() => this.createRsyncFile('bpm-folders')}>Create RSYNC file (Bpm folders)</div></li>
             </ul>

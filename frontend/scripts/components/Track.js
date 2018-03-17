@@ -46,6 +46,7 @@ var Track = React.createClass({
   handleClickDetails(item){
     var filepath = 'http://localhost:8888/selekta/music-vault/' + item.fileName;
     this.props.audioservice.setSrc(filepath); 
+    this.props.audioservice.setTrack(item);
     console.log(this.props.audioservice.getState());
   },
   handleChange(e) {
