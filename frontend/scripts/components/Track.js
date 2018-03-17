@@ -10,7 +10,15 @@ var Track = React.createClass({
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/update-doc/';
 
-    var reqBody = {'document': item, 'new-selection-name': this.state.newSelectionName, 'new-structure': ['root']};  
+    var newSelection = this.state.newSelectionName.split('/');
+    var newSelectionName = newSelection[0];
+    newSelection.shift(); 
+
+    if(typeof(newSelection[0]) === undefined){
+      newSelection = [];
+    }
+
+    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection};  
     console.log(item); 
 
     var xhr = new XMLHttpRequest();
@@ -56,7 +64,7 @@ var Track = React.createClass({
     return (
       <div className="track-block -collapsed" key={this.props.item.hash}>
         <div className="title" onClick={this.handleClick}>
-          { this.props.item.title }
+          { this.props.item.artist } - { this.props.item.title }
         </div>
         <div className="details" onClick={() => this.handleClickDetails(this.props.item)}> 
           <ul> 
