@@ -279,14 +279,12 @@ class ElasticHandler
   public function bulk($params){
     $results = $this->connection->bulk($params);
 
-    return $results;
+    return $results; 
   }
 
-  public function removeSelection($selectionName){
-    $doc_id = $doc['hash'];
-    $doc_json = json_encode($doc);
-    $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
-    $end = $doc_type . '/' . $doc_id . '/_update_by_query';
+  public function removeSelection($selectionName, $doc_type = 'mp3'){
+     // strip first and last { } added by json encode
+    $end = $doc_type . '/_update_by_query';
     $payload = '{ 
         "script" : {
             "inline": "if(ctx._source.structure != null && ctx._source.structure[params.selectionName] != null) { ctx._source.structure.remove(params.selectionName) } ",

@@ -184,6 +184,13 @@ class API {
     return $list;
   }
 
+  public function removeSelection($selectionName){
+    // read all items from an index with given 'type'
+    $resp = $this->dbClient->removeSelection($selectionName);
+
+    return $resp;
+  }
+ 
   public function createIndexFromFolder(){
     $client = $this->dbClient;
     $flatList = new FlatList($this->dir, $this->dir);

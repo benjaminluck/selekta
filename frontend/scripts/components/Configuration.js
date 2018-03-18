@@ -32,6 +32,37 @@ var Configuration = React.createClass({
     }    
     xhr.send(null);
   },
+  removeSelectionRequest(){ 
+    var host = 'http://localhost:8888';
+    var selection = this.props.params.selection; 
+    var vaultEndpoint = '/selekta/api/RunAPI.php/remove-selection'; 
+    var body = {'selection-name': selection};  
+    var error = '';
+
+    if(typeof(selection) == "undefined" || selection == ""){
+      alert('No selection selected');
+      error = true;
+    }
+    
+    if(!error){
+      var xhr = new XMLHttpRequest();  
+      xhr.open("POST", host + vaultEndpoint, true);
+      xhr.onload = function(e){
+        if (xhr.readyState === 4){
+          if (xhr.status === 200){ 
+            var resp = JSON.parse(xhr.response); 
+            console.log(resp);
+          } else {
+            console.error(xhr.statusText); 
+          }
+        }
+      }.bind(this);
+      xhr.onerror = function(e){ 
+        console.error(xhr.statusText); 
+      }    
+      xhr.send(JSON.stringify(body));
+    } 
+  },
   createVaultRequest(){ 
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/create-vault';
@@ -112,6 +143,7 @@ var Configuration = React.createClass({
               <li><div href="" onClick={() => this.deleteVaultRequest()}>Delete Vault</div></li>
               <li><div href="" onClick={() => this.createVaultRequest()}>Create/Update Vault</div></li>
               <li><div href="" onClick={() => this.indexPrevaultRequest()}>Index tracks in prevault</div></li>
+              <li><div href="" onClick={() => this.removeSelectionRequest()}>Remove the current selection</div></li>
               <li><div href="" onClick={() => this.createRsyncFile()}>Create RSYNC file</div></li>
               <li><div href="" onClick={() => this.createRsyncFile('bpm-folders')}>Create RSYNC file (Bpm folders)</div></li>
             </ul>
