@@ -40,8 +40,10 @@ class FileList
         if(isset($folder_array[0])){
             $it['songGroup'] = $folder_array[0];
         }
-        $it['key'] = $file_array[0];
-        $it['bpm'] = $file_array[1];
+        if(count($file_array) > 1){
+            $it['key'] = $file_array[0];
+            $it['bpm'] = $file_array[1];
+        }
         if(isset($folder_array[1])){
             $it['songGroup'] = $folder_array[1];
         }
@@ -85,7 +87,7 @@ class FileList
         $it['includePath'] = "selection/" . $it['relPath']; // assumes 'selection' is a symlink to directory containing files
         $it['fileName'] = $file;
         $meta = pathinfo($it['srcPath']);
-        $it['ext'] = $meta['extension'];
+        $it['ext'] = isset($meta['extension']) ? $meta['extension'] : '';
 
         return $it;
     }
