@@ -233,7 +233,10 @@ class ElasticHandler
     $size = 5000;
 
     $query = '{
-        "size": ' . $size . '
+        "size": ' . $size . ',
+        "sort" : [
+          {"artist" : {"order" : "asc"}}
+        ]
     }';
 
 
@@ -261,7 +264,10 @@ class ElasticHandler
                     }
                 }
             }
-        }
+        },
+      "sort" : [
+        {"artist" : {"order" : "asc"}}
+      ]
     }';
 
 
@@ -290,7 +296,8 @@ class ElasticHandler
             "inline": "if(ctx._source.structure != null && ctx._source.structure[params.selectionName] != null) { ctx._source.structure.remove(params.selectionName) } ",
             "lang": "painless",
             "params" : {
-                "selectionName" : "'.$selectionName .'"
+                "selectionName" : "'.$selectionName .'",
+                "time" : "'.time().'"
             }
         }
     }';
@@ -303,16 +310,18 @@ class ElasticHandler
 
   public function upsertSingleDoc($doc, $doc_type, $selectionName = '', $structure = []){
     $doc_id = $doc['hash'];
+    $doc['date_added'] = time();
     $doc_json = json_encode($doc);
     $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
     $end = $doc_type . '/' . $doc_id . '/_update';
     $payload = '{ 
         "script" : {
-            "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure}",
+            "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure; ctx._source.dated_updated = params.time }",
             "lang": "painless",
             "params" : {
                 "selectionName" : "'.$selectionName .'",
-                "structure" : '.json_encode($structure).'
+                "structure" : '.json_encode($structure).',
+                "time" : "'.time().'"
             }
         },
         "upsert" : {'
