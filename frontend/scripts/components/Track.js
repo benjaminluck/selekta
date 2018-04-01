@@ -55,6 +55,9 @@ var Track = React.createClass({
   },
   componentDidMount(){ 
   //
+    if(this.props.item.tags){
+      this.setState({ newTags: this.props.item.tags});
+    }
   },
   handleClick(event) { 
     event.target.parentNode.classList.toggle("-collapsed"); 
@@ -100,7 +103,6 @@ var Track = React.createClass({
             </li> 
             <li>
               <ul>
-              tags
               { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
                 return (<ul>
                     <li>{this.props.item.tags[i]}</li>

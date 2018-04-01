@@ -128,16 +128,16 @@ class API {
     return $json;
   }
 
-  public function getVaultFromIndex(){
+  public function getVaultFromIndex($tags = []){
     $indices = $this->dbClient->listIndices();
     $selectedType = 'mp3'; 
 
-    $list = $this->dbClient->searchVault($selectedType);
+    $list = $this->dbClient->searchVault($selectedType, $tags);
     $list = $this->shapeData($list, 'unstructured');
 
 
     return $list;
-  }
+  } 
 
   public function deleteVault(){
     $res = $this->dbClient->deleteVault(); 

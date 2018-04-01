@@ -29,6 +29,7 @@ var routes = (
     <Route path="/config" component={Configuration} />
     <Route path="/config/:selection" component={Configuration} />
     <Route path="/vault" component={Vault} />
+    <Route path="/vault/:tags" component={Vault} />
     <Route path="/selections/" component={Selections} />
     <Route path="/selection/:selection/:structure/" component={Selection} />
   </Router>

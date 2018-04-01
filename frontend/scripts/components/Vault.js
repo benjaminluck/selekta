@@ -13,6 +13,9 @@ var Vault = React.createClass({
   componentWillMount(){
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/vault';
+    var tags = this.props.params.tags; 
+    console.log(tags);
+
     this.audioservice = new AudioService(this);
 
     this.setState({ 
@@ -23,7 +26,11 @@ var Vault = React.createClass({
     });    
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", host + vaultEndpoint, true);
+    var url = host + vaultEndpoint;
+    if(tags && tags.length){
+      url = url + '/' + tags; 
+    }
+    xhr.open("GET", url, true);
     xhr.onload = function(e){
       if (xhr.readyState === 4){
         if (xhr.status === 200){

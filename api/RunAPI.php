@@ -93,6 +93,14 @@ switch($request){
   case ($request[0] == 'vault') : 
         $request_body = file_get_contents('php://input');
         $data = json_decode($request_body, true);
+        $tags = [];
+
+        if(!empty($request[1])){
+          $tags = explode('&',$request[1]);
+          $list = $apiInstance->getVaultFromIndex($tags);
+          print_r($list);
+          break;
+        }
       
         $list = $apiInstance->getVaultFromIndex();
 

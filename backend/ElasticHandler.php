@@ -228,7 +228,7 @@ class ElasticHandler
     return $res;
   }
 
-  public function searchVault($type){
+  public function searchVault($type, $tags = []){
     $index = $this->selectedIndex;
     $size = 5000;
 
@@ -238,6 +238,31 @@ class ElasticHandler
           {"artist" : {"order" : "asc"}}
         ]
     }';
+
+    if(!empty($tags) && is_array($tags)){
+      foreach($tags as &$tag){
+        $tag = '"'.$tag.'"';
+      }
+
+
+      $query = '{
+        "size": ' . $size . ',
+        "query": {
+          "bool":{
+            "filter": {
+              "terms": {
+                "tags": [
+                  '.implode(',',$tags).'
+                ]
+              }
+            }
+          }
+        },
+        "sort" : [
+          {"artist" : {"order" : "asc"}}
+        ]
+      }';
+    }
 
 
     $results = $this->elasticPOST('_search', $query);
