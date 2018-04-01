@@ -14,11 +14,18 @@ var Track = React.createClass({
     var newSelectionName = newSelection[0];
     newSelection.shift(); 
 
+    var newTags = this.state.newTags.split(',');
+    newTags = newTags.map(function(s) { return s.trim() });
+
     if(typeof(newSelection[0]) === undefined){
       newSelection = [];
     }
 
-    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection};  
+    if(typeof(newTags[0]) === undefined){
+      newTags = [];
+    }
+
+    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection, 'new-tags' : newTags};  
     console.log(item); 
 
     var xhr = new XMLHttpRequest();
@@ -41,7 +48,8 @@ var Track = React.createClass({
   componentWillMount(){
   //
   this.state = {
-    newSelectionName: ''
+    newSelectionName: '',
+    newTags: []
   };
 
   },
@@ -58,7 +66,16 @@ var Track = React.createClass({
     console.log(this.props.audioservice.getState());
   },
   handleChange(e) {
-    this.setState({ newSelectionName: e.target.value });
+    console.log(e);
+    switch(e.target.name){
+      case 'new-selection':
+        this.setState({ newSelectionName: e.target.value });
+      break;
+      case 'add-tag': 
+        this.setState({ newTags: e.target.value });
+      break; 
+    }
+    
   },
   render : function(){ 
     return (
@@ -77,13 +94,25 @@ var Track = React.createClass({
                 return (<ul>
                     {name}
                     {this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}
-                  </ul>);
+                  </ul>); 
+              }) : ''} 
+              </ul>
+            </li> 
+            <li>
+              <ul>
+              tags
+              { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
+                return (<ul>
+                    <li>{this.props.item.tags[i]}</li>
+                  </ul>); 
               }) : ''} 
               </ul>
             </li>
             <li>
-              <input type="text" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
-              <button type="submit" name="new-selection" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
+              <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
+              <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
+              <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
+              <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument(this.props.item)}>add tag</button>
             </li>
           </ul>
         </div>

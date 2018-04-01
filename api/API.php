@@ -39,7 +39,7 @@ class API {
 
   public function updateDoc($data){
     $selectedType = 'mp3'; 
-    $resp = $this->dbClient->upsertSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure']);
+    $resp = $this->dbClient->upsertSingleDoc($data['document'], $selectedType, $data['new-selection-name'], $data['new-structure'], $data['new-tags']);
 
     return $resp;
   }
