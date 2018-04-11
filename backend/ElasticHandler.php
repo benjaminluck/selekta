@@ -235,7 +235,7 @@ class ElasticHandler
     $query = '{
         "size": ' . $size . ',
         "sort" : [
-          {"artist" : {"order" : "asc"}}
+          {"date_added" : {"order" : "desc"}}
         ]
     }';
 
@@ -259,7 +259,7 @@ class ElasticHandler
           }
         },
         "sort" : [
-          {"artist" : {"order" : "asc"}}
+          {"date_added" : {"order" : "desc"}}
         ]
       }';
     }
@@ -291,7 +291,7 @@ class ElasticHandler
             }
         },
       "sort" : [
-        {"artist" : {"order" : "asc"}}
+        {"date_added" : {"order" : "desc"}}
       ]
     }';
 
@@ -341,7 +341,7 @@ class ElasticHandler
     $end = $doc_type . '/' . $doc_id . '/_update';
     $payload = '{ 
         "script" : {
-            "inline": "if(!ctx._source.structure.empty){ ctx._source.structure[params.selectionName] = params.structure; ctx._source.tags = params.tags; ctx._source.date_updated = params.time }",
+            "inline": "if(ctx._source.structure != null){ ctx._source.structure[params.selectionName] = params.structure; } ctx._source.tags = params.tags; ctx._source.date_updated = params.time;",
             "lang": "painless",
             "params" : {
                 "selectionName" : "'.$selectionName .'",
