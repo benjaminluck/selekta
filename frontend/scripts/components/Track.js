@@ -82,43 +82,66 @@ var Track = React.createClass({
   },
   render : function(){ 
     return (
-      <div className="track-block -collapsed" key={this.props.item.hash}>
-        <div className="title" onClick={this.handleClick}>
-          { this.props.item.artist } - { this.props.item.title }
-        </div>
-        <div className="details" onClick={() => this.handleClickDetails(this.props.item)}> 
-          <ul> 
-            <li>{ this.props.item.artist }</li>
-            <li>BPM: { this.props.item.bpm }</li>
-            <li>KEY: { this.props.item.key }</li>
-            <li>
-              <ul>
-              { this.props.item.structure ? Object.keys(this.props.item.structure).map(name => {
-                return (<ul>
-                    {name}
-                    {this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}
-                  </ul>); 
-              }) : ''} 
+      <tr>
+        <td>
+          <input type="checkbox"/>
+        </td>
+        <td>
+          <div className="track-block -collapsed" key={this.props.item.hash}>
+            <div className="title" onClick={this.handleClick}>
+              { this.props.item.artist } - { this.props.item.title }
+            </div>
+            <div className="details" onClick={() => this.handleClickDetails(this.props.item)}> 
+              <ul> 
+                <li>{ this.props.item.artist }</li>
+                <li>BPM: { this.props.item.bpm }</li>
+                <li>KEY: { this.props.item.key }</li>
+                <li>
+                  <ul>
+                  { this.props.item.structure ? Object.keys(this.props.item.structure).map(name => {
+                    return (<ul>
+                        {name}
+                        {this.props.item.structure[name].map(key =>{ return(<li>{key}</li>)})}
+                      </ul>); 
+                  }) : ''} 
+                  </ul>
+                </li> 
+                <li>
+                  <ul>
+                  { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
+                    return (<ul>
+                        <li>{this.props.item.tags[i]}</li>
+                      </ul>); 
+                  }) : ''} 
+                  </ul>
+                </li>
+                <li>
+                  <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
+                  <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
+                  <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
+                  <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument(this.props.item)}>add tag</button>
+                </li>
               </ul>
-            </li> 
-            <li>
-              <ul>
-              { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
-                return (<ul>
-                    <li>{this.props.item.tags[i]}</li>
-                  </ul>); 
-              }) : ''} 
-              </ul>
-            </li>
-            <li>
-              <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
-              <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
-              <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
-              <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument(this.props.item)}>add tag</button>
-            </li>
-          </ul>
-        </div>
-      </div>)
+            </div>
+          </div>
+        </td>
+        <td>
+                  { this.props.item.bpm }
+        </td>
+        <td>
+          { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
+            return (<span>
+                {this.props.item.tags[i]}, 
+              </span>); 
+          }) : ''} 
+        </td>
+        <td>
+                  { this.props.item.key }
+        </td>
+        <td>
+            
+        </td>
+      </tr>)
   } 
 });
 
