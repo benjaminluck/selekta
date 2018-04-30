@@ -69,6 +69,10 @@ class API {
       foreach($array as $item){
 
         $data = $item['_source'];
+        if(empty($data['fileName'])){
+          continue;
+        }
+
         $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
 
@@ -85,6 +89,9 @@ class API {
       
       foreach($array as $item){
         $data = $item['_source'];
+        if(empty($data['fileName'])){
+          continue;
+        }
         $data['id'] = $item['_id'];
         $fileName = $data['fileName'];
         $newArray[] = $data;

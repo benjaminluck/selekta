@@ -6,28 +6,38 @@ import React from 'react';
 import ReactHowler from 'react-howler'; 
 
 var Track = React.createClass({
-  updateDocument(item){
+  updateDocument(type, item){
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/update-doc/';
 
-    var newSelection = this.state.newSelectionName.split('/');
-    var newSelectionName = newSelection[0];
-    newSelection.shift(); 
+    var newTags = [];
+    var newSelection = [];
+    var newSelectionName = '';
 
-    var newTags = this.state.newTags.split(',');
-    newTags = newTags.map(function(s) { return s.trim() });
+    switch(type){
+      case 'selection':
+        newSelection = this.state.newSelectionName.split('/');
+        newSelectionName = newSelection[0];
+        newSelection.shift(); 
+    
+        if(typeof(newSelection[0]) === undefined){
+          newSelection = [];
+        }
+        
+         
+      break;
+      case 'tags':
+        newTags = this.state.newTags.split(',');
+        newTags = newTags.map(function(s) { return s.trim() });
 
-    if(typeof(newSelection[0]) === undefined){
-      newSelection = [];
+        if(typeof(newTags[0]) === undefined){
+          newTags = [];
+        }
+
+      break;
     }
 
-    if(typeof(newTags[0]) === undefined){
-      newTags = [];
-    }
-
-    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection, 'new-tags' : newTags};  
-    console.log(item); 
-
+    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection, 'new-tags': newTags}; 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", host + vaultEndpoint, true);
     xhr.onload = function(e){
@@ -117,9 +127,9 @@ var Track = React.createClass({
                 </li>
                 <li>
                   <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
-                  <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument(this.props.item)}>add to selection</button>
+                  <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',this.props.item)}>add to selection</button>
                   <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
-                  <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument(this.props.item)}>add tag</button>
+                  <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument('tags', this.props.item)}>add tag</button>
                 </li>
               </ul>
             </div>
