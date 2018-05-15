@@ -76,6 +76,10 @@ class FileList
 
         $it['title'] = rtrim(str_replace('.'.$it['ext'], '', $it['title']));
 
+        // 10A 123 Artist - Title
+       //preg_match('[0-9][A-Z] [0-9]{2,3} [A-z]+ - [A-Za-z ]+', $it['fileName'], $matches); 
+        //$matches;
+
         return $it;
     }
 
