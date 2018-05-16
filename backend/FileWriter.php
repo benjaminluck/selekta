@@ -80,7 +80,7 @@ class FileWriter
     file_put_contents($this->logFilePath, '----'.PHP_EOL, FILE_APPEND | LOCK_EX);
   }
 
-  public function writeToLogRsync($file, $fromVault = true){
+  public function writeToLogRsync($file, $count, $total_items, $fromVault = true){
     $targetPath = '';
     $bpmBasedFolder = false;
     if(in_array('bpm-folders',$this->configs)){
@@ -106,7 +106,7 @@ class FileWriter
       $rsyncIn = $file['srcPath'];
     }
 
-    $rsyncIn = escapeshellarg($rsyncIn);
+    $rsyncIn = escapeshellarg($rsyncIn); 
 
     if($bpmBasedFolder){ 
       $rsyncOut = $this->destination . $structSuffix . '/' . $this->getBPMFolder($file) . '/' . $file[$this->logParams['filename']];
@@ -124,7 +124,9 @@ class FileWriter
     }
     
     //rsync --delete --verbose --ignore-existing -r --partial /Volumes/2TB\ EXT\ Western\ Digital/_AUDIO/_ONSECK/_dj\:selection/selection-v10/ /Volumes/32GB\ D/
-    file_put_contents($this->todoRSYNC, $makeDirCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
+    $statusCmd = "echo '".round(($count / $total_items * 100),2) . "% -- (".$count.'/'.$total_items.")'"; 
+    file_put_contents($this->todoRSYNC, $statusCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
+    file_put_contents($this->todoRSYNC, $makeDirCmd . PHP_EOL , FILE_APPEND | LOCK_EX);  
     file_put_contents($this->todoRSYNC, $rsyncCmd . PHP_EOL , FILE_APPEND | LOCK_EX);
   }
 
@@ -135,14 +137,17 @@ class FileWriter
 
   public function writeTodoItems($array){
     $items = $this->items;
+    $total_items = count($array);
+    $count = 0;
     foreach($array as $k1 => $v1){
       if(!isset($v1['srcPath'])){
         $this->writeTodoItems($v1);
       }
       else{
         $items[] = $v1;
-        $this->writeToLogRsync($v1);
+        $this->writeToLogRsync($v1, $count, $total_items);
         $this->writeToLog($v1);
+        $count++;
       }
       // append filename to list
     }
