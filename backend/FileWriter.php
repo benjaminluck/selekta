@@ -109,18 +109,18 @@ class FileWriter
     $rsyncIn = escapeshellarg($rsyncIn); 
 
     if($bpmBasedFolder){ 
-      $rsyncOut = $this->destination . $structSuffix . '/' . $this->getBPMFolder($file) . '/' . $file[$this->logParams['filename']];
+      $rsyncOut = $this->destination . $this->selectedStructure . '/' . $structSuffix . '/' . $this->getBPMFolder($file) . '/' . $file[$this->logParams['filename']];
     }else{
-      $rsyncOut = $this->destination . $structSuffix . '/' . $file[$this->logParams['filename']];
+      $rsyncOut = $this->destination . $this->selectedStructure . '/' . $structSuffix . '/' . $file[$this->logParams['filename']];
     }
 
-    $rsyncOut = escapeshellarg($rsyncOut); 
+    $rsyncOut = escapeshellarg($rsyncOut);  
     $rsyncCmd = 'rsync '.$rsyncParams.' '.$rsyncIn.' '.$rsyncOut.$closeChar;
 
     if($bpmBasedFolder){ 
-      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix . '/' . $this->getBPMFolder($file) . '/') .$closeChar;
+      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $this->selectedStructure . '/' .  $structSuffix . '/' . $this->getBPMFolder($file) . '/') .$closeChar;
     }else{
-      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $structSuffix) .$closeChar;
+      $makeDirCmd = 'mkdir -p '.escapeshellarg($this->destination . $this->selectedStructure . '/' .  $structSuffix) .$closeChar;
     }
     
     //rsync --delete --verbose --ignore-existing -r --partial /Volumes/2TB\ EXT\ Western\ Digital/_AUDIO/_ONSECK/_dj\:selection/selection-v10/ /Volumes/32GB\ D/
