@@ -8,6 +8,7 @@ import TrackCollection from './TrackCollection';
 import AudioPlayer from './AudioPlayer'; 
 import AudioService from './AudioService';
 import TopNavigation from './TopNavigation';
+import TrackInformation from './TrackInformation';
 
 var Vault = React.createClass({
   componentWillMount(){
@@ -60,8 +61,11 @@ var Vault = React.createClass({
             <TopNavigation/>   
             <h1>Vault</h1> 
           </header> 
-            <AudioPlayer audioservice={this.audioservice}/> 
+          <div className="row">
             <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
+            <TrackInformation audioservice={this.audioservice}/>
+          </div>
+          <AudioPlayer audioservice={this.audioservice}/> 
         </div>
       </div>
     )

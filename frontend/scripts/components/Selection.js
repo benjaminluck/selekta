@@ -8,6 +8,7 @@ import TrackCollection from './TrackCollection';
 import AudioPlayer from './AudioPlayer'; 
 import AudioService from './AudioService';
 import TopNavigation from './TopNavigation';
+import TrackInformation from './TrackInformation';
 
 var Selection = React.createClass({
   componentWillMount(){
@@ -57,8 +58,11 @@ var Selection = React.createClass({
             <TopNavigation/>   
             <h1>{this.props.params.selection}</h1> 
           </header> 
+            <div className="row">
+              <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
+              <TrackInformation audioservice={this.audioservice}/>
+            </div>
             <AudioPlayer audioservice={this.audioservice}/> 
-            <TrackCollection audioservice={this.audioservice} list={this.state.list}/>
       </div>
     )
   } 

@@ -15,22 +15,22 @@ var TrackCollection = React.createClass({
   },
   render : function(){
     var list = this.props.list;
-    return ( 
-        <table className="tracklist col-xs-12">  
-          <th>
-            <tr>
-              <td>SELECT</td>
-              <td>TRACK</td>
-              <td>BPM</td>
-              <td>TAGS</td>
-              <td>KEY</td>
-              <td>ACTIONS</td>
-            </tr>
-          </th>
-          <tbody>
-          {Object.keys(list).map(this.renderTrack)} 
-          </tbody> 
-        </table>
+    return (  
+        <div className='col-xs-8'> 
+          <table className="tracklist">  
+            <th>
+              <tr>
+                <td>SELECT</td>
+                <td>TRACK</td>
+                <td>BPM</td>
+                <td>KEY</td>
+              </tr>
+            </th>
+            <tbody>
+            {Object.keys(list).map(this.renderTrack)} 
+            </tbody> 
+          </table>
+        </div>
       )  
   } 
 });

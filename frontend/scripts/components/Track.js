@@ -105,13 +105,13 @@ var Track = React.createClass({
   },
   render : function(){ 
     return (
-      <tr>
+      <tr className="track-item">
         <td>
-          <input type="checkbox"/>
+          <input type="checkbox"/> 
         </td>
         <td>
           <div className="track-block -collapsed" key={this.props.item.hash}>
-            <div className="title" onClick={this.handleClick}>
+            <div className="title" onClick={() => this.handleClickDetails(this.props.item)}>
               { this.props.item.artist } - { this.props.item.title }
             </div>
             <div className="details" onClick={() => this.handleClickDetails(this.props.item)}> 
@@ -153,17 +153,7 @@ var Track = React.createClass({
                   { this.props.item.bpm }
         </td>
         <td>
-          { this.props.item.tags ? Object.keys(this.props.item.tags).map(i => {
-            return (<span>
-                {this.props.item.tags[i]}, 
-              </span>); 
-          }) : ''} 
-        </td>
-        <td>
                   { this.props.item.key }
-        </td>
-        <td>
-            
         </td>
       </tr>)
   } 
