@@ -85,3 +85,24 @@ body {
   padding: 15px;
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 5px; }
+
+header {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+.splash-screen {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .splash-screen a {
+    transition: all 0.3s ease; }
+    .splash-screen a:hover {
+      -webkit-transform: scale(1.1);
+              transform: scale(1.1); }

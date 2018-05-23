@@ -109,3 +109,23 @@ body{
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 5px;
 }
+
+header{
+  margin-top:20px;
+  margin-bottom: 20px;
+}
+
+.splash-screen{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a{
+    transition: all 0.3s ease;
+    &:hover{
+      transform:scale(1.1);
+    }
+  }
+  
+}

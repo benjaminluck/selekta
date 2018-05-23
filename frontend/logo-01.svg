@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="164.016px" height="95px" viewBox="0 0 164.016 95" enable-background="new 0 0 164.016 95" xml:space="preserve">
+<g>
+	<rect x="2" y="2" fill="#FFFFFF" width="91" height="91"/>
+	<g>
+		<polyline fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="93,87 93,93 87,93 		"/>
+		
+			<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="11,11" x1="76" y1="93" x2="14" y2="93"/>
+		<polyline fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="8,93 2,93 2,87 		"/>
+		
+			<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="11,11" x1="2" y1="76" x2="2" y2="14"/>
+		<polyline fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="2,8 2,2 8,2 		"/>
+		
+			<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="11,11" x1="19" y1="2" x2="81" y2="2"/>
+		<polyline fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="87,2 93,2 93,8 		"/>
+		
+			<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" stroke-dasharray="11,11" x1="93" y1="19" x2="93" y2="81"/>
+	</g>
+</g>
+<rect x="23.922" y="18.022" transform="matrix(0.9998 -0.0186 0.0186 0.9998 -0.8565 1.7471)" fill="#FFFFFF" width="139.568" height="58.001"/>
+<text transform="matrix(1 0 0 1 31.381 63.8244)" font-family="'TradeGothicLTStd-BdCn20'" font-size="45.5738">selekta</text>
+</svg>
