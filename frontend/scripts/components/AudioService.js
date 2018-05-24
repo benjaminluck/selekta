@@ -15,14 +15,12 @@ module.exports = function(context){
   }  
 
   this.setTrack = function(item){
-    console.log(item);
     self.setState({
       Track: item
     });
   }
 
   this.getState = function(){
-    console.log(self.state);
     return self.state;
   }
 };

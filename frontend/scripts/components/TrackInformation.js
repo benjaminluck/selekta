@@ -7,8 +7,79 @@ import Track from './Track';
 
 var TrackInformation = React.createClass({
   componentWillMount(){
-    //
+    this.state = {
+      newSelectionName: '',
+      newTags: []
+    };
   }, 
+  componentDidMount(){ 
+    //
+    let track = this.props.audioservice.getState().Track;
+      if(track.tags){
+        this.setState({ newTags: track.tags});
+      }
+    },
+  updateDocument(type, item){
+    var host = 'http://localhost:8888';
+    var vaultEndpoint = '/selekta/api/RunAPI.php/update-doc/';
+
+    var newTags = [];
+    var newSelection = [];
+    var newSelectionName = '';
+
+    switch(type){
+      case 'selection':
+        newSelection = this.state.newSelectionName.split('/');
+        newSelectionName = newSelection[0];
+        newSelection.shift(); 
+    
+        if(typeof(newSelection[0]) === undefined){
+          newSelection = [];
+        }
+        
+         
+      break;
+      case 'tags':
+        newTags = this.state.newTags.split(',');
+        newTags = newTags.map(function(s) { return s.trim() });
+
+        if(typeof(newTags[0]) === undefined){
+          newTags = [];
+        }
+
+      break;
+    }
+
+    var reqBody = {'document': item, 'new-selection-name': newSelectionName, 'new-structure': newSelection, 'new-tags': newTags}; 
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", host + vaultEndpoint, true);
+    xhr.onload = function(e){
+      if (xhr.readyState === 4){
+        if (xhr.status === 200){
+          var res = JSON.parse(xhr.response);  
+          console.log(res);
+        } else {
+          console.error(xhr.statusText); 
+        }
+      } 
+    }.bind(this);
+    xhr.onerror = function(e){
+      console.error(xhr.statusText); 
+    }    
+    xhr.send(JSON.stringify(reqBody));
+  },
+  handleChange(e) {
+    console.log(e);
+    switch(e.target.name){
+      case 'new-selection':
+        this.setState({ newSelectionName: e.target.value });
+      break;
+      case 'add-tag': 
+        this.setState({ newTags: e.target.value });
+      break; 
+    }
+    
+  },
   render : function(){
     var list = this.props.list;
     var track = this.props.audioservice.getState().Track;
@@ -29,6 +100,14 @@ var TrackInformation = React.createClass({
                     {track.tags[i]}, 
                   </span>); 
               }) : ''} 
+            </div>
+            <div> 
+                <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
+                <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',track)}>add to selection</button>
+            </div>
+            <div> 
+                <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
+                <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument('tags', track)}>add tag</button>
             </div>
           </div>
         </div>
