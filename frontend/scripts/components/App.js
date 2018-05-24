@@ -18,10 +18,11 @@ var App = React.createClass({
     return (
       <div>
         <div className="container">
-          <header>  
-            <TopNavigation/>   
-            <h1>Selekta</h1> 
-          </header> 
+          <div className="splash-screen">   
+            <a href="/vault">
+              <img alt="selekta" src="../logo-01.svg" height="150"/>
+            </a>
+          </div> 
         </div>
       </div>
     )

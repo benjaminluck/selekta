@@ -12,7 +12,7 @@ module.exports = function(context){
     self.setState({
       AudioService_Src: path
     });
-  }
+  }  
 
   this.setTrack = function(item){
     console.log(item);
