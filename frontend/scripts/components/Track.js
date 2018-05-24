@@ -139,12 +139,6 @@ var Track = React.createClass({
                   }) : ''} 
                   </ul>
                 </li>
-                <li>
-                  <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
-                  <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',this.props.item)}>add to selection</button>
-                  <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
-                  <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument('tags', this.props.item)}>add tag</button>
-                </li>
               </ul>
             </div>
           </div>
