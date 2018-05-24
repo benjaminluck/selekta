@@ -101,6 +101,14 @@ var TrackInformation = React.createClass({
                   </span>); 
               }) : ''} 
             </div>
+            <div>
+                { track.structure ? Object.keys(track.structure).map(name => {
+                  return (<ul>
+                      {name} 
+                      {track.structure[name].map(key =>{ return(<li>{key}</li>)})}
+                    </ul>); 
+                }) : ''} 
+            </div>
             <div> 
                 <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
                 <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',track)}>add to selection</button>
