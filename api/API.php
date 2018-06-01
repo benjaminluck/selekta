@@ -63,7 +63,7 @@ class API {
     return $numericArr;
   }
 
-  public function shapeData($array, $type){
+  public function shapeData($array, $type, $filterSelectionName = ''){
     switch($type){
       case 'structured':
       foreach($array as $item){
@@ -78,6 +78,10 @@ class API {
 
         if(isset($data['structure'])){
           foreach($data['structure'] as $selectionName => $selectionVal){
+            if(!empty($filterSelectionName) && $filterSelectionName != $selectionName){
+              continue;
+            }
+
             $this->structureDepth = sizeof($data['structure'][$selectionName]); 
             $execstring = '$newArray["'. $selectionName . '"]["' . implode('"]["', $data['structure'][$selectionName]) . '"]["'. $fileName .'"] = $data;';
             eval($execstring);
@@ -160,7 +164,7 @@ class API {
       $list = $this->dbClient->searchIndex($selectionName, $selectedType);
     }
     
-    $list = $this->shapeData($list, $listShape);
+    $list = $this->shapeData($list, $listShape, $selectionName);
 
     return $list;
   }
