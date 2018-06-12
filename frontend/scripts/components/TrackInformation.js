@@ -80,6 +80,11 @@ var TrackInformation = React.createClass({
     }
     
   },
+  componentDidUpdate(){
+    var track = this.props.audioservice.getState().Track;
+    console.log( track.tags);  
+
+  },
   render : function(){
     var list = this.props.list;
     var track = this.props.audioservice.getState().Track;

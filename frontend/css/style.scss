@@ -129,3 +129,14 @@ header{
   }
   
 }
+
+.folder-node{
+  .content{
+    display:none;
+  }
+  &.-open{
+    .content{
+      display:block;
+    }
+  }
+}

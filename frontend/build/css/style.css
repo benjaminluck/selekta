@@ -27,7 +27,6 @@ body {
   .audioplayer-block .player {
     color: #404040;
     position: relative;
-    display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     margin: auto;
@@ -41,9 +40,8 @@ body {
     padding: 10px 15px 5px 10px;
     font-family: "Roboto"; }
     .audioplayer-block .player .information {
-      -webkit-box-flex: 1;
-          -ms-flex-positive: 1;
-              flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
       font-family: "Roboto";
       font-weight: 300;
       text-transform: uppercase;
@@ -76,8 +74,7 @@ body {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.03);
     color: black;
-    -webkit-transform: scale(1.02);
-            transform: scale(1.02); }
+    transform: scale(1.02); }
 
 .track-information-block {
   background-color: rgba(0, 0, 0, 0.03);
@@ -92,17 +89,19 @@ header {
 
 .splash-screen {
   height: 100vh;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center; }
   .splash-screen a {
     transition: all 0.3s ease; }
     .splash-screen a:hover {
-      -webkit-transform: scale(1.1);
-              transform: scale(1.1); }
+      transform: scale(1.1); }
+
+.folder-node .content {
+  display: none; }
+
+.folder-node.-open .content {
+  display: block; }

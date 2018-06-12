@@ -33,6 +33,15 @@ var Selection = React.createClass({
       if (xhr.readyState === 4){
         if (xhr.status === 200){
           var list = JSON.parse(xhr.response); 
+          switch(structure){
+            case 'unstructured':
+              list = list;
+            break;
+            case 'structured':
+              list = list[selection];
+            break;
+          }
+          console.log(list); 
           this.setState({ 
             list: list,
             numItems: list.length
