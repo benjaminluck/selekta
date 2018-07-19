@@ -108,6 +108,30 @@ body{
   padding: 15px;
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 5px;
+
+  .tags-list{
+    margin-bottom: 10px;
+    .ti{
+      background-color: gray;
+      border-radius : 5px;
+      padding: 5px;
+      margin-right: 5px;
+      color: white;
+    }
+  }
+}
+
+.track-action-block{
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  border-radius: 5px;
+  margin-top:15px;
+  padding: 15px;
+
+  input{
+    width: 100%;
+    margin-bottom: 5px;
+  }
 }
 
 header{
