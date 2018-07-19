@@ -99,10 +99,10 @@ var TrackInformation = React.createClass({
             <div className="item">{track.date_added}</div>
             <div className="item">{track.hash}</div>
             <div><br/></div>
-            <div>
+            <div className="tags-list">
               { track.tags ? Object.keys(track.tags).map(i => {
-                return (<span>
-                    {track.tags[i]}, 
+                return (<span className="ti">
+                    {track.tags[i]} 
                   </span>); 
               }) : ''} 
             </div>
@@ -114,6 +114,8 @@ var TrackInformation = React.createClass({
                     </ul>); 
                 }) : ''} 
             </div>
+          </div>
+          <div className="track-action-block">
             <div> 
                 <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
                 <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',track)}>add to selection</button>
