@@ -62,6 +62,8 @@ var Track = React.createClass({
     newTags: []
   };
 
+  console.log(this.props);
+
   },
   componentDidMount(){ 
   //
@@ -73,6 +75,7 @@ var Track = React.createClass({
     event.target.parentNode.classList.toggle("-collapsed"); 
   },
   handleClickDetails(item){
+    console.log('trackk');
     var filepath = 'http://localhost:8888/selekta/music-vault/' + item.fileName;
     this.props.audioservice.setSrc(filepath); 
     this.props.audioservice.setTrack(item);

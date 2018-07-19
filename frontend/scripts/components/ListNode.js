@@ -7,12 +7,16 @@ import Track from './Track';
 
 var ListNode = React.createClass({
   componentWillMount(){
-    //
+    console.log(this.props);
+    if(this.props.nodeDepth){
+      this.nodeDepth = his.props.nodeDepth;
+    }
   }, 
   renderTrack : function(item){ 
-    return <Track audioservice={this.props.audioservice} item={item}/>
+    return <Track audioservice={this.props.audioservice} item={item} nodeDepth={this.nodeDepth}/>
   },
   isTrackNode : function(item){
+    this.nodeDepth++;
     if(typeof(item) != 'undefined'){
       if(typeof(item) && typeof(item['ext']) != 'undefined'){
         return true;
@@ -22,11 +26,11 @@ var ListNode = React.createClass({
     return false;
   },
   isFolderNode : function(item){
+
+
     return true;
   }, 
   handleClickNode : function(e){
-    console.log(arguments);
-    console.log(e);  
     e.target.parentNode.classList.toggle("-open"); 
   },
   renderNode : function(key, item){ 
@@ -35,8 +39,6 @@ var ListNode = React.createClass({
     }
 
     if(this.isFolderNode(key, item)){
-      console.log(key);
-      console.log(item); 
       return(<div className='folder-node' onClick={this.handleClickNode}>
           <div className='name'>{key}</div>
           <div className='content'>
