@@ -3,7 +3,8 @@
 
 */
 import React from 'react';  
-import Track from './Track'; 
+import Track from './Track';
+import { Router, Route, Link } from 'react-router'; 
 
 var TrackInformation = React.createClass({
   componentWillMount(){
@@ -101,9 +102,10 @@ var TrackInformation = React.createClass({
             <div><br/></div>
             <div className="tags-list">
               { track.tags ? Object.keys(track.tags).map(i => {
-                return (<span className="ti">
+                var link = '/vault/'+track.tags[i]+'/';
+                return (<Link to={link} className="ti">
                     {track.tags[i]} 
-                  </span>); 
+                  </Link>); 
               }) : ''} 
             </div>
             <div>

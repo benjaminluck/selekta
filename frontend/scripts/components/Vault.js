@@ -11,6 +11,35 @@ import TopNavigation from './TopNavigation';
 import TrackInformation from './TrackInformation';
 
 var Vault = React.createClass({
+  componentWillReceiveProps(){
+    console.log("UPDATE!!");
+    var host = 'http://localhost:8888';
+    var vaultEndpoint = '/selekta/api/RunAPI.php/vault';
+    var tags = this.props.params.tags; 
+    var xhr = new XMLHttpRequest();
+    var url = host + vaultEndpoint;
+    if(tags && tags.length){
+      url = url + '/' + tags; 
+    }
+    xhr.open("GET", url, true);
+    xhr.onload = function(e){
+      if (xhr.readyState === 4){
+        if (xhr.status === 200){
+          var list = JSON.parse(xhr.response); 
+          this.setState({ 
+            list: list,
+            numItems: list.length
+          })
+        } else {
+          console.error(xhr.statusText); 
+        }
+      }
+    }.bind(this);
+    xhr.onerror = function(e){
+      console.error(xhr.statusText); 
+    }    
+    xhr.send(null);
+  },
   componentWillMount(){
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/vault';
