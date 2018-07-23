@@ -4,34 +4,31 @@
 */
 import React from 'react';  
 import Track from './Track'; 
+import ListNode from './ListNode'; 
 
 var TrackCollection = React.createClass({
-  componentWillMount(){
-    //
-  }, 
-  renderTrack : function(val, key){
-    var list = this.props.list;  
-    return <Track audioservice={this.props.audioservice} item={list[key]}/>
+  componentWillMount(){ 
+  //
+    this.nodeDepth = 0;
   },
   render : function(){
-    var list = this.props.list;
-    return (  
+    return (    
         <div className='col-xs-8'> 
           <table className="tracklist">  
             <th>
-              <tr>
-                <td>SELECT</td>
+              <tr> 
+                <td>SELECT</td> 
                 <td>TRACK</td>
                 <td>BPM</td>
                 <td>KEY</td>
               </tr>
-            </th>
-            <tbody>
-            {Object.keys(list).map(this.renderTrack)} 
+            </th> 
+            <tbody> 
+              <ListNode list={this.props.list} audioservice={this.props.audioservice} nodeDepth={this.nodeDepth}/> 
             </tbody> 
           </table>
         </div>
-      )  
+      )    
   } 
 });
 

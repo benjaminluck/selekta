@@ -5,11 +5,13 @@
 import React from 'react'; 
 import ReactHowler from 'react-howler'; 
 import TopNavigation from './TopNavigation';
+import { Router, Route, Link } from 'react-router';
 
 var App = React.createClass({
   componentWillMount(){ 
     var host = 'http://localhost:8888';
     var vaultEndpoint = '/selekta/api/RunAPI.php/list-selections';
+    var structure = this.props.params.structure;
 
     this.setState({ 
       selections: []
@@ -40,8 +42,9 @@ var App = React.createClass({
   },
   renderSelection : function(val, key){
     console.log(arguments);
-    var selectionPath = '/selection/' + val + '/unstructured/';
-    return <div><a href={selectionPath}>{val}</a></div>
+    var structure = this.props.params.structure;
+    var selectionPath = `/selection/${val}/${structure}/`;
+    return <div><Link to={selectionPath}>{val}</Link></div>
   },
   render : function(){
     //

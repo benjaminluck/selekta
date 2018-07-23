@@ -19,13 +19,15 @@ var AudioPlayer = React.createClass({
 
   },
   setTrackPosition(){
-    var duration = this.player.duration();
-    var seek = this.player.seek();
-    if(typeof(seek) === 'number'){
-      var pos = (seek / duration * 100);
-      this.setState({
-        position : pos
-      });
+    if(this.player){
+      var duration = this.player.duration();
+      var seek = this.player.seek();
+      if(typeof(seek) === 'number'){
+        var pos = (seek / duration * 100);
+        this.setState({
+          position : pos
+        });
+      }
     }
   },
   skipTo(){
