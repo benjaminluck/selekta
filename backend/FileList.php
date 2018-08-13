@@ -31,18 +31,28 @@ class FileList
     {
         $folder_array = explode('/', $it['relPath']);
         $file_array = explode(' ', $file);
-        $it['structure'] = $folder_array;
+
+        // add the name of the selection to the structure object
+        $selectionName= $this->getFolderName();
+        $it['structure'] = [];
+        $it['structure'][$selectionName] = $folder_array;
+
         if(isset($folder_array[0])){
             $it['songGroup'] = $folder_array[0];
         }
-        $it['key'] = $file_array[0];
-        $it['bpm'] = $file_array[1];
+        if(count($file_array) > 1){
+            $it['key'] = $file_array[0];
+            $it['bpm'] = $file_array[1];
+        }
         if(isset($folder_array[1])){
             $it['songGroup'] = $folder_array[1];
         }
 
+
         // remove last item from structure array since this is the filename
-        unset($it['structure'][count($it['structure']) - 1]);
+      // unset($it['structure'][$selectionName][count($it[$selectionName]['structure'])]);
+      $indexOfLastItemInStruct = count($it['structure'][$selectionName]) - 1;
+      unset($it['structure'][$selectionName][$indexOfLastItemInStruct]);
         $stripe_location = array_search('-', $file_array);
         $it['artist'] = '';
 
@@ -66,6 +76,10 @@ class FileList
 
         $it['title'] = rtrim(str_replace('.'.$it['ext'], '', $it['title']));
 
+        // 10A 123 Artist - Title
+       //preg_match('[0-9][A-Z] [0-9]{2,3} [A-z]+ - [A-Za-z ]+', $it['fileName'], $matches); 
+        //$matches;
+
         return $it;
     }
 
@@ -77,7 +91,7 @@ class FileList
         $it['includePath'] = "selection/" . $it['relPath']; // assumes 'selection' is a symlink to directory containing files
         $it['fileName'] = $file;
         $meta = pathinfo($it['srcPath']);
-        $it['ext'] = $meta['extension'];
+        $it['ext'] = isset($meta['extension']) ? $meta['extension'] : '';
 
         return $it;
     }

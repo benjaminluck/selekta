@@ -4,10 +4,10 @@ A set of tools to keep you sane when organising your music selection
 # mvp
 - [x] Fluently get data in selekta vault from folder
 - [x] Export rsync execs as bash script
-- [ ] Update existing vaults with new items
+- [] Bulk actions: move selected items to other path,
+- [] Update existing vaults with new items 
 - [ ] Easily create, duplicate and delete selections
 - [ ] Update tags in vault, delete tags, search by tags.
-- [ ] Bulk actions: move selected items to other path,
 - [ ] Simple smart structure: items will be forced in bpm structure (0,1,2 etc) if true
 
 # todo
@@ -17,6 +17,25 @@ A set of tools to keep you sane when organising your music selection
 - Frontend: button to duplicate a selection
 - Remove tag
 
+# dynamic-structure:
+- Decide what to do with name:
+    structure
+      selection-v10
+        0 => B
+        1 => 2
+    OR
+
+    structure
+      [
+        [
+          0 => B
+          1 => 2
+        ]
+      ]
+  And how does this work when a file is placed in multiple structures?
+
+- Make sure frontend understands new structure
+ 
 # todo-future
 - Versions of files in /vault/
 - Frontend: HTML5 audio player (how could this be possible? small API in media folder that serves the content? symlinks?)
@@ -40,5 +59,5 @@ overview of music selections and library, tools to export folders
 - selekta/mix
 timelines per mixed file, users inserts (fade in timestamp, fade out timestamp, track name) and comments on how tracks blend.
 all items are stored in elasticsearch index to link everything together.
-- selekta/tap (selekta count) (count selekta)
+- selekta/tap (selekta count) (count selekta) (loopsize)
 simple webapp / ios app with bpm count by tap, swipe to different screens to see additional details: how much seconds 16/32/64 bars take at current bpm etc.

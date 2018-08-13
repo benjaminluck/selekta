@@ -41,7 +41,7 @@ class FlatList extends FileList
         if (is_null($dir2)) {
             $dir2 = $this->startDir;
         }
-        echo $dir1;
+
         chdir($dir1);
         $tree = [];
         $list = [];
@@ -56,7 +56,11 @@ class FlatList extends FileList
                             chdir($dir1);
                         } else {
                             // logic if file is an actual file
+
                             $it = $this->newItem($file, $dir2, $this->startDir);
+                            $hash = hash("md5", $file + '_' + filesize($file));
+                            $it['hash'] = $hash;
+
                             if(in_array($it['ext'], $this->musicExt)){ $it = $this->describeMusicItem($it, $file); }
 
                             $this->list[] = $it;

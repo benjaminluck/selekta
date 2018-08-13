@@ -6,6 +6,8 @@ class ElasticHandler
 {
   public $connection;
 
+  public $selectedIndex = "selekta_db";
+
   public function __construct(){
     $this->connection = ClientBuilder::create()->build();
   }
@@ -31,11 +33,11 @@ class ElasticHandler
     return $resp;
   }
 
-  private function elasticPOST($endpoint, $requestData = []){
+  private function elasticPOSTold($endpoint, $requestData = []){
     $base = $this->es_host;
     $data_string = json_encode($requestData);
 
-    $curl = curl_init();
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -50,8 +52,54 @@ class ElasticHandler
     return $resp;
   }
 
+  private function elasticPOST($endpoint, $jsonData = []){
+    $base = $this->es_host;
+    $base = $base . $this->selectedIndex . '/';
+    $data_string = $jsonData;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json',
+      'Content-Length: ' . strlen($data_string))
+    );
+
+    $resp = curl_exec($ch);
+    curl_close($ch);
+
+    return $resp;
+  }
+
+  private function elasticDELETE(){
+    $base = $this->es_host;
+    $base = $base . $this->selectedIndex . '/';
+    $data_string = $jsonData;
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_URL, $base . $endpoint);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json'
+    ));
+
+    $resp = curl_exec($ch);
+    curl_close($ch);
+
+    return $resp;
+  }
+
+  public function deleteVault(){
+    $this->elasticDELETE();
+  }
+
   public function scrollThroughIndex($indexName, $typeName = ""){
     // read all items from an index with given 'type'
+    $indexName = $this->selectedIndex;
     $params = [
         "scroll" => "3s",          // how long between scroll requests. should be small!
         "size" => 500,               // how many results *per shard* you want back
@@ -84,11 +132,12 @@ class ElasticHandler
         );
     }
     // save items with new type value
-    
+
     return $items;
   }
 
   public function updateSingleDocument($index, $type, $doc_id, $data = ''){
+    $index = $this->selectedIndex;
     $params = [
       'index' => $index,
       'type' => $type,
@@ -97,11 +146,12 @@ class ElasticHandler
     ];
 
     $response = $this->connection->index($params);
-    $json = json_encode($response);
-    return $json;
+    return $response;
   }
 
   public function updateTags($index, $type, $doc_id, $data = ''){
+    $index = $this->selectedIndex;
+
         $params = [
         'index' => $index,
         'type' => $type,
@@ -121,6 +171,10 @@ class ElasticHandler
 
   public function formatResult($es_response){
     // takes a regular search response and only extracts the hits
+    if (!isset($es_response['hits']['hits'])){
+      return [];
+    }
+
     return $es_response['hits']['hits'];
   }
 
@@ -143,6 +197,7 @@ class ElasticHandler
   }
 
   public function searchIndexByBPMGroup($index, $type, $bpmGroup){
+    $index = $this->selectedIndex;
     $q = [
           'query' => [
               'match' => [
@@ -157,7 +212,8 @@ class ElasticHandler
     return $res;
   }
 
-  public function searchIndexByTags($index, $type, $tags){
+  public function searchIndexByTags($selectionName, $type, $tags){
+    $index = $this->selectedIndex;
     $q = [
           'query' => [
               'match' => [
@@ -172,26 +228,141 @@ class ElasticHandler
     return $res;
   }
 
-  public function searchIndex($index, $type, $query = []){
+  public function searchVault($type, $tags = []){
+    $index = $this->selectedIndex;
     $size = 5000;
-    $params = [
-        'index' => $index,
-        'type' => $type,
-        'size' => $size,
-        'body' => $query
-    ];
 
-    //$params['body'] = [];
+    $query = '{
+        "size": ' . $size . ',
+        "sort" : [
+          {"date_added" : {"order" : "desc"}}
+        ]
+    }';
+
+    if(!empty($tags) && is_array($tags)){
+      foreach($tags as &$tag){
+        $tag = '"'.$tag.'"';
+      }
 
 
-    $results = $this->connection->search($params);
+      $query = '{
+        "size": ' . $size . ',
+        "query": {
+          "bool":{
+            "filter": {
+              "terms": {
+                "tags": [
+                  '.implode(',',$tags).'
+                ]
+              }
+            }
+          }
+        },
+        "sort" : [
+          {"date_added" : {"order" : "desc"}}
+        ]
+      }';
+    }
+
+
+    $results = $this->elasticPOST('_search', $query);
+    $results = json_decode($results, true);
     $results = $this->formatResult($results);
 
     return $results;
   }
 
+  public function searchIndex($selectionName, $type){
+    $index = $this->selectedIndex;
+    $size = 5000;
+
+    $selectionNm = 'selection-v10';
+    $fieldVar = 'structure' . '.' . $selectionName;
+
+    $query = '{
+        "size": ' . $size . ',
+        "query": {
+            "bool" : {
+                "must" : {
+                    "exists" : {
+                        "field" : "' .$fieldVar. '"
+                    }
+                }
+            }
+        },
+      "sort" : [
+        {"date_added" : {"order" : "desc"}}
+      ]
+    }';
+
+
+    $results = $this->elasticPOST('_search', $query);
+    $results = json_decode($results, true);
+
+    if(!empty($results)){
+      $results = $this->formatResult($results);
+    }else{
+      //echo $json_encode($results); 
+    }
+    return $results;
+  }
+
   public function bulk($params){
     $results = $this->connection->bulk($params);
+
+    return $results; 
+  }
+
+  public function removeSelection($selectionName, $doc_type = 'mp3'){
+     // strip first and last { } added by json encode
+    $end = $doc_type . '/_update_by_query';
+    $payload = '{ 
+        "script" : {
+            "inline": "if(ctx._source.structure != null && ctx._source.structure[params.selectionName] != null) { ctx._source.structure.remove(params.selectionName) } ",
+            "lang": "painless",
+            "params" : {
+                "selectionName" : "'.$selectionName .'",
+                "time" : "'.time().'"
+            }
+        }
+    }';
+
+
+    $result = $this->elasticPOST($end, $payload);
+
+    return $result;
+  }
+
+  public function upsertSingleDoc($doc, $doc_type, $selectionName = '', $structure = [], $tags = []){
+    $doc_id = $doc['hash'];
+    $doc['date_added'] = time();
+    $doc_json = json_encode($doc); 
+    $doc_json = substr($doc_json, 1, -1); // strip first and last { } added by json encode
+    $end = $doc_type . '/' . $doc_id . '/_update';
+    $payload = '{ 
+        "script" : {
+            "inline": "if(ctx._source.structure != null){ ctx._source.structure[params.selectionName] = params.structure; } ctx._source.tags = params.tags; ctx._source.date_updated = params.time;",
+            "lang": "painless",
+            "params" : {
+                "selectionName" : "'.$selectionName .'",
+                "tags" : '.json_encode($tags).',
+                "structure" : '.json_encode($structure).',
+                "time" : "'.time().'"
+            }
+        },
+        "upsert" : {'
+          . $doc_json .
+        '}
+    }';
+
+
+    $result = $this->elasticPOST($end, $payload);
+
+    return $result;
+  }
+
+  public function update($params){
+    $results = $this->connection->update($params);
 
     return $results;
   }
