@@ -69,6 +69,14 @@ var TrackInformation = React.createClass({
     }    
     xhr.send(JSON.stringify(reqBody));
   },
+  updateSelectedDocuments(type, items){
+      console.log('Update selected docs');
+      console.log(items);
+      for(var i = 0; i <items.length; i++){
+        console.log(`Updating: ` + items[i].hash);
+        this.updateDocument(type,items[i]);  
+      }
+  },
   handleChange(e) {
     console.log(e);
     switch(e.target.name){
@@ -80,7 +88,7 @@ var TrackInformation = React.createClass({
       break; 
     }
     
-  },
+  }, 
   componentDidUpdate(){
     var track = this.props.audioservice.getState().Track;
     console.log( track.tags);  
@@ -121,13 +129,19 @@ var TrackInformation = React.createClass({
             <div> 
                 <input type="text" name="new-selection" onChange={ this.handleChange } value={this.state.newSelectionName}></input>
                 <button type="submit" name="new-selection-btn" onClick={() => this.updateDocument('selection',track)}>add to selection</button>
+                <button type="submit" name="new-selection-btn" onClick={() => this.updateSelectedDocuments('selection',this.props.audioservice.getState().SelectedItems)}>all to selection</button>
             </div>
             <div> 
                 <input type="text" name="add-tag" onChange={ this.handleChange } value={this.state.newTags}></input>
                 <button type="submit" name="add-tag-btn" onClick={() => this.updateDocument('tags', track)}>add tag</button>
             </div>
           </div>
-        </div>
+          <div className=""> 
+            <div> 
+                <button type="submit" onClick={() => this.props.audioservice.uncheckSelection()}>uncheck selection</button>
+            </div>
+          </div>
+        </div> 
       )  
   } 
 });

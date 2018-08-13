@@ -59,7 +59,8 @@ var Track = React.createClass({
   //
   this.state = {
     newSelectionName: '',
-    newTags: []
+    newTags: [],
+    isSelected: true
   };
 
   console.log(this.props);
@@ -73,6 +74,11 @@ var Track = React.createClass({
   },
   handleClick(event) { 
     event.target.parentNode.classList.toggle("-collapsed"); 
+  },
+  handleSelect(item) { 
+    this.props.audioservice.selectItem(item);
+    console.log(item);
+    console.log('select'); 
   },
   handleClickDetails(item){
     console.log('trackk');
@@ -110,7 +116,7 @@ var Track = React.createClass({
     return (
       <tr className="track-item">
         <td>
-          <input type="checkbox"/> 
+          <input type="checkbox" className="selector-checkbox" onClick={() => this.handleSelect(this.props.item)} /> 
         </td>
         <td>
           <div className="track-block -collapsed" key={this.props.item.hash}>
